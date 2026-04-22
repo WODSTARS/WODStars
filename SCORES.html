@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WODStar Scores</title>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #38bdf8;
+      --light: #f1f5f9;
+      --dark: #1e293b;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background: var(--primary);
+      color: var(--light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    select, button {
+      padding: 0.6rem;
+      margin: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1rem;
+    }
+    table {
+      width: 100%;
+      max-width: 900px;
+      margin-top: 1rem;
+      border-collapse: collapse;
+      background: var(--dark);
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--primary);
+    }
+    tr:nth-child(even) {
+      background: #334155;
+    }
+    tr:hover {
+      background: #475569;
+      cursor: pointer;
+    }
+    .category {
+      margin-top: 2rem;
+      color: var(--accent);
+      font-size: 1.5rem;
+    }
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal {
+      background: var(--dark);
+      border-radius: 1rem;
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      position: relative;
+      animation: popin 0.3s ease;
+    }
+    .modal h2 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .modal p {
+      margin: 0.5rem 0;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--light);
+      cursor: pointer;
+    }
+    @keyframes popin {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>WodStarScores</h1>
+  <select id="competenciaSelect">
+    <option value="">Selecciona categoria</option>
+    <option value="equipos_hh">Hombre Hombre</option>
+    <option value="equipos_hm">Hombre Mujer</option>
+    <option value="equipos_mm">Mujer Mujer</option>
+  </select>
+  <button onclick="mostrarCompetencia()">Ingresar</button>
+
+  <div id="tablas"></div>
+  <div id="modalContainer"></div>
+
+  <script>
+    const datos = {
+      pruebaEquipos: {
+        principiantes: [
+          {
+            equipo: "Titanes | Hombre Hombre",
+            atletas: ["Luis", "Carlos"],
+            resultados: [
+              { descripcion: "WOD 1", valor: "120 reps", puntos: 200  },
+              { descripcion: "WOD 2", valor: "100 reps", puntos: 75 },
+              { descripcion: "WOD 3", valor: "130 reps", puntos: 85 },
+              { descripcion: "Final", valor: "100 kg / 220 lb", puntos: 90 }
+            ]
+          },
+           {
+            equipo: "Zorrass | Hombre Hombre",
+            atletas: ["Luis", "Carlos"],
+            resultados: [
+              { descripcion: "WOD 1", valor: "120 reps", puntos: 200  },
+              { descripcion: "WOD 2", valor: "100 reps", puntos: 75 },
+              { descripcion: "WOD 3", valor: "130 reps", puntos: 85 },
+              { descripcion: "Final", valor: "100 kg / 220 lb", puntos: 90 }
+            ]
+          },
+          {
+            equipo: "FuerzaMixta | Hombre Mujer",
+            atletas: ["Pedro", "Ana"],
+            resultados: [
+              { descripcion: "WOD 1", valor: "110 reps", puntos: 70 },
+              { descripcion: "WOD 2", valor: "105 reps", puntos: 80 },
+              { descripcion: "WOD 3", valor: "120 reps", puntos: 75 },
+              { descripcion: "Final", valor: "90 kg / 198 lb", puntos: 85 }
+            ]
+          },
+          {
+            equipo: "Guerreras | Mujer Mujer",
+            atletas: ["Ana", "Laura"],
+            resultados: [
+              { descripcion: "WOD 1", valor: "100 reps", puntos: 65 },
+              { descripcion: "WOD 2", valor: "95 reps", puntos: 60 },
+              { descripcion: "WOD 3", valor: "110 reps", puntos: 70 },
+              { descripcion: "Final", valor: "80 kg / 176 lb", puntos: 75 }
+            ]
+          }
+        ],
+        intermedios: [],
+        avanzados: []
+      }
+    };
+
+    function mostrarCompetencia() {
+      const seleccion = document.getElementById("competenciaSelect").value;
+      const contenedor = document.getElementById("tablas");
+      contenedor.innerHTML = "";
+
+      const filtros = {
+        equipos_hh: "Hombre Hombre",
+        equipos_hm: "Hombre Mujer",
+        equipos_mm: "Mujer Mujer"
+      };
+
+      const filtroTipo = filtros[seleccion];
+      if (!filtroTipo) return;
+
+      const datosCompetencia = datos.pruebaEquipos;
+
+      Object.entries(datosCompetencia).forEach(([categoria, equipos]) => {
+        const filtrados = equipos.filter(e => e.equipo.includes(filtroTipo));
+        if (filtrados.length === 0) return;
+
+        let html = `<div class='category'>${categoria.toUpperCase()} - ${filtroTipo}</div><table><thead><tr>`;
+        html += "<th>#</th><th>Equipo</th><th>Total</th></tr></thead><tbody>";
+
+        filtrados
+          .map(e => ({ ...e, total: e.resultados.reduce((s, x) => s + x.puntos, 0) }))
+          .sort((a, b) => b.total - a.total)
+          .forEach((e, i) => {
+            let lugarDisplay = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
+            html += `<tr onclick='verEquipo(${JSON.stringify(e)}, ${i})'><td>${lugarDisplay}</td><td>${e.equipo}</td><td>${e.total}</td></tr>`;
+
+          });
+
+        html += "</tbody></table>";
+        contenedor.innerHTML += html;
+      });
+    }
+
+    function verEquipo(e, lugar) {
+  if (lugar < 3) {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+
+  let html = `<div class="modal-bg" onclick="cerrarModal(event)">
+                <div class="modal" onclick="event.stopPropagation()">
+                  <button class="close-btn" onclick="cerrarModal(event)">×</button>
+                  <h2>${e.equipo}</h2>
+                  <p><strong>Atletas:</strong> ${e.atletas.join(" & ")}</p>`;
+  e.resultados.forEach(r => {
+    html += `<p><strong>${r.descripcion}:</strong> ${r.valor} → ${r.puntos} pts</p>`;
+  });
+  html += `<p><strong>Total:</strong> ${e.resultados.reduce((s, x) => s + x.puntos, 0)}</p>
+           </div></div>`;
+  document.getElementById("modalContainer").innerHTML = html;
+}
+
+    
+
+    function cerrarModal() {
+      document.getElementById("modalContainer").innerHTML = "";
+    }
+  </script>
+<footer style="text-align: center; padding: 15px; background-color: #0f172a; color: white; font-size: 14px; margin-top: 40px;">
+  ¿Quieres contratar este servicio para tu competencia?<br />
+  📧 Contacto: <a href="mailto:wodstarsoporte@gmail.com" style="color: #38bdf8; text-decoration: none;">wodstarsoporte@gmail.com</a>
+</footer>
+
+
+</body>
+</html>
