@@ -159,6 +159,35 @@ tr:hover{
   body{font-size:1.3rem;}
   td{padding:22px;}
 }
+/* MODAL GRANDE */
+.modal.grande{
+  width:95%;
+  max-width:900px;
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+/* WOD CARDS */
+.wod-card{
+  margin-top:10px;
+  border:1px solid #333;
+  border-radius:8px;
+  overflow:hidden;
+}
+
+.wod-header{
+  background:#FFD700;
+  color:black;
+  padding:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.wod-body{
+  display:none;
+  padding:10px;
+  background:#1a1a1a;
+}
 </style>
 </head>
 
@@ -267,7 +296,7 @@ function verAtleta(a,lugar){
 
   let html = `
   <div class="modal-bg" onclick="cerrarModal()">
-  <div class="modal" onclick="event.stopPropagation()">
+  <div class="modal grande" onclick="event.stopPropagation()">
   <button class="close-btn" onclick="cerrarModal()">×</button>
 
   <h2>${a.nombre}</h2>
@@ -275,11 +304,20 @@ function verAtleta(a,lugar){
   <p><strong>Rama:</strong> ${a.rama}</p>
   <p><strong>Heat:</strong> ${a.heat}</p>
   <p><strong>Carril:</strong> ${a.carril}</p>
+
+  <h3 style="margin-top:15px;">WODs</h3>
   `;
 
-  a.resultados.forEach(r=>{
+  a.resultados.forEach((r,i)=>{
 
-    html += `<hr><p><strong>${r.wod}</strong></p>`;
+    html += `
+      <div class="wod-card">
+        <div class="wod-header" onclick="toggleWod(${i})">
+          ${r.wod} ⬇
+        </div>
+
+        <div class="wod-body" id="wod_${i}">
+    `;
 
     if(r.timeCap) html += `<p>⏱ Time Cap: ${r.timeCap}</p>`;
     if(r.tiempo) html += `<p>⏱ Tiempo: ${r.tiempo}</p>`;
@@ -290,11 +328,15 @@ function verAtleta(a,lugar){
     if(r.tiebreak) html += `<p>⚖️ Tiebreak: ${r.tiebreak}</p>`;
 
     html += `<p>⭐ ${r.puntos} pts</p>`;
+
+    html += `</div></div>`;
   });
 
-  html += `<hr>
-  <p><strong>Total:</strong> ${a.resultados.reduce((s,x)=>s+x.puntos,0)}</p>
-  </div></div>`;
+  html += `
+    <hr>
+    <p><strong>Total:</strong> ${a.resultados.reduce((s,x)=>s+x.puntos,0)}</p>
+  </div></div>
+  `;
 
   document.getElementById("modalContainer").innerHTML = html;
 }
@@ -302,8 +344,12 @@ function verAtleta(a,lugar){
 function cerrarModal(){
   modalContainer.innerHTML="";
 }
-
+function toggleWod(i){
+  const el = document.getElementById("wod_"+i);
+  el.style.display = el.style.display === "block" ? "none" : "block";
+}
 </script>
 
 </body>
 </html>
+
