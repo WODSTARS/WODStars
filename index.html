@@ -1,121 +1,179 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WODStar Scores</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WODStar Scores PRO</title>
 
-  <style>
-    :root {
-      --primary: #0f172a;
-      --accent: #38bdf8;
-      --light: #f1f5f9;
-      --dark: #1e293b;
-    }
+<style>
+:root{
+  --primary:#000;
+  --accent:#FFD700;
+  --light:#f5f5f5;
+  --dark:#111;
+  --row:#1a1a1a;
+}
 
-    body {
-      background: var(--primary);
-      color: var(--light);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-      font-family: 'Segoe UI', sans-serif;
-    }
+/* BASE */
+body{
+  background:var(--primary);
+  color:var(--light);
+  font-family:'Segoe UI',sans-serif;
+  text-align:center;
+  padding:2rem;
+}
 
-    h1 {
-      margin-bottom: 1rem;
-      color: var(--accent);
-    }
+h1{
+  color:var(--accent);
+  font-size:2.5rem;
+  letter-spacing:3px;
+  margin-bottom:1rem;
+}
 
-    select, button {
-      padding: 0.6rem;
-      margin: 0.5rem;
-      border-radius: 0.5rem;
-      border: none;
-      font-size: 1rem;
-    }
+/* CONTROLES */
+select,button{
+  padding:10px;
+  margin:5px;
+  border-radius:8px;
+  border:none;
+  font-size:1rem;
+}
 
-    table {
-      width: 100%;
-      max-width: 900px;
-      margin-top: 1rem;
-      border-collapse: collapse;
-      background: var(--dark);
-      border-radius: 1rem;
-      overflow: hidden;
-    }
+button{
+  background:var(--accent);
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    th, td {
-      padding: 1rem;
-      text-align: center;
-      border-bottom: 1px solid var(--primary);
-    }
+button:hover{
+  transform:scale(1.05);
+}
 
-    tr:nth-child(even) {
-      background: #334155;
-    }
+/* TABLA */
+table{
+  width:100%;
+  max-width:1000px;
+  margin-top:1rem;
+  border-collapse:collapse;
+  background:var(--dark);
+  border-radius:1rem;
+  overflow:hidden;
+}
 
-    tr:hover {
-      background: #475569;
-      cursor: pointer;
-    }
+th{
+  background:black;
+  color:var(--accent);
+  font-size:1.1rem;
+  padding:15px;
+}
 
-    .category {
-      margin-top: 2rem;
-      color: var(--accent);
-      font-size: 1.5rem;
-    }
+td{
+  padding:18px;
+  font-size:1.1rem;
+}
 
-    .modal-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+tr:nth-child(even){
+  background:var(--row);
+}
 
-    .modal {
-      background: var(--dark);
-      border-radius: 1rem;
-      padding: 2rem;
-      width: 90%;
-      max-width: 500px;
-      position: relative;
-    }
+tr:hover{
+  background:#222;
+  cursor:pointer;
+}
 
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+/* 🥇🥈🥉 TOP 3 */
+.gold{
+  background:linear-gradient(90deg,#FFD70033,#FFD70011);
+  box-shadow:0 0 15px #FFD70066;
+  font-weight:bold;
+}
+
+.silver{
+  background:linear-gradient(90deg,#C0C0C033,#C0C0C011);
+}
+
+.bronze{
+  background:linear-gradient(90deg,#cd7f3233,#cd7f3211);
+}
+
+/* GLOW ANIMADO */
+@keyframes glow{
+  0%{box-shadow:0 0 5px #FFD700;}
+  50%{box-shadow:0 0 20px #FFD700;}
+  100%{box-shadow:0 0 5px #FFD700;}
+}
+
+.gold{
+  animation:glow 2s infinite;
+}
+
+/* CATEGORIA */
+.category{
+  margin-top:2rem;
+  color:var(--accent);
+  font-size:1.8rem;
+}
+
+/* MODAL */
+.modal-bg{
+  position:fixed;
+  top:0;left:0;
+  width:100vw;height:100vh;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal{
+  background:var(--dark);
+  padding:2rem;
+  border-radius:1rem;
+  border:1px solid var(--accent);
+  max-width:500px;
+}
+
+.modal h2{
+  color:var(--accent);
+}
+
+.modal p{
+  border-left:3px solid var(--accent);
+  padding-left:10px;
+}
+
+.close-btn{
+  position:absolute;
+  right:15px;
+  top:10px;
+  font-size:1.5rem;
+  background:none;
+  border:none;
+  color:var(--accent);
+}
+
+/* 📺 MODO PANTALLA GRANDE */
+@media(min-width:1200px){
+  body{font-size:1.3rem;}
+  td{padding:22px;}
+}
+</style>
 </head>
 
 <body>
 
-<h1>Wod Star Scores</h1>
+<h1>WOD STAR SCORES</h1>
 
 <select id="competenciaSelect">
-  <option value="">Selecciona una categoria</option>
-
-  <option value="principiante_hombre">Principiante Hombre</option>
-  <option value="principiante_mujer">Principiante Mujer</option>
-
-  <option value="intermedio_hombre">Intermedio Hombre</option>
-  <option value="intermedio_mujer">Intermedio Mujer</option>
-
-  <option value="avanzado_hombre">Avanzado Hombre</option>
-  <option value="avanzado_mujer">Avanzado Mujer</option>
+<option value="">Selecciona categoría</option>
+<option value="principiante_hombre">Principiante Hombre</option>
+<option value="principiante_mujer">Principiante Mujer</option>
+<option value="intermedio_hombre">Intermedio Hombre</option>
+<option value="intermedio_mujer">Intermedio Mujer</option>
+<option value="avanzado_hombre">Avanzado Hombre</option>
+<option value="avanzado_mujer">Avanzado Mujer</option>
 </select>
 
 <button onclick="mostrarCompetencia()">Ingresar</button>
@@ -124,132 +182,112 @@
 <div id="modalContainer"></div>
 
 <script>
+
+// DATOS IGUAL
 const datos = {
-  pruebaIndividual: {
-    ATLETAS: [
-
+  pruebaIndividual:{
+    ATLETAS:[
       {
-        nombre: "LUIS RAMIREZ",
-        categoria: "Principiante",
-        rama: "Hombre",
-        heat: "1",
-        carril: "1",
-        resultados: [
-          { descripcion: "WOD 1", valor: "0 reps", puntos: 5 },
-          { descripcion: "WOD 2", valor: "0 reps", puntos: 6 },
-          { descripcion: "Final", valor: "0 reps", puntos: 7 }
+        nombre:"LUIS RAMIREZ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {descripcion:"WOD 1",valor:"",puntos:100},
+          {descripcion:"WOD 2",valor:"",puntos:90}
         ]
       },
-
       {
-        nombre: "ANA LOPEZ",
-        categoria: "Intermedio",
-        rama: "Mujer",
-        heat: "2",
-        carril: "2",
-        resultados: [
-          { descripcion: "WOD 1", valor: "0 reps", puntos: 8 },
-          { descripcion: "WOD 2", valor: "0 reps", puntos: 9 },
-          { descripcion: "Final", valor: "0 reps", puntos: 10 }
+        nombre:"CARLOS MENDEZ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"2",
+        resultados:[
+          {descripcion:"WOD 1",valor:"",puntos:98},
+          {descripcion:"WOD 2",valor:"",puntos:85}
         ]
       },
-
       {
-        nombre: "CARLOS MENDEZ",
-        categoria: "Avanzado",
-        rama: "Hombre",
-        heat: "3",
-        carril: "3",
-        resultados: [
-          { descripcion: "WOD 1", valor: "0 reps", puntos: 10 },
-          { descripcion: "WOD 2", valor: "0 reps", puntos: 10 },
-          { descripcion: "Final", valor: "0 reps", puntos: 10 }
+        nombre:"PEDRO LOPEZ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"3",
+        resultados:[
+          {descripcion:"WOD 1",valor:"",puntos:96},
+          {descripcion:"WOD 2",valor:"",puntos:80}
         ]
       }
-
     ]
   }
 };
 
-const filtros = {
-  principiante_hombre: { categoria: "Principiante", rama: "Hombre" },
-  principiante_mujer: { categoria: "Principiante", rama: "Mujer" },
-
-  intermedio_hombre: { categoria: "Intermedio", rama: "Hombre" },
-  intermedio_mujer: { categoria: "Intermedio", rama: "Mujer" },
-
-  avanzado_hombre: { categoria: "Avanzado", rama: "Hombre" },
-  avanzado_mujer: { categoria: "Avanzado", rama: "Mujer" }
+const filtros={
+  principiante_hombre:{categoria:"Principiante",rama:"Hombre"},
+  principiante_mujer:{categoria:"Principiante",rama:"Mujer"},
+  intermedio_hombre:{categoria:"Intermedio",rama:"Hombre"},
+  intermedio_mujer:{categoria:"Intermedio",rama:"Mujer"},
+  avanzado_hombre:{categoria:"Avanzado",rama:"Hombre"},
+  avanzado_mujer:{categoria:"Avanzado",rama:"Mujer"}
 };
 
-function mostrarCompetencia() {
-  const seleccion = document.getElementById("competenciaSelect").value;
-  const contenedor = document.getElementById("tablas");
-  contenedor.innerHTML = "";
+function mostrarCompetencia(){
 
-  const filtro = filtros[seleccion];
-  if (!filtro) return;
+  const seleccion=competenciaSelect.value;
+  const filtro=filtros[seleccion];
+  if(!filtro)return;
 
-  const atletas = datos.pruebaIndividual.ATLETAS;
+  const atletas=datos.pruebaIndividual.ATLETAS
+  .filter(a=>a.categoria===filtro.categoria && a.rama===filtro.rama)
+  .map(a=>({...a,total:a.resultados.reduce((s,x)=>s+x.puntos,0)}))
+  .sort((a,b)=>b.total-a.total);
 
-  const filtrados = atletas.filter(a =>
-    a.categoria === filtro.categoria &&
-    a.rama === filtro.rama
-  );
+  let html=`<div class="category">${filtro.categoria} - ${filtro.rama}</div>
+  <table><tr><th>#</th><th>Atleta</th><th>Total</th></tr>`;
 
-  let html = `<div class='category'>${filtro.categoria} - ${filtro.rama}</div>
-  <table>
-  <thead>
-  <tr><th>#</th><th>Atleta</th><th>Total</th></tr>
-  </thead><tbody>`;
+  atletas.forEach((a,i)=>{
 
-  filtrados
-    .map(a => ({ ...a, total: a.resultados.reduce((s, x) => s + x.puntos, 0) }))
-    .sort((a, b) => b.total - a.total)
-    .forEach((a, i) => {
-      let lugar = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1;
-      html += `<tr onclick='verAtleta(${JSON.stringify(a)}, ${i})'>
-      <td>${lugar}</td>
-      <td>${a.nombre}</td>
-      <td>${a.total}</td>
-      </tr>`;
-    });
+    let clase="";
+    if(i===0)clase="gold";
+    else if(i===1)clase="silver";
+    else if(i===2)clase="bronze";
 
-  html += "</tbody></table>";
-  contenedor.innerHTML = html;
-}
+    let lugar=i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1;
 
-function verAtleta(a, lugar) {
-  if (lugar < 3) {
-    confetti({
-      particleCount: 100,
-      spread: 70
-    });
-  }
-
-  let html = `<div class="modal-bg" onclick="cerrarModal()">
-  <div class="modal" onclick="event.stopPropagation()">
-  <button class="close-btn" onclick="cerrarModal()">×</button>
-
-  <h2>${a.nombre}</h2>
-  <p><strong>Categoría:</strong> ${a.categoria}</p>
-  <p><strong>Rama:</strong> ${a.rama}</p>
-  <p><strong>Heat:</strong> ${a.heat}</p>
-  <p><strong>Carril:</strong> ${a.carril}</p>`;
-
-  a.resultados.forEach(r => {
-    html += `<p>${r.descripcion}: ${r.valor} → ${r.puntos} pts</p>`;
+    html+=`<tr class="${clase}" onclick='verAtleta(${JSON.stringify(a)},${i})'>
+    <td>${lugar}</td><td>${a.nombre}</td><td>${a.total}</td></tr>`;
   });
 
-  html += `<p><strong>Total:</strong> ${a.resultados.reduce((s, x) => s + x.puntos, 0)}</p>
-  </div></div>`;
-
-  document.getElementById("modalContainer").innerHTML = html;
+  html+="</table>";
+  tablas.innerHTML=html;
 }
 
-function cerrarModal() {
-  document.getElementById("modalContainer").innerHTML = "";
+function verAtleta(a,lugar){
+
+  if(lugar<3){
+    confetti({particleCount:150,spread:90});
+  }
+
+  let html=`<div class="modal-bg" onclick="cerrarModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+  <button class="close-btn" onclick="cerrarModal()">×</button>
+  <h2>${a.nombre}</h2>`;
+
+  a.resultados.forEach(r=>{
+    html+=`<p>${r.descripcion}: ${r.puntos} pts</p>`;
+  });
+
+  html+=`<p><strong>Total:</strong> ${a.total}</p></div></div>`;
+
+  modalContainer.innerHTML=html;
 }
+
+function cerrarModal(){
+  modalContainer.innerHTML="";
+}
+
 </script>
 
 </body>
