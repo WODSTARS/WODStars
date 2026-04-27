@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WODStar Scores PRO</title>
+
+<style>
+:root{
+  --primary:#000;
+  --accent:#FFD700;
+  --light:#f5f5f5;
+  --dark:#111;
+  --row:#1a1a1a;
+}
+
+/* BASE */
+body{
+  background:var(--primary);
+  color:var(--light);
+  font-family:'Segoe UI',sans-serif;
+  text-align:center;
+  padding:2rem;
+}
+
+h1{
+  color:var(--accent);
+  font-size:2.5rem;
+  letter-spacing:3px;
+  margin-bottom:1rem;
+}
+
+/* CONTROLES */
+select,button{
+  padding:10px;
+  margin:5px;
+  border-radius:8px;
+  border:none;
+  font-size:1rem;
+}
+
+button{
+  background:var(--accent);
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  transform:scale(1.05);
+}
+
+/* TABLA */
+table{
+  width:100%;
+  max-width:1000px;
+  margin-top:1rem;
+  border-collapse:collapse;
+  background:var(--dark);
+  border-radius:1rem;
+  overflow:hidden;
+}
+
+th{
+  background:black;
+  color:var(--accent);
+  font-size:1.1rem;
+  padding:15px;
+}
+
+td{
+  padding:18px;
+  font-size:1.1rem;
+}
+
+tr:nth-child(even){
+  background:var(--row);
+}
+
+tr:hover{
+  background:#222;
+  cursor:pointer;
+}
+
+/* 🥇🥈🥉 TOP 3 */
+.gold{
+  background:linear-gradient(90deg,#FFD70033,#FFD70011);
+  box-shadow:0 0 15px #FFD70066;
+  font-weight:bold;
+}
+
+.silver{
+  background:linear-gradient(90deg,#C0C0C033,#C0C0C011);
+}
+
+.bronze{
+  background:linear-gradient(90deg,#cd7f3233,#cd7f3211);
+}
+
+/* GLOW ANIMADO */
+@keyframes glow{
+  0%{box-shadow:0 0 5px #FFD700;}
+  50%{box-shadow:0 0 20px #FFD700;}
+  100%{box-shadow:0 0 5px #FFD700;}
+}
+
+.gold{
+  animation:glow 2s infinite;
+}
+
+/* CATEGORIA */
+.category{
+  margin-top:2rem;
+  color:var(--accent);
+  font-size:1.8rem;
+}
+
+/* MODAL */
+.modal-bg{
+  position:fixed;
+  top:0;left:0;
+  width:100vw;height:100vh;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal{
+  background:var(--dark);
+  padding:2rem;
+  border-radius:1rem;
+  border:1px solid var(--accent);
+  max-width:500px;
+}
+
+.modal h2{
+  color:var(--accent);
+}
+
+.modal p{
+  border-left:3px solid var(--accent);
+  padding-left:10px;
+}
+
+.close-btn{
+  position:absolute;
+  right:15px;
+  top:10px;
+  font-size:1.5rem;
+  background:none;
+  border:none;
+  color:var(--accent);
+}
+
+/* 📺 MODO PANTALLA GRANDE */
+@media(min-width:1200px){
+  body{font-size:1.3rem;}
+  td{padding:22px;}
+}
+/* MODAL GRANDE */
+.modal.grande{
+  width:95%;
+  max-width:900px;
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+/* WOD CARDS */
+.wod-card{
+  margin-top:10px;
+  border:1px solid #333;
+  border-radius:8px;
+  overflow:hidden;
+}
+
+.wod-header{
+  background:#FFD700;
+  color:black;
+  padding:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.wod-body{
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  padding: 0 10px;
+  background:#1a1a1a;
+  opacity: 0;
+}
+
+/* cuando está abierto */
+.wod-body.activo{
+  max-height: 300px;
+  padding: 10px;
+  opacity: 1;
+}
+.wod-header{
+  background:#FFD700;
+  color:black;
+  padding:10px;
+  font-weight:bold;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:0.3s;
+}
+
+.wod-header:hover{
+  background:#ffcc00;
+}
+</style>
+</head>
+
+<body>
+
+<h1>WOD STAR SCORES</h1>
+
+<select id="competenciaSelect">
+<option value="">Selecciona categoría</option>
+<option value="principiante_hombre">Principiante Hombre</option>
+<option value="principiante_mujer">Principiante Mujer</option>
+<option value="intermedio_hombre">Intermedio Hombre</option>
+<option value="intermedio_mujer">Intermedio Mujer</option>
+<option value="avanzado_hombre">Avanzado Hombre</option>
+<option value="avanzado_mujer">Avanzado Mujer</option>
+</select>
+
+<button onclick="mostrarCompetencia()">Ingresar</button>
+
+<div id="tablas"></div>
+<div id="modalContainer"></div>
+
+<script>
+
+// DATOS IGUAL
+const datos = {
+  pruebaIndividual:{
+    ATLETAS:[
+      {//LUIS RAMIREZ
+        nombre:"LUIS RAMIREZ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:5,
+            reps:1,
+            timeCap:"",
+            tiebreak:"8:30",
+            puntos:100
+          },
+          {//wod2
+            wod:"WOD 2",
+            tiempo:"12:30",
+            timeCap:"",
+            puntos:98
+          },
+          {//wod3
+            wod:"WOD 3",
+            peso:500,
+            puntos:30
+          }
+        ]
+      },
+      {
+        nombre:"PEPE",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"2",
+        resultados:[
+          {
+            wod:"WOD 1",
+            rondas:5,
+            reps:1,
+            timeCap:"",
+            tiebreak:"8:30",
+            puntos:100
+          },
+          {
+            wod:"WOD 2",
+            tiempo:"12:30",
+            timeCap:"",
+            puntos:100
+          },
+          {
+            wod:"WOD 3",
+            peso:500,
+            puntos:30
+          }
+        ]
+      }
+    ]
+  }
+};
+
+const filtros={
+  principiante_hombre:{categoria:"Principiante",rama:"Hombre"},
+  principiante_mujer:{categoria:"Principiante",rama:"Mujer"},
+  intermedio_hombre:{categoria:"Intermedio",rama:"Hombre"},
+  intermedio_mujer:{categoria:"Intermedio",rama:"Mujer"},
+  avanzado_hombre:{categoria:"Avanzado",rama:"Hombre"},
+  avanzado_mujer:{categoria:"Avanzado",rama:"Mujer"}
+};
+
+function mostrarCompetencia(){
+
+  const seleccion=competenciaSelect.value;
+  const filtro=filtros[seleccion];
+  if(!filtro)return;
+
+  const atletas=datos.pruebaIndividual.ATLETAS
+  .filter(a=>a.categoria===filtro.categoria && a.rama===filtro.rama)
+  .map(a=>({...a,total:a.resultados.reduce((s,x)=>s+x.puntos,0)}))
+  .sort((a,b)=>b.total-a.total);
+
+  let html=`<div class="category">${filtro.categoria} - ${filtro.rama}</div>
+  <table><tr><th>#</th><th>Atleta</th><th>Total</th></tr>`;
+
+  atletas.forEach((a,i)=>{
+
+    let clase="";
+    if(i===0)clase="gold";
+    else if(i===1)clase="silver";
+    else if(i===2)clase="bronze";
+
+    let lugar=i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1;
+
+    html+=`<tr class="${clase}" onclick='verAtleta(${JSON.stringify(a)},${i})'>
+    <td>${lugar}</td><td>${a.nombre}</td><td>${a.total}</td></tr>`;
+  });
+
+  html+="</table>";
+  tablas.innerHTML=html;
+}
+
+function verAtleta(a,lugar){
+
+  if(lugar<3){
+    confetti({particleCount:150,spread:90});
+  }
+
+  let html = `
+  <div class="modal-bg" onclick="cerrarModal()">
+  <div class="modal grande" onclick="event.stopPropagation()">
+  <button class="close-btn" onclick="cerrarModal()">×</button>
+
+  <h2>${a.nombre}</h2>
+  <p><strong>Categoría:</strong> ${a.categoria}</p>
+  <p><strong>Rama:</strong> ${a.rama}</p>
+  <p><strong>Heat:</strong> ${a.heat}</p>
+  <p><strong>Carril:</strong> ${a.carril}</p>
+
+  <h3 style="margin-top:15px;">WODs</h3>
+  `;
+
+  a.resultados.forEach((r,i)=>{
+
+    html += `
+      <div class="wod-card">
+        <div class="wod-header" onclick="toggleWod(${i})">
+         ${r.wod} <span id="arrow_${i}">▼</span>
+        </div>
+
+        <div class="wod-body" id="wod_${i}">
+    `;
+
+    if(r.timeCap) html += `<p>⏱ Time Cap: ${r.timeCap}</p>`;
+    if(r.tiempo) html += `<p>⏱ Tiempo: ${r.tiempo}</p>`;
+    if(r.rondas || r.reps){
+      html += `<p>🔁 ${r.rondas||0} rondas ${r.reps||0} reps</p>`;
+    }
+    if(r.peso) html += `<p>🏋️ ${r.peso} lb</p>`;
+    if(r.tiebreak) html += `<p>⚖️ Tiebreak: ${r.tiebreak}</p>`;
+
+    html += `<p>⭐ ${r.puntos} pts</p>`;
+
+    html += `</div></div>`;
+  });
+
+  html += `
+    <hr>
+    <p><strong>Total:</strong> ${a.resultados.reduce((s,x)=>s+x.puntos,0)}</p>
+  </div></div>
+  `;
+
+  document.getElementById("modalContainer").innerHTML = html;
+}
+
+function cerrarModal(){
+  modalContainer.innerHTML="";
+}
+function toggleWod(i){
+
+  const el = document.getElementById("wod_"+i);
+  const arrow = document.getElementById("arrow_"+i);
+  const yaAbierto = el.classList.contains("activo");
+
+  // cerrar todos
+  document.querySelectorAll(".wod-body").forEach((el2, index)=>{
+    el2.classList.remove("activo");
+    const a = document.getElementById("arrow_"+index);
+    if(a) a.style.transform = "rotate(0deg)";
+  });
+
+  // si no estaba abierto, lo abrimos
+  if(!yaAbierto){
+    el.classList.add("activo");
+    arrow.style.transform = "rotate(180deg)";
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WODStar Scores PRO</title>
+
+<style>
+:root{
+  --primary:#000;
+  --accent:#FFD700;
+  --light:#f5f5f5;
+  --dark:#111;
+  --row:#1a1a1a;
+}
+body{
+  background:var(--primary);
+  color:var(--light);
+  font-family:'Segoe UI',sans-serif;
+  text-align:center;
+  padding:2rem;
+}
+h1{color:var(--accent);}
+button{
+  padding:10px;
+  margin:5px;
+  border-radius:8px;
+  border:none;
+  font-size:1rem;
+  background:var(--accent);
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+table{width:100%;max-width:1000px;margin-top:1rem;border-collapse:collapse;background:var(--dark);}
+th{background:black;color:var(--accent);padding:15px;}
+td{padding:18px;}
+.gold{background:#FFD70033;}
+</style>
+</head>
+
+<body>
+
+<button onclick="window.location.href='index.html'">⬅ Volver</button>
+
+<h1>WOD STAR SCORES</h1>
+
+<select id="competenciaSelect">
+<option value="">Selecciona categoría</option>
+<option value="principiante_hombre">Principiante Hombre</option>
+</select>
+
+<button onclick="mostrarCompetencia()">Ingresar</button>
+
+<div id="tablas"></div>
+
+<script>
+const datos={pruebaIndividual:{ATLETAS:[{nombre:"LUIS",categoria:"Principiante",rama:"Hombre",resultados:[{puntos:100},{puntos:90}]}]}}};
+const filtros={principiante_hombre:{categoria:"Principiante",rama:"Hombre"}};
+
+function mostrarCompetencia(){
+  const f=filtros[competenciaSelect.value];
+  if(!f)return;
+  const atletas=datos.pruebaIndividual.ATLETAS.map(a=>({...a,total:a.resultados.reduce((s,x)=>s+x.puntos,0)}));
+  let html="<table><tr><th>Atleta</th><th>Total</th></tr>";
+  atletas.forEach(a=>{html+=`<tr><td>${a.nombre}</td><td>${a.total}</td></tr>`});
+  html+="</table>";
+  tablas.innerHTML=html;
+}
+</script>
+
+</body>
+</html>
