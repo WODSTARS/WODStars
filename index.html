@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WODSTAR COMPETENCIAS</title>
+
 <style>
 body{
   background:black;
@@ -12,7 +14,7 @@ body{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  min-height:100vh;
   margin:0;
 }
 
@@ -28,35 +30,259 @@ h1{color:gold;}
   margin:10px;
   padding:15px;
   border-radius:10px;
-  cursor:pointer;
-  transition:0.3s;
   text-align:center;
+}
+
+.competencia div{
+  cursor:pointer;
+  margin-bottom:10px;
 }
 
 .competencia:hover{
   background:#222;
-  transform:scale(1.05);
+}
+
+button{
+  padding:10px;
+  background:gold;
+  border:none;
+  cursor:pointer;
+  border-radius:5px;
+}
+
+.modal-bg{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal{
+  background:#111;
+  padding:20px;
+  border-radius:10px;
+  max-width:400px;
+  width:90%;
+}
+
+input,select{
+  padding:10px;
+  width:90%;
+  border-radius:5px;
+  border:none;
 }
 </style>
 </head>
+
 <body>
 
 <h1>WODSTAR COMPETENCIAS</h1>
 
 <div id="lista"></div>
+<div id="modal"></div>
 
 <script>
+
+// 🔥 COMPETENCIAS CON DATOS PROPIOS
 const competencias = [
-  {nombre:"Competencia 1", archivo:"competencia1.html"},
-  {nombre:"Competencia 2", archivo:"competencia2.html"}
+  {
+    nombre:"Competencia Enero",
+    archivo:"competencia1.html",
+    banco:"BBVA",
+    cuenta:"1234567890",
+    clabe:"012345678901234567",
+    costos:{
+  "Principiante Hombre":"$400 MXN",
+  "Principiante Mujer":"$400 MXN",
+  "Intermedio Hombre":"$500 MXN",
+  "Intermedio Mujer":"$500 MXN",
+  "Avanzado Hombre":"$600 MXN",
+  "Avanzado Mujer":"$600 MXN"
+}
+  },
+  {
+    nombre:"Competencia Febrero",
+    archivo:"competencia2.html",
+    banco:"Santander",
+    cuenta:"9876543210",
+    clabe:"999888777666555444",
+    costos:{
+  "Principiante Hombre":"$400 MXN",
+  "Principiante Mujer":"$400 MXN",
+  "Intermedio Hombre":"$500 MXN",
+  "Intermedio Mujer":"$500 MXN",
+  "Avanzado Hombre":"$600 MXN",
+  "Avanzado Mujer":"$600 MXN"
+}
+  }
 ];
 
+// RENDER
 let html="";
 competencias.forEach(c=>{
-  html+=`<div class="competencia" onclick="location.href='${c.archivo}'">${c.nombre}</div>`;
+  html+=`
+    <div class="competencia">
+      <div onclick="location.href='${c.archivo}'">${c.nombre}</div>
+      <button onclick='inscribir(${JSON.stringify(c)})'>INSCRIBIRSE</button>
+    </div>
+  `;
 });
 document.getElementById("lista").innerHTML=html;
-</script>
 
+// MODAL INSCRIPCIÓN
+function inscribir(comp){
+  document.getElementById("modal").innerHTML = `
+  <div class="modal-bg" onclick="cerrar()">
+    <div class="modal" onclick="event.stopPropagation()">
+
+      <h2>${comp.nombre}</h2>
+
+      <input id="nombre" placeholder="Nombre completo"><br><br>
+
+      <select id="categoria">
+        <option>Principiante Hombre</option>
+        <option>Principiante Mujer</option>
+        <option>Intermedio Hombre</option>
+        <option>Intermedio Mujer</option>
+        <option>Avanzado Hombre</option>
+        <option>Avanzado Mujer</option>
+      </select><br><br>
+
+      <button onclick='generarRegistro(${JSON.stringify(comp)})'>Continuar</button>
+
+    </div>
+  </div>
+  `;
+}
+
+function cerrar(){
+  document.getElementById("modal").innerHTML="";
+}
+
+// GENERAR REGISTRO (NO SE REINICIA)
+function generarRegistro(comp){
+
+  const nombre = document.getElementById("nombre").value;
+  const categoria = document.getElementById("categoria").value;
+
+  if(!nombre) return alert("Ingresa tu nombre");
+
+  // 👇 ESTA LÍNEA VA DESPUÉS DE OBTENER categoria
+  const monto = comp.costos[categoria] || "No definido";
+
+  const tiempoFinal = Date.now() + (15 * 60 * 1000);
+
+  localStorage.setItem("registro", JSON.stringify({
+    nombre,
+    categoria,
+    competencia: comp.nombre,
+    banco: comp.banco,
+    cuenta: comp.cuenta,
+    clabe: comp.clabe,
+    monto: monto,
+    tiempoFinal
+  }));
+
+  mostrarRegistro();
+}
+
+// MOSTRAR REGISTRO
+function mostrarRegistro(){
+
+  const data = JSON.parse(localStorage.getItem("registro"));
+  if(!data) return;
+
+  document.getElementById("modal").innerHTML = `
+  <div class="modal-bg">
+    <div class="modal">
+
+      <h2>Pre-registro</h2>
+
+      <p><b>${data.nombre}</b></p>
+      <p>${data.competencia}</p>
+      <p>${data.categoria}</p>
+
+      <hr>
+
+      <h3>Transferencia</h3>
+      <p>Banco: ${data.banco}</p>
+      <p>Cuenta: ${data.cuenta}</p>
+      <p>CLABE: ${data.clabe}</p>
+      <p>Monto: ${data.monto}</p>
+
+      <p id="timer"></p>
+
+      <button onclick="enviarCorreo('${data.nombre}','${data.categoria}','${data.competencia}')">
+        Enviar comprobante
+      </button>
+
+      <br><br>
+      <button onclick="cancelar()">Cancelar</button>
+
+    </div>
+  </div>
+  `;
+
+  iniciarTimer(data.tiempoFinal);
+}
+
+// TIMER REAL
+function iniciarTimer(tiempoFinal){
+
+  const intervalo = setInterval(()=>{
+
+    const restante = tiempoFinal - Date.now();
+
+    if(restante <= 0){
+      clearInterval(intervalo);
+      document.getElementById("timer").innerText="⛔ Tiempo expirado";
+      localStorage.removeItem("registro");
+      return;
+    }
+
+    let min = Math.floor(restante/60000);
+    let sec = Math.floor((restante%60000)/1000);
+
+    document.getElementById("timer").innerText =
+      "Tiempo restante: " + min + ":" + (sec<10?"0":"") + sec;
+
+  },1000);
+}
+
+// CANCELAR
+function cancelar(){
+  localStorage.removeItem("registro");
+  cerrar();
+}
+
+// CORREO
+function enviarCorreo(nombre,categoria,competencia){
+
+  const asunto = encodeURIComponent("Comprobante WODSTAR");
+  const cuerpo = encodeURIComponent(
+`Nombre: ${nombre}
+Categoría: ${categoria}
+Competencia: ${competencia}
+
+Adjunto comprobante`
+  );
+
+  window.location.href =
+  `mailto:wodstarssoporte@gmail.com?subject=${asunto}&body=${cuerpo}`;
+}
+
+// RECUPERAR SI RECARGAN
+window.onload = ()=>{
+  if(localStorage.getItem("registro")){
+    mostrarRegistro();
+  }
+};
+
+</script>
+<button onclick="window.location.href='index.html'">⬅ Volver</button>
 </body>
 </html>
