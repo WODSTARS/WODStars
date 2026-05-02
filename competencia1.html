@@ -213,11 +213,37 @@ tr:hover{
 .wod-header:hover{
   background:#ffcc00;
 }
+.top-actions{
+  width:100%;
+  max-width:1000px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 auto 1rem auto;
+  gap:10px;
+}
+
+.top-actions button{
+  min-width:140px;
+}
+
+@media(max-width:600px){
+  .top-actions{
+    flex-direction:column;
+  }
+
+  .top-actions button{
+    width:100%;
+  }
+}
 </style>
 </head>
 
 <body>
-
+<div class="top-actions">
+  <button onclick="volverCompetencias()">⬅ Competencias</button>
+  <button onclick="refrescarPagina()">↻ Refrescar</button>
+</div>
 <h1>WOD STAR SCORES</h1>
 
 <select id="competenciaSelect">
@@ -557,6 +583,14 @@ function toggleWod(i){
     el.classList.add("activo");
     arrow.style.transform = "rotate(180deg)";
   }
+}
+
+function volverCompetencias(){
+  window.location.href = "index.html";
+}
+
+function refrescarPagina(){
+  window.location.reload();
 }
 </script>
 
