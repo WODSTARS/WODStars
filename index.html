@@ -173,9 +173,25 @@ const competencias = [
       "Avanzado Hombre":"$600 MXN",
       "Avanzado Mujer":"$600 MXN"
     }
+  },
+   {
+    nombre:"Competencia ",
+    archivo:"competencia2.html",
+    banco:"BBVA",
+    cuenta:"1234567890",
+    clabe:"012345678901234567",
+    costos:{
+      "Principiante Hombre":"$400 MXN",
+      "Principiante Mujer":"$400 MXN",
+      "Intermedio Hombre":"$500 MXN",
+      "Intermedio Mujer":"$500 MXN",
+      "Avanzado Hombre":"$600 MXN",
+      "Avanzado Mujer":"$600 MXN"
+    }
   }
-];
 
+];
+ 
 // RENDER
 let html="";
 competencias.forEach(c=>{
@@ -304,10 +320,10 @@ function enviarCorreo(n,c,comp){
 
 // WHATSAPP STYLE
 const mensajesWA=[
-  "🔥 Últimos lugares disponibles",
-  "💡 Recuerda completar tu pago",
-  "📲 Síguenos: https://instagram.com/",
-  "🎯 Elige bien tu categoría",
+  
+ 
+  "📲 Síguenos: https://www.instagram.com/wodstarscores//",
+  
   "📢 Responde esta encuesta y gana un descuento https://docs.google.com/forms/d/e/1FAIpQLSc4VS9NYqgB5hOnb7-PomnAQ77a-O_trD5M4FDhGe_3OlyMmQ/viewform?usp=header"
 ];
 
@@ -317,25 +333,45 @@ function hora(){
 }
 
 function mostrarMensajeWA(txt){
-  const c=document.createElement("div");
-  c.className="mensaje-wa";
 
-  const urlRegex=/(https?:\/\/[^\s]+)/g;
-  const t=txt.replace(urlRegex,u=>`<a href="${u}" target="_blank">${u}</a>`);
+  const chat = document.getElementById("chatBox");
 
-  c.innerHTML=`
-  <div class="avatar">W</div>
-  <div class="burbuja">
-    ${t}
-    <div class="hora">${hora()}</div>
-  </div>`;
+  // borrar mensaje anterior
+  chat.innerHTML = "";
 
-  chatBox.appendChild(c);
-  setTimeout(()=>c.classList.add("show"),100);
+  const c = document.createElement("div");
+  c.className = "mensaje-wa";
 
-  if(chatBox.children.length>4){
-    setTimeout(()=>chatBox.children[0].remove(),5000);
-  }
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const t = txt.replace(urlRegex, u => {
+    return `<a href="${u}" target="_blank">${u}</a>`;
+  });
+
+  c.innerHTML = `
+    <div class="avatar">W</div>
+    <div class="burbuja">
+      ${t}
+      <div class="hora">${hora()}</div>
+    </div>
+  `;
+
+  chat.appendChild(c);
+
+  setTimeout(() => {
+    c.classList.add("show");
+  }, 100);
+
+  // desaparecer
+  setTimeout(() => {
+    c.classList.remove("show");
+
+    setTimeout(() => {
+      if (chat.contains(c)) {
+        c.remove();
+      }
+    }, 400);
+
+  }, 7000);
 }
 
 function iniciarChatWA(){
