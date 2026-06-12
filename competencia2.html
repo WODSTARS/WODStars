@@ -263,6 +263,9 @@ tr:hover{
 
 <option value="master_hombre">Master Hombre</option>
 <option value="master_mujer">Master Mujer</option>
+
+<option value="avanazado_hombre">Avanzado Hombre</option>
+<option value="avanzado_mujer">Avanzado Mujer</option>
 </select>
 
 <button onclick="mostrarCompetencia()">
@@ -276,22 +279,976 @@ tr:hover{
 
 // DATOS IGUAL
 const datos = {
-  pruebaIndividual:{
+ pruebaIndividual:{
     ATLETAS:[
-     
+      {//TEENS HOMBRE Leonardo  
+
+
+
+        nombre:"Leonardo Serratos / Comando",
+        categoria:"Teens",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
         
+         
+        ]
+      },
+        {//Novatos  HOMBRE Manuel Vazquez
+        nombre:"Manuel Vazquez / Grizzly ",
+        categoria:"Novatos",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Novatos  HOMBRE David Martinez 
+        nombre:"David Martinez / Grizzly ",
+        categoria:"Novatos",
+        rama:"Hombre",
+        heat:"1",
+        carril:"3",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+         {//Novatos  HOMBRE Diego Garcia 
+        nombre:"Diego Garcia  / Grizzly ",
+        categoria:"Novatos",
+        rama:"Hombre",
+        heat:"1",
+        carril:"4",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+
+         {//Novatos  Mujer Jenifer de la torre
+        nombre:"Jenifer De La Torre / Primitivo ",
+        categoria:"Novatos",
+        rama:"Mujer",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+         {//Novatos Mujer Isabel Aldama  
+        nombre:"Isabel Aldama / Grizzly ",
+        categoria:"Novatos",
+        rama:"Mujer",
+        heat:"1",
+        carril:"2",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+
+
+         {//Principiante Hombre Armando Altamirano  
+        nombre:"David Martinez / Primitivo ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+         
+         {//Principiantes Hombre Armando Ruiz
+        nombre:"Armando Ruiz / Comandos ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"3",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+         {//Principiantes Hombre Christian  Quiroz 
+        nombre:"Christian  Quiroz  / Primitivos ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"4",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Hombre German Costumbre 
+        nombre:"German Costumbre / Primitivos ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"4",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Hombre Fernando Aparicio
+        nombre:"Fernando Aparicio / Grizzly ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"2",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Hombre Jaret Domingez
+        nombre:"Jaret Dominguez / Grizzly ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"1",
+        carril:"2",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
       
+
+
+      {//Principiantes Mujer Mariel Hernandez
+        nombre:"Mariel Hernandez / Primitivos ",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Mujer Kimberly Abundes 
+        nombre:"Kimberly Abundes / Primitivos ",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"1",
+        carril:"2",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Mujer Veronica Alavarez
+        nombre:"Veronica Alvarez / Moonlight ",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"1",
+        carril:"3",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Mujer Tere
+        nombre:"Tere / Comando ",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"1",
+        carril:"4",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Mujer Fryda 
+        nombre:"Fryda / Comando",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"1",
+        carril:"5",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Principiantes Mujer Nancy Gomez
+        nombre:"Nancy Gomez / Grizzly ",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"2",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+
+
+{//Intermedio Hombre Alexis Resendiz
+        nombre:"Alexis Resendiz / Grizzly ",
+        categoria:"Intermedio",
+        rama:"Hombre",
+        heat:"1",
+        carril:"4",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+
+
+      {//Intermedio Mujer
+        nombre:" Tatiana Quezada / Grizzly  ",
+        categoria:"Intermedio",
+        rama:"Mujer",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Intermedio Mujer Yaneli Carbajal
+        nombre:"Yaneli  Carbajal / Grizzly ",
+        categoria:"Intermedio",
+        rama:"Mujer",
+        heat:"1",
+        carril:"2",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+      {//Intermedio Mujer Sonia Zalazar
+        nombre:"Sonia Zalazar / Grizzly ",
+        categoria:"Intermedio",
+        rama:"Mujer",
+        heat:"1",
+        carril:"311",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+
+
+{//Avanzado Hombre David Maya
+        nombre:"David Maya / Grizzly ",
+        categoria:"Avanzado",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+            ]
+      },
+
+{//Avanzado Hombre 
+        nombre:"Rafael Campos / FIT60 ",
+        categoria:"Avanzado",
+        rama:"Hombre",
+        heat:"1",
+        carril:"2",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+
+      {//Avanzado Hombre Irving Salas
+        nombre:" Irving Salas / FIT60 ",
+        categoria:"Avanzado",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+        {//Avanzado Hombre Mauricio Avila 
+        nombre:"Mauricio Avila  / Black Horse",
+        categoria:"Avanzado",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+       {//Avanzado Hombre Ivan Tellez
+        nombre:"Ivan Tellez / Grizzly ",
+        categoria:"Avanzado",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+       {//Avanzado Hombre Ivan Tellez
+        nombre:"Jorge Kyoshy / Black Horse ",
+        categoria:"Avanzado",
+        rama:"Hombre",
+        heat:"1",
+        carril:"1",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"0",
+            puntos:0
+          },
+            ]
+      },
+
+
+
+
+
+
+
     ]
   }
   
 };
+      
+  
+  
+
 
 const filtros={//filtros categorias paso 2
 
   teens_hombre:{
     categoria:"Teens",
     rama:"Hombre"
+    
   },
+ 
 
   teens_mujer:{
     categoria:"Teens",
@@ -336,6 +1293,17 @@ const filtros={//filtros categorias paso 2
   master_mujer:{
     categoria:"Master",
     rama:"Mujer"
+  },
+
+   avanazado_hombre:{
+    categoria:"Avanzado",
+    rama:"Hombre"
+    
+  },
+   avanzado_mujer:{
+    categoria:"Avanzado",
+    rama:"Mujer"
+    
   }
 
 };
