@@ -271,6 +271,9 @@ tr:hover{
 <button onclick="mostrarCompetencia()">
   Ingresar
 </button>
+<button onclick="mostrarHeats()">
+📋 Heats y Carriles
+</button>
 
 <div id="tablas"></div>
 <div id="modalContainer"></div>
@@ -1539,10 +1542,12 @@ const filtros={//filtros categorias paso 2
   }
 
 };
+let categoriaActual="";
 
 function mostrarCompetencia(){
 
   const seleccion=competenciaSelect.value;
+  categoriaActual = seleccion;
   const filtro=filtros[seleccion];
   if(!filtro)return;
 
@@ -1653,6 +1658,116 @@ function volverCompetencias(){
 function refrescarPagina(){
   window.location.reload();
 }
+
+const heats = {
+
+principiante_mujer:`
+
+<h2>WOD 1</h2>
+
+<table>
+
+<tr>
+<th>Heat</th>
+<th>Carril</th>
+<th>Atleta</th>
+<th>Warmup</th>
+<th>Hora</th>
+<th>Escenario</th>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+</table>
+
+`,
+
+
+
+intermedio_hombre:`
+
+<h2>WOD 1</h2>
+
+<table>
+
+...
+
+</table>
+
+`,
+
+
+
+avanzado_hombre:`
+
+...
+
+`
+
+}
+function mostrarHeats(){
+
+modalContainer.innerHTML=`
+
+<div class='modal-bg'>
+
+<div class='modal grande'>
+
+<button onclick='cerrarModal()'>
+
+×
+
+</button>
+
+
+
+${heats[categoriaActual]}
+
+
+
+</div>
+
+</div>
+
+
+`;
+
+}
+
+function mostrarHeats(){
+
+console.log(categoriaActual);
+
+document.getElementById("modalContainer").innerHTML=`
+
+<div class="modal-bg">
+
+<div class="modal grande">
+
+<button class="close-btn"
+onclick="cerrarModal()">
+
+×
+
+</button>
+
+${heats[categoriaActual] || "<h2>No hay heats cargados para esta categoría</h2>"}
+
+</div>
+
+</div>
+
+`;
+
+}
+
 </script>
 
 </body>
