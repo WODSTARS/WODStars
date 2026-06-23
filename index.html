@@ -144,6 +144,23 @@ input,select{
   margin-top:5px;
   text-align:right;
 }
+.competencia{
+  background:#111;
+  margin:10px;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.botones{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+}
+
+.botones button{
+  flex:1;
+}
 </style>
 </head>
 
@@ -195,12 +212,23 @@ const competencias = [
 // RENDER
 let html="";
 competencias.forEach(c=>{
-  html+=`
-    <div class="competencia">
-      <div onclick="location.href='${c.archivo}'">${c.nombre}</div>
-      <button onclick='inscribir(${JSON.stringify(c)})'>INSCRIBIRSE</button>
-    </div>
-  `;
+html+=`
+<div class="competencia">
+
+  <div onclick="location.href='${c.archivo}'">
+    ${c.nombre}
+  </div>
+
+  <button onclick="location.href='${c.archivo}'">
+    🏆 Ver posiciones
+  </button>
+
+  <button onclick='inscribir(${JSON.stringify(c)})'>
+    INSCRIBIRSE
+  </button>
+
+</div>
+`;
 });
 lista.innerHTML=html;
 
