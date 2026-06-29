@@ -44,13 +44,15 @@ h1{color:gold;}
 
 #lista{
   width:100%;
-  max-width:400px;
+  max-width:760px;
+  padding:0 16px;
+  box-sizing:border-box;
 }
 
 #precios{
   width:100%;
   max-width:520px;
-  margin:30px 0 50px;
+  margin:30px 0;
   padding:0 15px;
   box-sizing:border-box;
 }
@@ -227,17 +229,90 @@ h1{color:gold;}
   text-decoration:none;
 }
 
-.competencia{
-  background:#111;
-  margin:10px;
-  padding:15px;
-  border-radius:10px;
+.seccion-info{
+  width:100%;
+  max-width:1040px;
+  padding:0 18px;
+  margin:18px 0;
+  box-sizing:border-box;
+}
+
+.seccion-info h2{
+  color:gold;
   text-align:center;
+  margin:0 0 18px;
+}
+
+.testimonios{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.testimonio{
+  background:#0b0b0b;
+  border:1px solid #333;
+  border-left:4px solid gold;
+  border-radius:8px;
+  padding:18px;
+  line-height:1.45;
+}
+
+.testimonio p{
+  margin:0 0 12px;
+}
+
+.testimonio strong{
+  color:gold;
+}
+
+.faq{
+  display:grid;
+  gap:10px;
+}
+
+.faq details{
+  background:#0b0b0b;
+  border:1px solid #333;
+  border-radius:8px;
+  padding:14px 16px;
+}
+
+.faq summary{
+  color:gold;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.faq p{
+  margin:10px 0 0;
+  color:#ddd;
+  line-height:1.45;
+}
+
+.competencia{
+  background:linear-gradient(145deg,#151515,#050505);
+  border:1px solid #333;
+  border-left:5px solid gold;
+  margin:16px 0;
+  padding:22px;
+  border-radius:8px;
+  text-align:center;
+  box-shadow:0 0 18px rgba(255,215,0,0.16);
 }
 
 .competencia div{
   cursor:pointer;
-  margin-bottom:10px;
+  margin-bottom:16px;
+  color:gold;
+  font-size:1.45rem;
+  font-weight:bold;
+}
+
+.competencia button{
+  min-width:170px;
+  margin:5px;
+  font-weight:bold;
 }
 
 button{
@@ -346,14 +421,6 @@ input,select{
   margin-top:5px;
   text-align:right;
 }
-.competencia{
-  background:#111;
-  margin:10px;
-  padding:15px;
-  border-radius:10px;
-  text-align:center;
-}
-
 .botones{
   display:flex;
   gap:10px;
@@ -422,6 +489,27 @@ input,select{
     flex:1;
     text-align:center;
   }
+
+  .testimonios{
+    grid-template-columns:1fr;
+  }
+
+  .seccion-info{
+    padding:0 12px;
+  }
+
+  .competencia{
+    padding:20px 14px;
+  }
+
+  .competencia div{
+    font-size:1.25rem;
+  }
+
+  .competencia button{
+    width:100%;
+    margin:6px 0;
+  }
 }
 </style>
 </head>
@@ -440,6 +528,50 @@ input,select{
     <button class="btn-contratar" onclick="mostrarPlanes()">
       Contratar este servicio para tu competencia
     </button>
+  </div>
+</section>
+
+<section class="seccion-info" id="testimonios">
+  <h2>Testimonios</h2>
+  <div class="testimonios">
+    <div class="testimonio">
+      <p>"La competencia se sintió más profesional y los atletas pudieron ver sus resultados al momento."</p>
+      <strong>Organizador de evento</strong>
+    </div>
+    <div class="testimonio">
+      <p>"El staff tuvo mejor control de heats, categorías y scores durante toda la jornada."</p>
+      <strong>Equipo de jueces</strong>
+    </div>
+    <div class="testimonio">
+      <p>"La entrega de resultados finales fue rápida, clara y lista para compartir en redes."</p>
+      <strong>Comunidad WODSTAR</strong>
+    </div>
+  </div>
+</section>
+
+<section class="seccion-info" id="preguntas">
+  <h2>Preguntas frecuentes</h2>
+  <div class="faq">
+    <details>
+      <summary>¿Cuánto tarda la configuración?</summary>
+      <p>Depende del tamaño del evento, pero podemos preparar categorías, atletas y estructura de scoring antes de la competencia.</p>
+    </details>
+    <details>
+      <summary>¿Necesito internet en el evento?</summary>
+      <p>Sí, se recomienda tener internet estable para capturar scores y mostrar resultados en tiempo real.</p>
+    </details>
+    <details>
+      <summary>¿Incluye staff presencial?</summary>
+      <p>El plan START incluye soporte presencial y staff en tu competencia. Los planes PRO y ELITE agregan más apoyo operativo.</p>
+    </details>
+    <details>
+      <summary>¿Puedo personalizar categorías?</summary>
+      <p>Sí. El plan PRO incluye categorías ilimitadas y el plan ELITE agrega personalización total del evento.</p>
+    </details>
+    <details>
+      <summary>¿Puedo agregar fotógrafo?</summary>
+      <p>Sí. Puedes agregar fotógrafo profesional por $1500 MXN extra e incluye 120 fotos.</p>
+    </details>
   </div>
 </section>
 <div id="modal"></div>
@@ -467,9 +599,9 @@ const competencias = [
    {
     nombre:"MOONLIGHT GAMES ",
     archivo:"competencia2.html",
-    banco:"No disponibe ",
-    cuenta:"No disponibe",
-    clabe:"Comunicate con el staff de competencia",
+    banco:"No disponible ",
+    cuenta:"No disponible",
+    clabe:"Comunícate con el staff de competencia",
     costos:{
       "Principiante Hombre":"$ MXN",
       "Principiante Mujer":"$ MXN",
@@ -565,14 +697,14 @@ function mostrarPlanes(){
               <td>Extra</td>
               <td colspan="3">
                 <div class="extra-foto">
-                  <strong>Agrega fotografo profesional en tu competencia</strong><br>
+                  <strong>Agrega fotógrafo profesional en tu competencia</strong><br>
                   $1500 MXN extra por 120 fotos.
                 </div>
               </td>
             </tr>
             <tr>
               <td>Tipo</td>
-              <td>Plan basico</td>
+              <td>Plan básico</td>
               <td>Plan recomendado</td>
               <td>Plan premium</td>
             </tr>
@@ -583,7 +715,7 @@ function mostrarPlanes(){
                   <li>Plataforma de resultados en tiempo real</li>
                   <li>Captura de scores</li>
                   <li>Hasta 100 atletas</li>
-                  <li>Heats y logistica basica</li>
+                  <li>Heats y logística básica</li>
                   <li>5 modalidades de scoring</li>
                   <li>Soporte presencial</li>
                   <li>Staff en tu competencia</li>
@@ -592,23 +724,24 @@ function mostrarPlanes(){
               <td>
                 <ul class="beneficios-lista">
                   <li>Todo el plan START</li>
-                  <li>Inscripcion desde la plataforma</li>
-                  <li>Categorias ilimitadas</li>
+                  <li>Inscripción desde la plataforma</li>
+                  <li>Categorías ilimitadas</li>
                   <li>App para jueces</li>
                   <li>Entrega de memorias finales</li>
                   <li>Soporte prioritario</li>
                   <li>Redes sociales</li>
-                  <li>Direccion de evento</li>
+                  <li>Highlights de competencia</li>
+                  <li>Dirección de evento</li>
                   <li>Venta de entradas</li>
                 </ul>
               </td>
               <td>
                 <ul class="beneficios-lista">
                   <li>Todo el plan PRO</li>
-                  <li>Personalizacion total del evento</li>
-                  <li>Diseno grafico y branding</li>
-                  <li>Estadisticas avanzadas</li>
-                  <li>Integracion con patrocinadores</li>
+                  <li>Personalización total del evento</li>
+                  <li>Diseño gráfico y branding</li>
+                  <li>Estadísticas avanzadas</li>
+                  <li>Integración con patrocinadores</li>
                   <li>Respaldo en la nube</li>
                   <li>Publicaciones en redes sociales</li>
                 </ul>
@@ -621,13 +754,13 @@ function mostrarPlanes(){
       <div class="planes-mobile">
         <div class="plan-mobile">
           <h3>START</h3>
-          <p class="tipo-mobile">Plan basico</p>
+          <p class="tipo-mobile">Plan básico</p>
           <span class="plan-precio">$950 MXN</span>
           <ul class="beneficios-lista">
             <li>Plataforma de resultados en tiempo real</li>
             <li>Captura de scores</li>
             <li>Hasta 100 atletas</li>
-            <li>Heats y logistica basica</li>
+            <li>Heats y logística básica</li>
             <li>5 modalidades de scoring</li>
             <li>Soporte presencial</li>
             <li>Staff en tu competencia</li>
@@ -640,13 +773,14 @@ function mostrarPlanes(){
           <span class="plan-precio">$1500 MXN</span>
           <ul class="beneficios-lista">
             <li>Todo el plan START</li>
-            <li>Inscripcion desde la plataforma</li>
-            <li>Categorias ilimitadas</li>
+            <li>Inscripción desde la plataforma</li>
+            <li>Categorías ilimitadas</li>
             <li>App para jueces</li>
             <li>Entrega de memorias finales</li>
             <li>Soporte prioritario</li>
             <li>Redes sociales</li>
-            <li>Direccion de evento</li>
+            <li>Highlights de competencia</li>
+            <li>Dirección de evento</li>
             <li>Venta de entradas</li>
           </ul>
         </div>
@@ -657,17 +791,17 @@ function mostrarPlanes(){
           <span class="plan-precio">$1650 MXN</span>
           <ul class="beneficios-lista">
             <li>Todo el plan PRO</li>
-            <li>Personalizacion total del evento</li>
-            <li>Diseno grafico y branding</li>
-            <li>Estadisticas avanzadas</li>
-            <li>Integracion con patrocinadores</li>
+            <li>Personalización total del evento</li>
+            <li>Diseño gráfico y branding</li>
+            <li>Estadísticas avanzadas</li>
+            <li>Integración con patrocinadores</li>
             <li>Respaldo en la nube</li>
             <li>Publicaciones en redes sociales</li>
           </ul>
         </div>
 
         <div class="extra-foto">
-          <strong>Agrega fotografo profesional en tu competencia</strong><br>
+          <strong>Agrega fotógrafo profesional en tu competencia</strong><br>
           $1500 MXN extra por 120 fotos.
         </div>
       </div>
