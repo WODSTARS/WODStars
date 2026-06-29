@@ -254,6 +254,62 @@ overflow-y:auto;
     color:white;
 }
 
+.competencia-hero{
+  max-width:1000px;
+  margin:0 auto 1.25rem;
+  padding:18px;
+  border:1px solid #333;
+  border-radius:14px;
+  background:linear-gradient(145deg,#141414,#050505);
+  box-shadow:0 0 18px #FFD70022;
+}
+
+.competencia-hero h1{
+  margin:0 0 14px;
+}
+
+.highlights-link{
+  display:inline-block;
+  padding:12px 18px;
+  border-radius:10px;
+  background:var(--accent);
+  color:black;
+  font-weight:bold;
+  text-decoration:none;
+  box-shadow:0 0 14px #FFD70055;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.highlights-link:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 22px #FFD70088;
+}
+
+.highlights-link small{
+  display:block;
+  font-weight:600;
+  margin-top:3px;
+}
+
+@media(max-width:600px){
+  body{
+    padding:1rem;
+  }
+
+  .competencia-hero{
+    padding:16px 12px;
+  }
+
+  .competencia-hero h1{
+    font-size:2rem;
+    letter-spacing:1px;
+  }
+
+  .highlights-link{
+    width:100%;
+    box-sizing:border-box;
+  }
+}
 </style>
 </head>
 
@@ -263,7 +319,13 @@ overflow-y:auto;
   <button onclick="refrescarPagina()">↻ Refrescar</button>
 </div>
 
-<h1>MOONLIGHT GAMES</h1>
+<section class="competencia-hero">
+  <h1>MOONLIGHT GAMES</h1>
+  <a class="highlights-link" href="https://wodstars.github.io/wodstarshiglights/" target="_blank" rel="noopener">
+    Highlights de competencia
+    <small>Fotos ordenadas del evento</small>
+  </a>
+</section>
 
 <select id="competenciaSelect"> //agrega categorias paso 1
 <option value="">Selecciona categoría</option>
@@ -1918,4 +1980,3 @@ ${heats[categoriaActual] ||
 
 </body>
 </html>
-
