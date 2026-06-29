@@ -231,63 +231,44 @@ h1{color:gold;}
 
 .seccion-info{
   width:100%;
-  max-width:1040px;
+  max-width:780px;
   padding:0 18px;
-  margin:18px 0;
+  margin:12px 0 22px;
   box-sizing:border-box;
 }
 
 .seccion-info h2{
   color:gold;
   text-align:center;
-  margin:0 0 18px;
+  margin:0 0 10px;
+  font-size:1.2rem;
+  letter-spacing:.04em;
 }
 
 .testimonios{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
+  grid-template-columns:1fr;
+  gap:8px;
 }
 
 .testimonio{
-  background:#0b0b0b;
-  border:1px solid #333;
-  border-left:4px solid gold;
-  border-radius:8px;
-  padding:18px;
-  line-height:1.45;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.12);
+  border-left:2px solid rgba(255,215,0,.55);
+  border-radius:6px;
+  color:#d8d8d8;
+  font-size:.92rem;
+  line-height:1.35;
+  padding:11px 14px;
 }
 
 .testimonio p{
-  margin:0 0 12px;
+  margin:0 0 6px;
 }
 
 .testimonio strong{
   color:gold;
-}
-
-.faq{
-  display:grid;
-  gap:10px;
-}
-
-.faq details{
-  background:#0b0b0b;
-  border:1px solid #333;
-  border-radius:8px;
-  padding:14px 16px;
-}
-
-.faq summary{
-  color:gold;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.faq p{
-  margin:10px 0 0;
-  color:#ddd;
-  line-height:1.45;
+  font-size:.84rem;
 }
 
 .competencia{
@@ -492,10 +473,26 @@ input,select{
 
   .testimonios{
     grid-template-columns:1fr;
+    gap:6px;
   }
 
   .seccion-info{
     padding:0 12px;
+    margin:6px 0 16px;
+  }
+
+  .seccion-info h2{
+    font-size:1rem;
+    margin-bottom:8px;
+  }
+
+  .testimonio{
+    font-size:.82rem;
+    padding:9px 11px;
+  }
+
+  .testimonio:nth-child(n+2){
+    display:none;
   }
 
   .competencia{
@@ -549,31 +546,6 @@ input,select{
   </div>
 </section>
 
-<section class="seccion-info" id="preguntas">
-  <h2>Preguntas frecuentes</h2>
-  <div class="faq">
-    <details>
-      <summary>¿Cuánto tarda la configuración?</summary>
-      <p>Depende del tamaño del evento, pero podemos preparar categorías, atletas y estructura de scoring antes de la competencia.</p>
-    </details>
-    <details>
-      <summary>¿Necesito internet en el evento?</summary>
-      <p>Sí, se recomienda tener internet estable para capturar scores y mostrar resultados en tiempo real.</p>
-    </details>
-    <details>
-      <summary>¿Incluye staff presencial?</summary>
-      <p>El plan START incluye soporte presencial y staff en tu competencia. Los planes PRO y ELITE agregan más apoyo operativo.</p>
-    </details>
-    <details>
-      <summary>¿Puedo personalizar categorías?</summary>
-      <p>Sí. El plan PRO incluye categorías ilimitadas y el plan ELITE agrega personalización total del evento.</p>
-    </details>
-    <details>
-      <summary>¿Puedo agregar fotógrafo?</summary>
-      <p>Sí. Puedes agregar fotógrafo profesional por $1500 MXN extra e incluye 120 fotos.</p>
-    </details>
-  </div>
-</section>
 <div id="modal"></div>
 <div id="chatBox"></div>
 
