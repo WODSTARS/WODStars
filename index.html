@@ -3,951 +3,297 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WODSTAR COMPETENCIAS</title>
+<title>Highlights Moonlight Games</title>
 
 <style>
+:root{
+  --bg:#000;
+  --panel:#0c0c0c;
+  --line:#303030;
+  --accent:#FFD700;
+  --text:#f5f5f5;
+  --muted:#cfcfcf;
+}
+
+*{
+  box-sizing:border-box;
+}
+
 body{
-  background:black;
-  color:white;
-  font-family:sans-serif;
-  display:flex;
-  flex-direction:column;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Segoe UI',Arial,sans-serif;
+}
+
+.page{
+  width:100%;
+  max-width:1180px;
+  margin:0 auto;
+  padding:76px 18px 42px;
+}
+
+.back-link{
+  position:fixed;
+  top:14px;
+  left:14px;
+  z-index:20;
+  display:inline-flex;
+  align-items:center;
   justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  margin:0;
+  background:var(--accent);
+  color:#000;
+  padding:10px 14px;
+  border-radius:999px;
+  box-shadow:0 8px 22px rgba(0,0,0,.35);
+  text-decoration:none;
+  font-weight:800;
+  font-size:.92rem;
 }
 
-h1{color:gold;}
+.brand{
+  color:var(--accent);
+  font-weight:800;
+  text-align:right;
+  margin-bottom:26px;
+}
 
-.encabezado{
+.hero{
+  min-height:230px;
   display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  margin:24px 0 10px;
+  align-items:flex-end;
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:
+    linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.86)),
+    radial-gradient(circle at top right,#4a3c00,#070707 54%);
+  box-shadow:0 0 22px rgba(255,215,0,.18);
+  margin-bottom:26px;
 }
 
-.logo-wodstar{
-  width:230px;
-  max-width:70vw;
-  height:auto;
-  filter:drop-shadow(0 0 12px rgba(255,215,0,0.45));
+.hero h1{
+  color:var(--accent);
+  font-size:clamp(2rem,6vw,4.2rem);
+  margin:0 0 8px;
 }
 
-.encabezado h1{
+.hero p{
+  color:var(--muted);
+  font-size:1.05rem;
   margin:0;
-  font-size:2rem;
-  letter-spacing:0;
-  text-align:center;
-}
-
-#lista{
-  width:100%;
-  max-width:760px;
-  padding:0 16px;
-  box-sizing:border-box;
-}
-
-#precios{
-  width:100%;
-  max-width:520px;
-  margin:30px 0;
-  padding:0 15px;
-  box-sizing:border-box;
-}
-
-.precios-titulo{
-  color:gold;
-  text-align:center;
-  margin-bottom:18px;
-}
-
-.servicio-competencia{
-  background:#050505;
-  border:2px solid #f6c400;
-  border-radius:10px;
-  padding:24px 18px;
-  text-align:center;
-  box-shadow:0 0 14px rgba(246,196,0,0.35);
-}
-
-.servicio-competencia h3{
-  margin:0;
-  font-size:1.3rem;
-  color:white;
-}
-
-.btn-contratar{
-  margin-top:16px;
-  width:100%;
-  font-weight:bold;
-  font-size:1rem;
-  padding:14px;
-}
-
-.modal-bg{
-  z-index:10000;
-}
-
-.modal.modal-planes{
-  max-width:1100px;
-  width:calc(100vw - 24px);
-  max-height:calc(100vh - 24px);
-  overflow:auto;
-  box-sizing:border-box;
-  padding:18px;
-}
-
-.modal-encabezado{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:15px;
-}
-
-.modal-encabezado h2{
-  color:gold;
-  margin:0;
-}
-
-.btn-cerrar{
-  min-width:42px;
-  font-weight:bold;
-}
-
-.tabla-wrap{
-  width:100%;
-  overflow-x:auto;
-}
-
-.tabla-planes{
-  width:100%;
-  min-width:860px;
-  border-collapse:collapse;
-  background:#050505;
-  table-layout:fixed;
-}
-
-.tabla-planes th,
-.tabla-planes td{
-  border:1px solid #333;
-  padding:16px;
-  text-align:left;
-  vertical-align:top;
+  max-width:680px;
   line-height:1.45;
 }
 
-.tabla-planes th{
-  color:gold;
-  background:#111;
-  text-align:center;
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:30px 0 14px;
 }
 
-.tabla-planes td:first-child{
-  color:#f6c400;
-  font-weight:bold;
-  text-align:left;
-}
-
-.plan-precio{
-  color:white;
-  display:block;
-  font-size:1.25rem;
-  font-weight:bold;
-  text-align:center;
-}
-
-.beneficios-lista{
+.section-title h2{
+  color:var(--accent);
   margin:0;
-  padding-left:18px;
 }
 
-.beneficios-lista li{
-  margin-bottom:8px;
+.counter{
+  color:#000;
+  background:var(--accent);
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:.85rem;
+  font-weight:800;
 }
 
-.extra-foto{
-  border:1px solid #f6c400;
-  border-radius:8px;
-  margin-top:16px;
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.photo-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 0 14px rgba(255,215,0,.08);
+}
+
+.photo-slot{
+  aspect-ratio:4/3;
+  background:#050505;
+}
+
+.photo-slot img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.photo-slot img[src="wodstar-logo-transparent.png"]{
+  width:145px;
+  height:auto;
+  max-width:70%;
+  object-fit:contain;
+  filter:drop-shadow(0 0 12px rgba(255,215,0,.35));
+}
+
+.photo-info{
   padding:14px;
-  text-align:center;
-  background:#0b0b0b;
+}
+
+.photo-info h3{
+  margin:0 0 6px;
+  color:var(--accent);
+  font-size:1.05rem;
+}
+
+.photo-info p{
+  margin:0;
+  color:var(--muted);
   line-height:1.4;
 }
 
-.extra-foto strong{
-  color:gold;
+@media(max-width:900px){
+  .gallery{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 
-.planes-mobile{
-  display:none;
-}
-
-.plan-mobile{
-  background:#050505;
-  border:1px solid #333;
-  border-radius:8px;
-  padding:16px;
-  margin-bottom:14px;
-}
-
-.plan-mobile h3{
-  color:gold;
-  text-align:center;
-  margin:0 0 8px;
-  font-size:1.5rem;
-}
-
-.plan-mobile .tipo-mobile{
-  text-align:center;
-  color:#ddd;
-  margin:0 0 12px;
-}
-
-.plan-mobile .plan-precio{
-  margin-bottom:14px;
-}
-
-.acciones-planes{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-top:18px;
-  flex-wrap:wrap;
-}
-
-.btn-contactar{
-  display:inline-block;
-  background:#25d366;
-  color:black;
-  padding:12px 18px;
-  border-radius:5px;
-  font-weight:bold;
-  text-decoration:none;
-}
-
-.seccion-info{
-  width:100%;
-  max-width:780px;
-  padding:0 18px;
-  margin:12px 0 22px;
-  box-sizing:border-box;
-}
-
-.seccion-info h2{
-  color:gold;
-  text-align:center;
-  margin:0 0 10px;
-  font-size:1.2rem;
-  letter-spacing:.04em;
-}
-
-.testimonios{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:8px;
-}
-
-.testimonio{
-  background:rgba(255,255,255,.025);
-  border:1px solid rgba(255,255,255,.12);
-  border-left:2px solid rgba(255,215,0,.55);
-  border-radius:6px;
-  color:#d8d8d8;
-  font-size:.92rem;
-  line-height:1.35;
-  padding:11px 14px;
-}
-
-.testimonio p{
-  margin:0 0 6px;
-}
-
-.testimonio strong{
-  color:gold;
-  font-size:.84rem;
-}
-
-.competencia{
-  background:linear-gradient(145deg,#151515,#050505);
-  border:1px solid #333;
-  border-left:5px solid gold;
-  margin:16px 0;
-  padding:22px;
-  border-radius:8px;
-  text-align:center;
-  box-shadow:0 0 18px rgba(255,215,0,0.16);
-}
-
-.competencia div{
-  cursor:pointer;
-  margin-bottom:16px;
-  color:gold;
-  font-size:1.45rem;
-  font-weight:bold;
-}
-
-.competencia button{
-  min-width:170px;
-  margin:5px;
-  font-weight:bold;
-}
-
-button{
-  padding:10px;
-  background:gold;
-  border:none;
-  cursor:pointer;
-  border-radius:5px;
-}
-
-/* MODAL */
-.modal-bg{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.9);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.modal{
-  background:#111;
-  padding:20px;
-  border-radius:10px;
-  max-width:400px;
-  width:90%;
-}
-
-input,select{
-  padding:10px;
-  width:90%;
-  border-radius:5px;
-  border:none;
-}
-
-/* WHATSAPP */
-#chatBox{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  width:280px;
-  max-height:400px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  z-index:9999;
-}
-
-.mensaje-wa{
-  display:flex;
-  align-items:flex-end;
-  gap:8px;
-  opacity:0;
-  transform:translateY(20px);
-  transition:all 0.4s ease;
-}
-
-.mensaje-wa.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-.avatar{
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  background:gold;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  color:black;
-}
-
-.burbuja{
-  background:#1f2c34;
-  color:white;
-  padding:10px 12px;
-  border-radius:10px;
-  max-width:200px;
-  font-size:0.85rem;
-  position:relative;
-}
-
-.burbuja::after{
-  content:"";
-  position:absolute;
-  left:-6px;
-  bottom:5px;
-  width:10px;
-  height:10px;
-  background:#1f2c34;
-  transform:rotate(45deg);
-}
-
-.burbuja a{
-  color:#4fc3f7;
-  text-decoration:underline;
-}
-
-.hora{
-  font-size:0.7rem;
-  color:#aaa;
-  margin-top:5px;
-  text-align:right;
-}
-.botones{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-}
-
-.botones button{
-  flex:1;
-}
-
-@media (max-width:760px){
-  body{
-    justify-content:flex-start;
+@media(max-width:620px){
+  .page{
+    padding:66px 12px 32px;
   }
 
-  .encabezado{
-    margin-top:18px;
-    padding:0 12px;
-  }
-
-  .encabezado h1{
-    font-size:1.55rem;
-    text-align:center;
-  }
-
-  .logo-wodstar{
-    width:185px;
-  }
-
-  #precios{
-    max-width:100%;
-  }
-
-  .modal.modal-planes{
-    width:calc(100vw - 16px);
-    max-height:calc(100vh - 16px);
-    padding:14px;
-  }
-
-  .modal-encabezado h2{
-    font-size:1.55rem;
-  }
-
-  .tabla-wrap{
-    display:none;
-  }
-
-  .planes-mobile{
-    display:block;
-  }
-
-  .extra-foto{
-    font-size:0.95rem;
-    margin-bottom:16px;
-  }
-
-  .acciones-planes{
-    position:sticky;
-    bottom:0;
-    background:#111;
-    padding-top:12px;
-  }
-
-  .btn-contactar,
-  .acciones-planes button{
-    flex:1;
-    text-align:center;
-  }
-
-  .testimonios{
-    grid-template-columns:1fr;
-    gap:6px;
-  }
-
-  .seccion-info{
-    padding:0 12px;
-    margin:6px 0 16px;
-  }
-
-  .seccion-info h2{
-    font-size:1rem;
-    margin-bottom:8px;
-  }
-
-  .testimonio{
+  .back-link{
+    top:calc(10px + env(safe-area-inset-top));
+    left:10px;
+    padding:9px 12px;
     font-size:.82rem;
-    padding:9px 11px;
   }
 
-  .testimonio:nth-child(n+2){
-    display:none;
+  .brand{
+    text-align:center;
+    margin-bottom:18px;
   }
 
-  .competencia{
-    padding:20px 14px;
+  .hero{
+    min-height:210px;
+    padding:20px;
+    border-radius:12px;
   }
 
-  .competencia div{
-    font-size:1.25rem;
+  .section-title{
+    align-items:flex-start;
+    flex-direction:column;
   }
 
-  .competencia button{
-    width:100%;
-    margin:6px 0;
+  .gallery{
+    grid-template-columns:1fr;
   }
 }
 </style>
 </head>
 
 <body>
+<main class="page">
+  <a class="back-link" href="https://wodstars.github.io/WODStars/competencia2.html">Volver a la competencia</a>
+  <div class="brand">WODSTARS HIGHLIGHTS</div>
 
-<header class="encabezado">
-  <img class="logo-wodstar" src="wodstar-logo-transparent.png" alt="WODSTAR">
-  <h1>WODSTARS COMPETENCIAS</h1>
-</header>
+  <section class="hero">
+    <div>
+      <h1>Moonlight Games</h1>
+      <p>Highlights de competencia organizados para mostrar los mejores momentos del evento.</p>
+    </div>
+  </section>
 
-<div id="lista"></div>
-<section id="precios">
-  <div class="servicio-competencia">
-    <h3>Servicio para competencias WODSTAR</h3>
-    <button class="btn-contratar" onclick="mostrarPlanes()">
-      Contratar este servicio para tu competencia
-    </button>
+  <div class="section-title">
+    <h2>Galeria del evento</h2>
+    <span class="counter">6 fotos</span>
   </div>
-</section>
 
-<section class="seccion-info" id="testimonios">
-  <h2>Testimonios</h2>
-  <div class="testimonios">
-    <div class="testimonio">
-      <p>"La competencia se sintió más profesional y los atletas pudieron ver sus resultados al momento."</p>
-      <strong>Organizador de evento</strong>
-    </div>
-    <div class="testimonio">
-      <p>"El staff tuvo mejor control de heats, categorías y scores durante toda la jornada."</p>
-      <strong>Equipo de jueces</strong>
-    </div>
-    <div class="testimonio">
-      <p>"La entrega de resultados finales fue rápida, clara y lista para compartir en redes."</p>
-      <strong>Comunidad WODSTAR</strong>
-    </div>
-  </div>
-</section>
+  <section class="gallery">
+    <article class="photo-card">
+      <div class="photo-slot">
+        <img src="fotos/highlight-01.jpg" data-base="fotos/highlight-01" alt="Inicio del evento" onerror="probarOtraFoto(this)">
+      </div>
+      <div class="photo-info">
+        <h3>Inicio del evento</h3>
+        <p>Primera foto destacada de la competencia.</p>
+      </div>
+    </article>
 
-<div id="modal"></div>
-<div id="chatBox"></div>
+    <article class="photo-card">
+      <div class="photo-slot">
+        <img src="fotos/highlight-02.jpg" data-base="fotos/highlight-02" alt="Atletas en accion" onerror="probarOtraFoto(this)">
+      </div>
+      <div class="photo-info">
+        <h3>Atletas en accion</h3>
+        <p>Momento principal del wod o prueba del dia.</p>
+      </div>
+    </article>
 
+    <article class="photo-card">
+      <div class="photo-slot">
+        <img src="fotos/highlight-03.jpg" data-base="fotos/highlight-03" alt="Comunidad" onerror="probarOtraFoto(this)">
+      </div>
+      <div class="photo-info">
+        <h3>Comunidad</h3>
+        <p>Ambiente, publico o equipos del evento.</p>
+      </div>
+    </article>
+
+    <article class="photo-card">
+      <div class="photo-slot">
+        <img src="fotos/highlight-04.jpg" data-base="fotos/highlight-04" alt="Momentos clave" onerror="probarOtraFoto(this)">
+      </div>
+      <div class="photo-info">
+        <h3>Momentos clave</h3>
+        <p>Capturas importantes de la jornada.</p>
+      </div>
+    </article>
+
+    <article class="photo-card">
+      <div class="photo-slot">
+        <img src="fotos/highlight-05.jpg" data-base="fotos/highlight-05" alt="Staff y jueces" onerror="probarOtraFoto(this)">
+      </div>
+      <div class="photo-info">
+        <h3>Staff y jueces</h3>
+        <p>El equipo que hizo posible la competencia.</p>
+      </div>
+    </article>
+
+    <article class="photo-card">
+      <div class="photo-slot">
+        <img src="fotos/highlight-06.jpg" data-base="fotos/highlight-06" alt="Cierre del evento" onerror="probarOtraFoto(this)">
+      </div>
+      <div class="photo-info">
+        <h3>Cierre del evento</h3>
+        <p>Foto final o momento mas memorable.</p>
+      </div>
+    </article>
+  </section>
+</main>
 <script>
+function probarOtraFoto(img){
+  const extensiones = ["jpg","jpeg","png","webp","JPG","JPEG","PNG","WEBP"];
+  const intento = Number(img.dataset.intento || 0) + 1;
+  const base = img.dataset.base;
 
-// COMPETENCIAS
-const competencias = [
-  {
-    nombre:"MOONLIGHT GAMES ",
-    archivo:"competencia2.html",
-    banco:"No disponible ",
-    cuenta:"No disponible",
-    clabe:"Comunícate con el staff de competencia",
-    costos:{
-      "Principiante Hombre":"$ MXN",
-      "Principiante Mujer":"$ MXN",
-      "Intermedio Hombre":"$ MXN",
-      "Intermedio Mujer":"$MXN",
-      "Avanzado Hombre":"$MXN",
-      "Avanzado Mujer":"$XN"
-    }
-  },
-  {
-    nombre:"Competencia Enero",
-    archivo:"competencia1.html",
-    banco:"BBVA",
-    cuenta:"1234567890",
-    clabe:"012345678901234567",
-    costos:{
-      "Principiante Hombre":"$400 MXN",
-      "Principiante Mujer":"$400 MXN",
-      "Intermedio Hombre":"$500 MXN",
-      "Intermedio Mujer":"$500 MXN",
-      "Avanzado Hombre":"$600 MXN",
-      "Avanzado Mujer":"$600 MXN"
-    }
+  if(intento < extensiones.length){
+    img.dataset.intento = intento;
+    img.src = `${base}.${extensiones[intento]}`;
+    return;
   }
 
-];
- 
-// RENDER
-let html="";
-competencias.forEach(c=>{
-html+=`
-<div class="competencia">
-
-  <div onclick="location.href='${c.archivo}'">
-    ${c.nombre}
-  </div>
-
-  <button onclick="location.href='${c.archivo}'">
-    🏆 Ver posiciones
-  </button>
-
-  <button onclick='inscribir(${JSON.stringify(c)})'>
-    INSCRIBIRSE
-  </button>
-
-</div>
-`;
-});
-lista.innerHTML=html;
-
-// INSCRIBIR
-function inscribir(comp){
-  modal.innerHTML=`
-  <div class="modal-bg" onclick="cerrar()">
-    <div class="modal" onclick="event.stopPropagation()">
-
-      <h2>${comp.nombre}</h2>
-
-      <input id="nombre" placeholder="Nombre completo"><br><br>
-
-      <select id="categoria">
-        <option>Principiante Hombre</option>
-        <option>Principiante Mujer</option>
-        <option>Intermedio Hombre</option>
-        <option>Intermedio Mujer</option>
-        <option>Avanzado Hombre</option>
-        <option>Avanzado Mujer</option>
-      </select><br><br>
-
-      <button onclick='generarRegistro(${JSON.stringify(comp)})'>Continuar</button>
-
-    </div>
-  </div>`;
+  img.onerror = null;
+  img.removeAttribute("data-base");
+  img.src = "wodstar-logo-transparent.png";
 }
-
-function cerrar(){ modal.innerHTML=""; }
-
-function mostrarPlanes(){
-  const mensaje = encodeURIComponent("Hola 👋🏆 quiero cotizar mi competencia en WODSTARS. Me interesan los planes para mi evento 💪✨");
-  const whatsapp = `https://wa.me/525636501351?text=${mensaje}`;
-
-  modal.innerHTML=`
-  <div class="modal-bg" onclick="cerrar()">
-    <div class="modal modal-planes" onclick="event.stopPropagation()">
-      <div class="modal-encabezado">
-        <h2>Planes WODSTAR</h2>
-        <button class="btn-cerrar" onclick="cerrar()">X</button>
-      </div>
-
-      <div class="tabla-wrap">
-        <table class="tabla-planes">
-          <thead>
-            <tr>
-              <th>Plan</th>
-              <th>START</th>
-              <th>PRO</th>
-              <th>ELITE</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Precio</td>
-              <td><span class="plan-precio">$950 MXN</span></td>
-              <td><span class="plan-precio">$1500 MXN</span></td>
-              <td><span class="plan-precio">$1650 MXN</span></td>
-            </tr>
-            <tr>
-              <td>Extra</td>
-              <td colspan="3">
-                <div class="extra-foto">
-                  <strong>Agrega fotógrafo profesional en tu competencia</strong><br>
-                  $1500 MXN extra por 120 fotos.
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Tipo</td>
-              <td>Plan básico</td>
-              <td>Plan recomendado</td>
-              <td>Plan premium</td>
-            </tr>
-            <tr>
-              <td>Beneficios</td>
-              <td>
-                <ul class="beneficios-lista">
-                  <li>Plataforma de resultados en tiempo real</li>
-                  <li>Captura de scores</li>
-                  <li>Hasta 100 atletas</li>
-                  <li>Heats y logística básica</li>
-                  <li>5 modalidades de scoring</li>
-                  <li>Soporte presencial</li>
-                  <li>Staff en tu competencia</li>
-                </ul>
-              </td>
-              <td>
-                <ul class="beneficios-lista">
-                  <li>Todo el plan START</li>
-                  <li>Inscripción desde la plataforma</li>
-                  <li>Categorías ilimitadas</li>
-                  <li>App para jueces</li>
-                  <li>Entrega de memorias finales</li>
-                  <li>Soporte prioritario</li>
-                  <li>Redes sociales</li>
-                  <li>Highlights de competencia</li>
-                  <li>Dirección de evento</li>
-                  <li>Venta de entradas</li>
-                </ul>
-              </td>
-              <td>
-                <ul class="beneficios-lista">
-                  <li>Todo el plan PRO</li>
-                  <li>Personalización total del evento</li>
-                  <li>Diseño gráfico y branding</li>
-                  <li>Estadísticas avanzadas</li>
-                  <li>Integración con patrocinadores</li>
-                  <li>Respaldo en la nube</li>
-                  <li>Publicaciones en redes sociales</li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="planes-mobile">
-        <div class="plan-mobile">
-          <h3>START</h3>
-          <p class="tipo-mobile">Plan básico</p>
-          <span class="plan-precio">$950 MXN</span>
-          <ul class="beneficios-lista">
-            <li>Plataforma de resultados en tiempo real</li>
-            <li>Captura de scores</li>
-            <li>Hasta 100 atletas</li>
-            <li>Heats y logística básica</li>
-            <li>5 modalidades de scoring</li>
-            <li>Soporte presencial</li>
-            <li>Staff en tu competencia</li>
-          </ul>
-        </div>
-
-        <div class="plan-mobile">
-          <h3>PRO</h3>
-          <p class="tipo-mobile">Plan recomendado</p>
-          <span class="plan-precio">$1500 MXN</span>
-          <ul class="beneficios-lista">
-            <li>Todo el plan START</li>
-            <li>Inscripción desde la plataforma</li>
-            <li>Categorías ilimitadas</li>
-            <li>App para jueces</li>
-            <li>Entrega de memorias finales</li>
-            <li>Soporte prioritario</li>
-            <li>Redes sociales</li>
-            <li>Highlights de competencia</li>
-            <li>Dirección de evento</li>
-            <li>Venta de entradas</li>
-          </ul>
-        </div>
-
-        <div class="plan-mobile">
-          <h3>ELITE</h3>
-          <p class="tipo-mobile">Plan premium</p>
-          <span class="plan-precio">$1650 MXN</span>
-          <ul class="beneficios-lista">
-            <li>Todo el plan PRO</li>
-            <li>Personalización total del evento</li>
-            <li>Diseño gráfico y branding</li>
-            <li>Estadísticas avanzadas</li>
-            <li>Integración con patrocinadores</li>
-            <li>Respaldo en la nube</li>
-            <li>Publicaciones en redes sociales</li>
-          </ul>
-        </div>
-
-        <div class="extra-foto">
-          <strong>Agrega fotógrafo profesional en tu competencia</strong><br>
-          $1500 MXN extra por 120 fotos.
-        </div>
-      </div>
-
-      <div class="acciones-planes">
-        <a class="btn-contactar" href="${whatsapp}" target="_blank" rel="noopener">Contactar</a>
-        <button onclick="cerrar()">Cerrar</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-// REGISTRO
-function generarRegistro(comp){
-
-  const nombre=document.getElementById("nombre").value;
-  const categoria=document.getElementById("categoria").value;
-
-  if(!nombre) return alert("Ingresa tu nombre");
-
-  const monto = comp.costos?.[categoria] ?? "No definido";
-  const tiempoFinal = Date.now()+15*60*1000;
-
-  localStorage.setItem("registro",JSON.stringify({
-    nombre,categoria,
-    competencia:comp.nombre,
-    banco:comp.banco,
-    cuenta:comp.cuenta,
-    clabe:comp.clabe,
-    monto,tiempoFinal
-  }));
-
-  mostrarRegistro();
-}
-
-// MOSTRAR REGISTRO
-function mostrarRegistro(){
-  const data=JSON.parse(localStorage.getItem("registro"));
-  if(!data)return;
-
-  modal.innerHTML=`
-  <div class="modal-bg">
-    <div class="modal">
-
-      <h2>Pre-registro</h2>
-      <p><b>${data.nombre}</b></p>
-      <p>${data.competencia}</p>
-      <p>${data.categoria}</p>
-
-      <hr>
-
-      <h3>Transferencia</h3>
-      <p>Banco: ${data.banco}</p>
-      <p>Cuenta: ${data.cuenta}</p>
-      <p>CLABE: ${data.clabe}</p>
-      <p>Monto: ${data.monto}</p>
-
-      <p id="timer"></p>
-
-      <button onclick="enviarCorreo('${data.nombre}','${data.categoria}','${data.competencia}')">
-        Enviar comprobante
-      </button>
-
-      <br><br>
-      <button onclick="cancelar()">Cancelar</button>
-
-    </div>
-  </div>`;
-
-  iniciarTimer(data.tiempoFinal);
-}
-
-// TIMER
-function iniciarTimer(t){
-  const i=setInterval(()=>{
-    const r=t-Date.now();
-    if(r<=0){
-      clearInterval(i);
-      timer.innerText="⛔ Expirado";
-      localStorage.removeItem("registro");
-      return;
-    }
-    let m=Math.floor(r/60000);
-    let s=Math.floor((r%60000)/1000);
-    timer.innerText=`Tiempo: ${m}:${s<10?"0":""}${s}`;
-  },1000);
-}
-
-function cancelar(){
-  localStorage.removeItem("registro");
-  cerrar();
-}
-
-// CORREO
-function enviarCorreo(n,c,comp){
-  window.location.href=
-  `mailto:wodstarssoporte@gmail.com?subject=Comprobante&body=Nombre:${n}%0ACategoria:${c}%0ACompetencia:${comp}`;
-}
-
-// WHATSAPP STYLE
-const mensajesWA=[
-  
- 
-  "📲 Síguenos: https://www.instagram.com/wodstarscores//",
-  
-  "📢 Responde esta encuesta y gana un descuento https://docs.google.com/forms/d/e/1FAIpQLSc4VS9NYqgB5hOnb7-PomnAQ77a-O_trD5M4FDhGe_3OlyMmQ/viewform?usp=header"
-];
-
-function hora(){
-  let d=new Date();
-  return d.getHours()+":"+(d.getMinutes()<10?"0":"")+d.getMinutes();
-}
-
-function mostrarMensajeWA(txt){
-
-  const chat = document.getElementById("chatBox");
-
-  // borrar mensaje anterior
-  chat.innerHTML = "";
-
-  const c = document.createElement("div");
-  c.className = "mensaje-wa";
-
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const t = txt.replace(urlRegex, u => {
-    return `<a href="${u}" target="_blank">${u}</a>`;
-  });
-
-  c.innerHTML = `
-    <div class="avatar">W</div>
-    <div class="burbuja">
-      ${t}
-      <div class="hora">${hora()}</div>
-    </div>
-  `;
-
-  chat.appendChild(c);
-
-  setTimeout(() => {
-    c.classList.add("show");
-  }, 100);
-
-  // desaparecer
-  setTimeout(() => {
-    c.classList.remove("show");
-
-    setTimeout(() => {
-      if (chat.contains(c)) {
-        c.remove();
-      }
-    }, 400);
-
-  }, 7000);
-}
-
-function iniciarChatWA(){
-  function loop(){
-    setTimeout(()=>{
-      const m=mensajesWA[Math.floor(Math.random()*mensajesWA.length)];
-      mostrarMensajeWA(m);
-      loop();
-    },Math.random()*15000+10000);
-  }
-  loop();
-}
-
-// INIT
-window.onload=()=>{
-  if(localStorage.getItem("registro")){
-    mostrarRegistro();
-  }
-};
-
 </script>
-
 </body>
 </html>
