@@ -32,7 +32,7 @@ h1{
 }
 
 /* CONTROLES */
-select,button{
+select,button,.top-actions a{
   padding:10px;
   margin:5px;
   border-radius:8px;
@@ -40,14 +40,16 @@ select,button{
   font-size:1rem;
 }
 
-button{
+button,.top-actions a{
   background:var(--accent);
   color:black;
   font-weight:bold;
   cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
 }
 
-button:hover{
+button:hover,.top-actions a:hover{
   transform:scale(1.05);
 }
 
@@ -229,7 +231,8 @@ overflow-y:auto;
   gap:10px;
 }
 
-.top-actions button{
+.top-actions button,
+.top-actions a{
   min-width:140px;
 }
 
@@ -238,8 +241,11 @@ overflow-y:auto;
     flex-direction:column;
   }
 
-  .top-actions button{
+  .top-actions button,
+  .top-actions a{
     width:100%;
+    box-sizing:border-box;
+    text-align:center;
   }
 }
 
@@ -315,7 +321,7 @@ overflow-y:auto;
 
 <body>
 <div class="top-actions">
-  <button onclick="volverCompetencias()">⬅ Competencias</button>
+  <a href="https://wodstars.github.io/WODStars/">⬅ Competencias</a>
   <button onclick="refrescarPagina()">↻ Refrescar</button>
 </div>
 
@@ -1804,7 +1810,7 @@ function toggleWod(i){
   }
 }
 function volverCompetencias(){
-  window.location.href = "https://wodstars.github.io/";
+  window.location.href = "./index.html";
 }
 
 function refrescarPagina(){
