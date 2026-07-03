@@ -368,6 +368,136 @@ overflow-y:auto;
     width:auto;
   }
 }
+
+/* AJUSTE DE CABECERA Y CONTROLES */
+body{
+  padding:1.25rem;
+}
+
+.top-actions{
+  max-width:1000px;
+  justify-content:center;
+  gap:8px;
+  margin:0 auto 14px;
+}
+
+.top-actions button{
+  min-width:0;
+  width:auto;
+  padding:8px 12px;
+  border:1px solid #3a3a3a;
+  border-radius:999px;
+  background:#111;
+  color:#FFD700;
+  font-size:.9rem;
+  box-shadow:none;
+}
+
+.top-actions button:hover{
+  background:#1b1b1b;
+  transform:translateY(-1px);
+}
+
+.competencia-hero{
+  max-width:760px;
+  margin:0 auto 14px;
+  padding:18px 14px;
+  border-color:#262626;
+  box-shadow:0 0 14px #FFD70018;
+}
+
+.competencia-hero h1{
+  margin:0 0 14px;
+  font-size:clamp(2rem, 8vw, 3rem);
+  line-height:1.05;
+}
+
+.score-controls{
+  align-items:center;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin:0 auto 18px;
+  max-width:760px;
+}
+
+.category-select{
+  width:min(420px, 100%);
+  background:#f5f5f5;
+  border:2px solid #FFD700;
+  color:#111;
+  font-weight:700;
+  min-height:44px;
+}
+
+.secondary-actions{
+  align-items:center;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  margin:0 auto 18px;
+  max-width:760px;
+}
+
+.secondary-actions button,
+.secondary-actions .highlights-link{
+  align-items:center;
+  background:#151515;
+  border:1px solid #3a3a3a;
+  border-radius:999px;
+  color:#FFD700;
+  display:inline-flex;
+  font-size:.9rem;
+  font-weight:800;
+  justify-content:center;
+  min-height:38px;
+  padding:8px 13px;
+  text-decoration:none;
+  width:auto;
+}
+
+.secondary-actions button:hover,
+.secondary-actions .highlights-link:hover{
+  background:#202020;
+  box-shadow:0 0 14px #FFD70022;
+  transform:translateY(-1px);
+}
+
+.highlights-link small{
+  display:none;
+}
+
+@media(max-width:600px){
+  body{
+    padding:1rem;
+  }
+
+  .top-actions{
+    flex-direction:row;
+  }
+
+  .top-actions button{
+    width:auto;
+    flex:0 1 auto;
+  }
+
+  .competencia-hero{
+    padding:16px 10px;
+  }
+
+  .score-controls,
+  .secondary-actions{
+    gap:8px;
+  }
+
+  .secondary-actions button,
+  .secondary-actions .highlights-link{
+    flex:1 1 145px;
+    box-sizing:border-box;
+  }
+}
 </style>
 </head>
 
@@ -379,44 +509,30 @@ overflow-y:auto;
 
 <section class="competencia-hero">
   <h1>MOONLIGHT GAMES</h1>
-  <a class="highlights-link" href="https://wodstars.github.io/wodstarshiglights/">
-    Highlights de competencia 
-    <small>click aqui</small>
-  </a>
+  <div class="score-controls">
+    <select id="competenciaSelect" class="category-select" onchange="mostrarCompetencia()">
+      <option value="">Selecciona categoria</option>
+      <option value="teens_hombre">Teens Hombre</option>
+      <option value="teens_mujer">Teens Mujer</option>
+      <option value="novatos_hombre">Novatos Hombre</option>
+      <option value="novatos_mujer">Novatos Mujer</option>
+      <option value="principiante_hombre">Principiante Hombre</option>
+      <option value="principiante_mujer">Principiante Mujer</option>
+      <option value="intermedio_hombre">Intermedio Hombre</option>
+      <option value="intermedio_mujer">Intermedio Mujer</option>
+      <option value="master_hombre">Master Hombre</option>
+      <option value="master_mujer">Master Mujer</option>
+      <option value="avanazado_hombre">Avanzado Hombre</option>
+      <option value="avanzado_mujer">Avanzado Mujer</option>
+    </select>
+  </div>
 </section>
 
-<select id="competenciaSelect"> //agrega categorias paso 1
-<option value="">Selecciona categoría</option>
-<option value="teens_hombre">Teens Hombre</option>
-<option value="teens_mujer">Teens Mujer</option>
-
-<option value="novatos_hombre">Novatos Hombre</option>
-<option value="novatos_mujer">Novatos Mujer</option>
-
-<option value="principiante_hombre">Principiante Hombre</option>
-<option value="principiante_mujer">Principiante Mujer</option>
-
-<option value="intermedio_hombre">Intermedio Hombre</option>
-<option value="intermedio_mujer">Intermedio Mujer</option>
-
-<option value="master_hombre">Master Hombre</option>
-<option value="master_mujer">Master Mujer</option>
-
-<option value="avanazado_hombre">Avanzado Hombre</option>
-<option value="avanzado_mujer">Avanzado Mujer</option>
-</select>
-
-<button onclick="mostrarCompetencia()">
-  Ingresar
-</button>
-<button onclick="mostrarHeats()">
-📋 Heats y Carriles
-</button>
-
-<button onclick="mostrarTablaRecords()">
-🏆 Records
-</button>
-
+<div class="secondary-actions">
+  <a class="highlights-link" href="https://wodstars.github.io/wodstarshiglights/">Highlights</a>
+  <button onclick="mostrarHeats()">Heats y Carriles</button>
+  <button onclick="mostrarTablaRecords()">Clean RM</button>
+</div>
 <div id="tablas"></div>
 <div id="modalContainer"></div>
 <div id="toastStack" class="toast-stack" aria-live="polite"></div>
@@ -447,7 +563,7 @@ const datos = {
             rondas:0,
             reps:0,
             timeCap:"",
-            peso:"520",
+            peso:"",
             tiebreak:"",
             
             puntos:0
@@ -485,7 +601,7 @@ const datos = {
             reps:0,
             timeCap:"",
             tiebreak:"",
-            peso:"519",
+            peso:"",
             puntos:0
           },
           {//wod3
@@ -2409,145 +2525,79 @@ function textoSeguro(valor){
     .replaceAll("'","&#039;");
 }
 
-const reglasRecords = {
-  "WOD 1":{
-    titulo:"WOD 1",
-    regla:"Gana el menor tiempo registrado.",
-    columna:"Tiempo",
-    sinDatos:"Todavia no hay tiempos registrados para WOD 1.",
-    obtenerMarca:(resultado)=>segundosDesdeTiempo(resultado.tiempo),
-    esMejor:(nuevo, actual)=>actual===null || nuevo<actual,
-    mostrar:(record)=>record.resultado.tiempo
-  },
-  "WOD 2":{
-    titulo:"WOD 2 Clean",
-    regla:"Gana la mayor cantidad de libras levantadas en Clean.",
-    columna:"Libras",
-    sinDatos:"Todavia no hay libras registradas para WOD 2 Clean.",
-    obtenerMarca:(resultado)=>numeroDesdePeso(resultado.peso),
-    esMejor:(nuevo, actual)=>actual===null || nuevo>actual,
-    mostrar:(record)=>`${record.marca} lb`
-  },
-  "WOD 3":{
-    titulo:"WOD 3",
-    regla:"Gana la mayor cantidad de rondas completadas.",
-    columna:"Rondas",
-    sinDatos:"Todavia no hay rondas registradas para WOD 3.",
-    obtenerMarca:(resultado)=>Number(resultado.rondas || 0),
-    esMejor:(nuevo, actual)=>nuevo>0 && (actual===null || nuevo>actual),
-    mostrar:(record)=>`${record.marca} rondas`
-  }
-};
-
-let wodRecordActivo = "WOD 1";
-
 function obtenerRecords(){
-  const records = {};
-
-  Object.keys(reglasRecords).forEach(wod=>{
-    records[wod] = null;
-  });
+  const records = [];
 
   datos.pruebaIndividual.ATLETAS.forEach(atleta=>{
-    atleta.resultados.forEach(resultado=>{
-      const regla = reglasRecords[resultado.wod];
-      if(!regla)return;
+    const clean = atleta.resultados.find(resultado=>resultado.wod==="WOD 2");
+    if(!clean)return;
 
-      const marca = regla.obtenerMarca(resultado);
-      if(marca===null || marca===undefined || Number.isNaN(marca))return;
+    const peso = numeroDesdePeso(clean.peso);
+    if(peso===null)return;
 
-      const actual = records[resultado.wod];
-      if(regla.esMejor(marca, actual ? actual.marca : null)){
-        records[resultado.wod] = {atleta, resultado, marca};
-      }
-    });
+    records.push({atleta, resultado:clean, marca:peso});
   });
 
-  return records;
-}
-
-function recordsComoAvisos(records){
-  return Object.keys(reglasRecords)
-    .filter(wod=>records[wod])
-    .map(wod=>{
-      const record = records[wod];
-      const regla = reglasRecords[wod];
-      return {
-        titulo:`Record ${regla.titulo}`,
-        mensaje:`${record.atleta.nombre} lidera con ${regla.mostrar(record)}.`,
-        wod,
-        record
-      };
-    });
+  return records.sort((a,b)=>b.marca-a.marca).slice(0,3);
 }
 
 function obtenerRecordDestacado(records){
-  const prioridad = ["WOD 2","WOD 3","WOD 1"];
-  const wod = prioridad.find(clave=>records[clave]);
-  if(!wod)return null;
-  const regla = reglasRecords[wod];
-  const record = records[wod];
+  const record = records[0];
+  if(!record)return null;
+
   return {
-    titulo:`Record destacado: ${regla.titulo}`,
-    mensaje:`${record.atleta.nombre} tiene el record con ${regla.mostrar(record)}.`,
-    wod,
+    titulo:"Record Clean RM",
+    mensaje:`${record.atleta.nombre} tiene el Clean mas alto con ${record.marca} lb.`,
     record
   };
 }
 
 function atletaTieneRecord(atleta, records){
-  return Object.values(records).some(record=>record && record.atleta.nombre===atleta.nombre);
+  return Boolean(records[0] && records[0].atleta.nombre===atleta.nombre);
 }
 
-function filaRecord(record, regla){
+function filaRecord(record, index){
+  const lugar = index===0 ? "1" : index===1 ? "2" : "3";
+  const badge = index===0 ? ` <span class="record-badge">🏆 RECORD</span>` : "";
+
   return `<tr>
-    <td><span class="record-name" data-record-name="${textoSeguro(record.atleta.nombre)}">${textoSeguro(record.atleta.nombre)} <span class="record-badge">🏆 RECORD</span></span></td>
+    <td><strong>${lugar}</strong></td>
+    <td><span class="record-name" data-record-name="${textoSeguro(record.atleta.nombre)}">${textoSeguro(record.atleta.nombre)}${badge}</span></td>
     <td>${textoSeguro(record.atleta.categoria)} ${textoSeguro(record.atleta.rama)}</td>
-    <td><strong>${textoSeguro(regla.mostrar(record))}</strong></td>
+    <td><strong>${textoSeguro(record.marca)} lb</strong></td>
   </tr>`;
 }
 
-function renderRecordWod(wod){
+function renderRecordsClean(){
   const records = obtenerRecords();
-  const regla = reglasRecords[wod];
-  const record = records[wod];
   const contenedor = document.getElementById("recordsContent");
-  if(!regla || !contenedor)return;
+  if(!contenedor)return;
 
-  document.querySelectorAll(".records-tabs button").forEach(btn=>{
-    btn.classList.toggle("activo", btn.dataset.wod===wod);
-  });
+  const filas = records.map((record,index)=>filaRecord(record,index)).join("");
 
   contenedor.innerHTML = `<div class="records-card">
-    <h3>${textoSeguro(regla.titulo)}</h3>
-    <p class="records-rule">${textoSeguro(regla.regla)}</p>
-    ${record ? `<table class="records-table"><tr><th>Atleta</th><th>Categoria</th><th>${textoSeguro(regla.columna)}</th></tr>${filaRecord(record, regla)}</table>` : `<p class="records-empty">${textoSeguro(regla.sinDatos)}</p>`}
+    <h3>Clean RM</h3>
+    <p class="records-rule">Top 3 atletas que mas libras levantaron en Clean, tomando todas las categorias.</p>
+    ${filas ? `<table class="records-table"><tr><th>#</th><th>Atleta</th><th>Categoria</th><th>Libras</th></tr>${filas}</table>` : `<p class="records-empty">Todavia no hay libras registradas en Clean.</p>`}
   </div>`;
 
-  if(record){
-    setTimeout(()=>lanzarConfetiDesdeElemento(buscarNombreRecord(record.atleta.nombre), 130), 80);
+  if(records[0]){
+    setTimeout(()=>lanzarConfetiDesdeElemento(contenedor.querySelector(".record-name"), 130), 80);
   }
 }
 
-function mostrarTablaRecords(wod="WOD 1"){
-  wodRecordActivo = reglasRecords[wod] ? wod : "WOD 1";
-
+function mostrarTablaRecords(){
   document.getElementById("modalContainer").innerHTML = `
     <div class="modal-bg" onclick="cerrarModal()">
       <div class="modal grande records-panel" onclick="event.stopPropagation()">
         <button class="close-btn" onclick="cerrarModal()">×</button>
-        <h2>Records de la competencia</h2>
-        <p class="records-subtitle">Elige que WOD quieres ver. Cada record se calcula con su propia regla.</p>
-        <div class="records-tabs">
-          <button data-wod="WOD 1" onclick="renderRecordWod('WOD 1')">WOD 1</button>
-          <button data-wod="WOD 2" onclick="renderRecordWod('WOD 2')">WOD 2 Clean</button>
-          <button data-wod="WOD 3" onclick="renderRecordWod('WOD 3')">WOD 3</button>
-        </div>
+        <h2>Records Clean RM</h2>
+        <p class="records-subtitle">Los 3 atletas que mas libras levantaron en Clean de todas las categorias.</p>
         <div id="recordsContent"></div>
       </div>
     </div>`;
 
-  renderRecordWod(wodRecordActivo);
+  renderRecordsClean();
 }
 
 function mostrarAvisosIniciales(){
@@ -2555,21 +2605,21 @@ function mostrarAvisosIniciales(){
   const destacado = obtenerRecordDestacado(records);
 
   if(!destacado){
-    setTimeout(()=>crearMensajeEmergente("Records listos", "Puedes abrir la tabla y elegir WOD 1, WOD 2 Clean o WOD 3. Los records apareceran cuando se capturen marcas.", 8500, {
+    setTimeout(()=>crearMensajeEmergente("Clean RM listo", "Cuando se capturen libras en Clean, aqui aparecera el atleta con el mayor levantamiento.", 8500, {
       tipo:"record",
-      accion:"Click para abrir records por WOD",
+      accion:"Click para abrir records Clean",
       confetti:true,
-      onClick:()=>mostrarTablaRecords("WOD 1")
+      onClick:mostrarTablaRecords
     }), 1200);
     return;
   }
 
   setTimeout(()=>crearMensajeEmergente(destacado.titulo, destacado.mensaje, 9000, {
     tipo:"record",
-    accion:"Click para ver la tabla de records",
+    accion:"Click para ver el top 3 Clean",
     confetti:true,
     confettiName:destacado.record.atleta.nombre,
-    onClick:()=>mostrarTablaRecords(destacado.wod)
+    onClick:mostrarTablaRecords
   }), 1200);
 }
 
@@ -2581,7 +2631,7 @@ function mostrarCompetencia(){
   const seleccion=competenciaSelect.value;
   categoriaActual = seleccion;
   const filtro=filtros[seleccion];
-  if(!filtro)return;
+  if(!filtro){ tablas.innerHTML=""; return; }
 
   const recordsActuales = obtenerRecords();
   const atletas=datos.pruebaIndividual.ATLETAS
