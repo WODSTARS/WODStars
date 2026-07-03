@@ -91,7 +91,7 @@ h1{color:gold;}
 }
 
 .modal.modal-planes{
-  max-width:1100px;
+  max-width:1200px;
   width:calc(100vw - 24px);
   max-height:calc(100vh - 24px);
   overflow:auto;
@@ -124,7 +124,7 @@ h1{color:gold;}
 
 .tabla-planes{
   width:100%;
-  min-width:860px;
+  min-width:1080px;
   border-collapse:collapse;
   background:#050505;
   table-layout:fixed;
@@ -157,6 +157,25 @@ h1{color:gold;}
   font-size:1.25rem;
   font-weight:bold;
   text-align:center;
+}
+
+.precio-normal{
+  color:#aaa;
+  display:block;
+  font-size:.82rem;
+  font-weight:400;
+  margin-top:4px;
+  text-align:center;
+  text-decoration:line-through;
+}
+
+.plan-nota{
+  color:#cfcfcf;
+  display:block;
+  font-size:.86rem;
+  font-weight:400;
+  line-height:1.35;
+  margin-top:8px;
 }
 
 .beneficios-lista{
@@ -653,6 +672,7 @@ function mostrarPlanes(){
           <thead>
             <tr>
               <th>Plan</th>
+              <th>WODSTARS SCORES</th>
               <th>START</th>
               <th>PRO</th>
               <th>ELITE</th>
@@ -661,13 +681,17 @@ function mostrarPlanes(){
           <tbody>
             <tr>
               <td>Precio</td>
+              <td>
+                <span class="plan-precio">$399 MXN</span>
+                <span class="precio-normal">$599 MXN</span>
+              </td>
               <td><span class="plan-precio">$950 MXN</span></td>
               <td><span class="plan-precio">$1500 MXN</span></td>
               <td><span class="plan-precio">$1650 MXN</span></td>
             </tr>
             <tr>
               <td>Extra</td>
-              <td colspan="3">
+              <td colspan="4">
                 <div class="extra-foto">
                   <strong>Agrega fotógrafo profesional en tu competencia</strong><br>
                   $1500 MXN extra por 120 fotos.
@@ -676,12 +700,28 @@ function mostrarPlanes(){
             </tr>
             <tr>
               <td>Tipo</td>
+              <td>
+                Operacion autogestionada
+                <span class="plan-nota">Ideal si tu equipo ya tiene staff, jueces y logistica definida.</span>
+              </td>
               <td>Plan básico</td>
               <td>Plan recomendado</td>
               <td>Plan premium</td>
             </tr>
             <tr>
               <td>Beneficios</td>
+              <td>
+                <ul class="beneficios-lista">
+                  <li>Capacitacion inicial para tu staff</li>
+                  <li>Acceso a plataforma de colaboradores</li>
+                  <li>Plataforma publica con resultados en vivo</li>
+                  <li>Tu equipo captura y publica los scores</li>
+                  <li>Sin representante WODSTARS en fisico</li>
+                  <li>Heats, carriles y cambios los administra el evento</li>
+                  <li>Sin creacion de heats ni direccion operativa por WODSTARS</li>
+                </ul>
+                <span class="plan-nota">Es la opcion mas economica para eventos que solo necesitan la herramienta. Para competir con mas respaldo, los planes con staff WODSTARS mantienen la operacion acompanada.</span>
+              </td>
               <td>
                 <ul class="beneficios-lista">
                   <li>Plataforma de resultados en tiempo real</li>
@@ -724,6 +764,26 @@ function mostrarPlanes(){
       </div>
 
       <div class="planes-mobile">
+        <div class="plan-mobile">
+          <h3>WODSTARS SCORES</h3>
+          <p class="tipo-mobile">
+            Operacion autogestionada
+            <span class="plan-nota">Para eventos que ya tienen staff, jueces y logistica lista.</span>
+          </p>
+          <span class="plan-precio">$399 MXN</span>
+          <span class="precio-normal">$599 MXN</span>
+          <ul class="beneficios-lista">
+            <li>Capacitacion inicial para tu staff</li>
+            <li>Acceso a plataforma de colaboradores</li>
+            <li>Plataforma publica con resultados en vivo</li>
+            <li>Tu equipo captura y publica los scores</li>
+            <li>Sin representante WODSTARS en fisico</li>
+            <li>Heats, carriles y cambios los administra el evento</li>
+            <li>Sin creacion de heats ni direccion operativa por WODSTARS</li>
+          </ul>
+          <span class="plan-nota">Es la opcion mas economica para usar la herramienta; si quieres respaldo en piso y heats armados por WODSTARS, conviene subir a un plan con staff.</span>
+        </div>
+
         <div class="plan-mobile">
           <h3>START</h3>
           <p class="tipo-mobile">Plan básico</p>
