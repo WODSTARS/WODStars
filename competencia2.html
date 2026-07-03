@@ -413,6 +413,10 @@ overflow-y:auto;
 📋 Heats y Carriles
 </button>
 
+<button onclick="mostrarTablaRecords()">
+🏆 Records
+</button>
+
 <div id="tablas"></div>
 <div id="modalContainer"></div>
 <div id="toastStack" class="toast-stack" aria-live="polite"></div>
@@ -443,7 +447,7 @@ const datos = {
             rondas:0,
             reps:0,
             timeCap:"",
-            peso:"",
+            peso:"520",
             tiebreak:"",
             
             puntos:0
@@ -2332,14 +2336,47 @@ const filtros={//filtros categorias paso 2
 };
 let categoriaActual="";
 
-function crearMensajeEmergente(titulo, mensaje, duracion=6500){
+function lanzarConfetiDesdeElemento(elemento, intensidad=100){
+  if(typeof confetti!=="function")return;
+  const rect = elemento?.getBoundingClientRect?.();
+  const origen = rect ? {
+    x:(rect.left + rect.width/2) / window.innerWidth,
+    y:(rect.top + rect.height/2) / window.innerHeight
+  } : {x:.5,y:.72};
+
+  confetti({particleCount:intensidad, spread:75, origin:origen});
+}
+
+function buscarNombreRecord(nombre){
+  return [...document.querySelectorAll("[data-record-name]")].find(el=>el.dataset.recordName===nombre);
+}
+
+function crearMensajeEmergente(titulo, mensaje, duracion=6500, opciones={}){
   const stack = document.getElementById("toastStack");
   if(!stack)return;
 
   const aviso = document.createElement("div");
-  aviso.className = "toast-message";
-  aviso.innerHTML = `<span class="toast-title">${titulo}</span><p>${mensaje}</p>`;
+  aviso.className = `toast-message${opciones.tipo==="record" ? " toast-record" : ""}`;
+  aviso.innerHTML = `<span class="toast-title">${titulo}</span><p>${mensaje}</p>${opciones.accion ? `<span class="toast-hint">${opciones.accion}</span>` : ""}`;
+
+  if(opciones.onClick){
+    aviso.setAttribute("role","button");
+    aviso.tabIndex = 0;
+    aviso.addEventListener("click", opciones.onClick);
+    aviso.addEventListener("keydown", (event)=>{
+      if(event.key==="Enter" || event.key===" "){
+        event.preventDefault();
+        opciones.onClick();
+      }
+    });
+  }
+
   stack.appendChild(aviso);
+
+  if(opciones.confetti){
+    const objetivo = opciones.confettiName ? buscarNombreRecord(opciones.confettiName) : aviso.querySelector(".toast-title");
+    lanzarConfetiDesdeElemento(objetivo || aviso.querySelector(".toast-title"), 80);
+  }
 
   setTimeout(()=>{
     aviso.classList.add("saliendo");
@@ -2363,59 +2400,182 @@ function numeroDesdePeso(valor){
   return Number.isFinite(numero) && numero>0 ? numero : null;
 }
 
+function textoSeguro(valor){
+  return String(valor ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+const reglasRecords = {
+  "WOD 1":{
+    titulo:"WOD 1",
+    regla:"Gana el menor tiempo registrado.",
+    columna:"Tiempo",
+    sinDatos:"Todavia no hay tiempos registrados para WOD 1.",
+    obtenerMarca:(resultado)=>segundosDesdeTiempo(resultado.tiempo),
+    esMejor:(nuevo, actual)=>actual===null || nuevo<actual,
+    mostrar:(record)=>record.resultado.tiempo
+  },
+  "WOD 2":{
+    titulo:"WOD 2 Clean",
+    regla:"Gana la mayor cantidad de libras levantadas en Clean.",
+    columna:"Libras",
+    sinDatos:"Todavia no hay libras registradas para WOD 2 Clean.",
+    obtenerMarca:(resultado)=>numeroDesdePeso(resultado.peso),
+    esMejor:(nuevo, actual)=>actual===null || nuevo>actual,
+    mostrar:(record)=>`${record.marca} lb`
+  },
+  "WOD 3":{
+    titulo:"WOD 3",
+    regla:"Gana la mayor cantidad de rondas completadas.",
+    columna:"Rondas",
+    sinDatos:"Todavia no hay rondas registradas para WOD 3.",
+    obtenerMarca:(resultado)=>Number(resultado.rondas || 0),
+    esMejor:(nuevo, actual)=>nuevo>0 && (actual===null || nuevo>actual),
+    mostrar:(record)=>`${record.marca} rondas`
+  }
+};
+
+let wodRecordActivo = "WOD 1";
+
 function obtenerRecords(){
-  const records = [];
-  const porWod = {};
-  let mayorPeso = null;
+  const records = {};
+
+  Object.keys(reglasRecords).forEach(wod=>{
+    records[wod] = null;
+  });
 
   datos.pruebaIndividual.ATLETAS.forEach(atleta=>{
     atleta.resultados.forEach(resultado=>{
-      const tiempo = segundosDesdeTiempo(resultado.tiempo);
-      if(tiempo!==null){
-        const actual = porWod[resultado.wod];
-        if(!actual || tiempo<actual.segundos){
-          porWod[resultado.wod] = {atleta, resultado, segundos:tiempo};
-        }
-      }
+      const regla = reglasRecords[resultado.wod];
+      if(!regla)return;
 
-      const peso = numeroDesdePeso(resultado.peso);
-      if(peso!==null && (!mayorPeso || peso>mayorPeso.peso)){
-        mayorPeso = {atleta, resultado, peso};
+      const marca = regla.obtenerMarca(resultado);
+      if(marca===null || marca===undefined || Number.isNaN(marca))return;
+
+      const actual = records[resultado.wod];
+      if(regla.esMejor(marca, actual ? actual.marca : null)){
+        records[resultado.wod] = {atleta, resultado, marca};
       }
     });
   });
-
-  Object.keys(porWod).forEach(wod=>{
-    const record = porWod[wod];
-    records.push({
-      titulo:`Record ${wod}`,
-      mensaje:`${record.atleta.nombre} tiene el tiempo mas rapido registrado: ${record.resultado.tiempo}.`
-    });
-  });
-
-  if(mayorPeso){
-    records.push({
-      titulo:"Record de libras",
-      mensaje:`${mayorPeso.atleta.nombre} tiene el levantamiento mas alto registrado: ${mayorPeso.peso} lb en ${mayorPeso.resultado.wod}.`
-    });
-  }
 
   return records;
 }
 
-function mostrarAvisosIniciales(){
-  crearMensajeEmergente("Importante", "Por favor da a tu juez el mismo nombre y apellido que tienes en la tabla para la competencia.", 7500);
+function recordsComoAvisos(records){
+  return Object.keys(reglasRecords)
+    .filter(wod=>records[wod])
+    .map(wod=>{
+      const record = records[wod];
+      const regla = reglasRecords[wod];
+      return {
+        titulo:`Record ${regla.titulo}`,
+        mensaje:`${record.atleta.nombre} lidera con ${regla.mostrar(record)}.`,
+        wod,
+        record
+      };
+    });
+}
 
+function obtenerRecordDestacado(records){
+  const prioridad = ["WOD 2","WOD 3","WOD 1"];
+  const wod = prioridad.find(clave=>records[clave]);
+  if(!wod)return null;
+  const regla = reglasRecords[wod];
+  const record = records[wod];
+  return {
+    titulo:`Record destacado: ${regla.titulo}`,
+    mensaje:`${record.atleta.nombre} tiene el record con ${regla.mostrar(record)}.`,
+    wod,
+    record
+  };
+}
+
+function atletaTieneRecord(atleta, records){
+  return Object.values(records).some(record=>record && record.atleta.nombre===atleta.nombre);
+}
+
+function filaRecord(record, regla){
+  return `<tr>
+    <td><span class="record-name" data-record-name="${textoSeguro(record.atleta.nombre)}">${textoSeguro(record.atleta.nombre)} <span class="record-badge">🏆 RECORD</span></span></td>
+    <td>${textoSeguro(record.atleta.categoria)} ${textoSeguro(record.atleta.rama)}</td>
+    <td><strong>${textoSeguro(regla.mostrar(record))}</strong></td>
+  </tr>`;
+}
+
+function renderRecordWod(wod){
   const records = obtenerRecords();
-  records.slice(0,4).forEach((record, index)=>{
-    setTimeout(()=>crearMensajeEmergente(record.titulo, record.mensaje, 7000), 1800 + (index*2400));
+  const regla = reglasRecords[wod];
+  const record = records[wod];
+  const contenedor = document.getElementById("recordsContent");
+  if(!regla || !contenedor)return;
+
+  document.querySelectorAll(".records-tabs button").forEach(btn=>{
+    btn.classList.toggle("activo", btn.dataset.wod===wod);
   });
+
+  contenedor.innerHTML = `<div class="records-card">
+    <h3>${textoSeguro(regla.titulo)}</h3>
+    <p class="records-rule">${textoSeguro(regla.regla)}</p>
+    ${record ? `<table class="records-table"><tr><th>Atleta</th><th>Categoria</th><th>${textoSeguro(regla.columna)}</th></tr>${filaRecord(record, regla)}</table>` : `<p class="records-empty">${textoSeguro(regla.sinDatos)}</p>`}
+  </div>`;
+
+  if(record){
+    setTimeout(()=>lanzarConfetiDesdeElemento(buscarNombreRecord(record.atleta.nombre), 130), 80);
+  }
+}
+
+function mostrarTablaRecords(wod="WOD 1"){
+  wodRecordActivo = reglasRecords[wod] ? wod : "WOD 1";
+
+  document.getElementById("modalContainer").innerHTML = `
+    <div class="modal-bg" onclick="cerrarModal()">
+      <div class="modal grande records-panel" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="cerrarModal()">×</button>
+        <h2>Records de la competencia</h2>
+        <p class="records-subtitle">Elige que WOD quieres ver. Cada record se calcula con su propia regla.</p>
+        <div class="records-tabs">
+          <button data-wod="WOD 1" onclick="renderRecordWod('WOD 1')">WOD 1</button>
+          <button data-wod="WOD 2" onclick="renderRecordWod('WOD 2')">WOD 2 Clean</button>
+          <button data-wod="WOD 3" onclick="renderRecordWod('WOD 3')">WOD 3</button>
+        </div>
+        <div id="recordsContent"></div>
+      </div>
+    </div>`;
+
+  renderRecordWod(wodRecordActivo);
+}
+
+function mostrarAvisosIniciales(){
+  const records = obtenerRecords();
+  const destacado = obtenerRecordDestacado(records);
+
+  if(!destacado){
+    setTimeout(()=>crearMensajeEmergente("Records listos", "Puedes abrir la tabla y elegir WOD 1, WOD 2 Clean o WOD 3. Los records apareceran cuando se capturen marcas.", 8500, {
+      tipo:"record",
+      accion:"Click para abrir records por WOD",
+      confetti:true,
+      onClick:()=>mostrarTablaRecords("WOD 1")
+    }), 1200);
+    return;
+  }
+
+  setTimeout(()=>crearMensajeEmergente(destacado.titulo, destacado.mensaje, 9000, {
+    tipo:"record",
+    accion:"Click para ver la tabla de records",
+    confetti:true,
+    confettiName:destacado.record.atleta.nombre,
+    onClick:()=>mostrarTablaRecords(destacado.wod)
+  }), 1200);
 }
 
 window.addEventListener("load", ()=>{
   setTimeout(mostrarAvisosIniciales, 900);
 });
-
 function mostrarCompetencia(){
 
   const seleccion=competenciaSelect.value;
@@ -2423,6 +2583,7 @@ function mostrarCompetencia(){
   const filtro=filtros[seleccion];
   if(!filtro)return;
 
+  const recordsActuales = obtenerRecords();
   const atletas=datos.pruebaIndividual.ATLETAS
   .filter(a=>a.categoria===filtro.categoria && a.rama===filtro.rama)
   .map(a=>({...a,total:a.resultados.reduce((s,x)=>s+x.puntos,0)}))
@@ -2440,8 +2601,9 @@ function mostrarCompetencia(){
 
     let lugar=i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1;
 
+    const recordBadge = atletaTieneRecord(a, recordsActuales) ? ` <span class="record-badge">🏆 RECORD</span>` : "";
     html+=`<tr class="${clase}" onclick='verAtleta(${JSON.stringify(a)},${i})'>
-    <td>${lugar}</td><td>${a.nombre}</td><td>${a.total}</td></tr>`;
+    <td>${lugar}</td><td><span class="record-name" data-record-name="${textoSeguro(a.nombre)}">${a.nombre}${recordBadge}</span></td><td>${a.total}</td></tr>`;
   });
 
   html+="</table>";
@@ -2451,7 +2613,7 @@ function mostrarCompetencia(){
 function verAtleta(a,lugar){
 
   if(lugar<3){
-    confetti({particleCount:150,spread:90});
+    lanzarConfetiDesdeElemento(buscarNombreRecord(a.nombre), 150);
   }
 
   let html = `
