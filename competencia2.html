@@ -531,7 +531,7 @@ body{
 <div class="secondary-actions">
   <a class="highlights-link" href="https://wodstars.github.io/wodstarshiglights/">Highlights</a>
   <button onclick="mostrarHeats()">Heats y Carriles</button>
-  <button onclick="mostrarTablaRecords()">Clean RM</button>
+  <button onclick="mostrarTablaRecords()">Records</button>
 </div>
 <div id="tablas"></div>
 <div id="modalContainer"></div>
@@ -2600,32 +2600,6 @@ function mostrarTablaRecords(){
   renderRecordsClean();
 }
 
-function mostrarAvisosIniciales(){
-  const records = obtenerRecords();
-  const destacado = obtenerRecordDestacado(records);
-
-  if(!destacado){
-    setTimeout(()=>crearMensajeEmergente("Clean RM listo", "Cuando se capturen libras en Clean, aqui aparecera el atleta con el mayor levantamiento.", 8500, {
-      tipo:"record",
-      accion:"Click para abrir records Clean",
-      confetti:true,
-      onClick:mostrarTablaRecords
-    }), 1200);
-    return;
-  }
-
-  setTimeout(()=>crearMensajeEmergente(destacado.titulo, destacado.mensaje, 9000, {
-    tipo:"record",
-    accion:"Click para ver el top 3 Clean",
-    confetti:true,
-    confettiName:destacado.record.atleta.nombre,
-    onClick:mostrarTablaRecords
-  }), 1200);
-}
-
-window.addEventListener("load", ()=>{
-  setTimeout(mostrarAvisosIniciales, 900);
-});
 function mostrarCompetencia(){
 
   const seleccion=competenciaSelect.value;
