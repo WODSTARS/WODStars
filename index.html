@@ -264,13 +264,9 @@ h1{color:gold;}
   letter-spacing:.04em;
 }
 
-.crossfits-confian{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.crossfit-card{
+.trust-rotator{
+  max-width:360px;
+  margin:0 auto;
   background:rgba(255,255,255,.035);
   border:1px solid rgba(255,215,0,.22);
   border-radius:10px;
@@ -278,20 +274,34 @@ h1{color:gold;}
   box-shadow:0 12px 24px rgba(0,0,0,.28);
 }
 
-.crossfit-card img{
+.trust-rotator img{
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
   display:block;
   background:#080808;
+  opacity:1;
+  transition:opacity .35s ease;
 }
 
-.crossfit-card strong{
+.trust-rotator img.is-changing{
+  opacity:.12;
+}
+
+.trust-rotator strong{
   display:block;
   color:gold;
   padding:10px 12px 12px;
   text-align:center;
   font-size:.9rem;
+}
+
+.trust-hint{
+  margin:10px 0 0;
+  color:#aaa;
+  font-size:.82rem;
+  line-height:1.35;
+  text-align:center;
 }
 
 .trabajo-wodstars{
@@ -327,12 +337,25 @@ h1{color:gold;}
   box-shadow:0 0 18px rgba(255,215,0,0.16);
 }
 
-.competencia div{
+.competencia-titulo{
   cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
   margin-bottom:16px;
   color:gold;
   font-size:1.45rem;
   font-weight:bold;
+}
+
+.competencia-logo{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid rgba(255,215,0,.45);
+  box-shadow:0 0 14px rgba(255,215,0,.18);
 }
 
 .competencia button{
@@ -516,11 +539,6 @@ input,select{
     text-align:center;
   }
 
-  .crossfits-confian{
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
   .seccion-info{
     padding:0 12px;
     margin:6px 0 16px;
@@ -531,21 +549,11 @@ input,select{
     margin-bottom:8px;
   }
 
-  .crossfit-card{
-    display:grid;
-    grid-template-columns:78px 1fr;
-    align-items:center;
+  .trust-rotator{
+    max-width:210px;
   }
 
-  .crossfit-card img{
-    width:78px;
-    height:78px;
-    aspect-ratio:auto;
-  }
-
-  .crossfit-card strong{
-    text-align:left;
-    padding:10px;
+  .trust-rotator strong{
     font-size:.86rem;
   }
 
@@ -558,8 +566,14 @@ input,select{
     padding:20px 14px;
   }
 
-  .competencia div{
+  .competencia-titulo{
     font-size:1.25rem;
+    gap:10px;
+  }
+
+  .competencia-logo{
+    width:40px;
+    height:40px;
   }
 
   .competencia button{
@@ -589,20 +603,11 @@ input,select{
 
 <section class="seccion-info" id="crossfits-confian">
   <h2>Crossfits que ya confían en nosotros</h2>
-  <div class="crossfits-confian">
-    <article class="crossfit-card">
-      <img src="assets/crossfits/phoenix-fitness-center.jpg" alt="Phoenix Fitness Center">
-      <strong>Phoenix Fitness Center</strong>
-    </article>
-    <article class="crossfit-card">
-      <img src="assets/crossfits/moonlight-crossfit.jpg" alt="Moonlight Crossfit">
-      <strong>Moonlight Crossfit</strong>
-    </article>
-    <article class="crossfit-card">
-      <img src="assets/crossfits/crossfit-bros-team.jpg" alt="Crossfit Bros Team">
-      <strong>Crossfit Bros Team</strong>
-    </article>
+  <div class="trust-rotator" aria-live="polite">
+    <img id="trustLogo" src="assets/crossfits/phoenix-fitness-center.jpg" alt="Phoenix Fitness Center">
+    <strong id="trustName">Phoenix Fitness Center</strong>
   </div>
+  <p class="trust-hint">Logos rotativos de boxes que han trabajado con WODSTARS.</p>
   <div class="trabajo-wodstars">
     <h3>Más sobre nuestro trabajo</h3>
     <p>En WODSTARS acompañamos competencias con plataforma de resultados, heats, captura de scores, apoyo operativo y contenido para que cada evento se vea más profesional antes, durante y después de la jornada.</p>
@@ -618,6 +623,7 @@ input,select{
 const competencias = [
   {
     nombre:"MOONLIGHT GAMES ",
+    logo:"assets/crossfits/moonlight-crossfit.jpg",
     archivo:"competencia2.html",
     banco:"No disponible ",
     cuenta:"No disponible",
@@ -640,8 +646,9 @@ competencias.forEach(c=>{
 html+=`
 <div class="competencia">
 
-  <div onclick="location.href='${c.archivo}'">
-    ${c.nombre}
+  <div class="competencia-titulo" onclick="location.href='${c.archivo}'">
+    ${c.logo ? `<img class="competencia-logo" src="${c.logo}" alt="${c.nombre.trim()}">` : ""}
+    <span>${c.nombre}</span>
   </div>
 
   <button onclick="location.href='${c.archivo}'">
@@ -1029,11 +1036,47 @@ function iniciarChatWA(){
   loop();
 }
 
+const logosConfianza = [
+  {
+    nombre:"Phoenix Fitness Center",
+    imagen:"assets/crossfits/phoenix-fitness-center.jpg"
+  },
+  {
+    nombre:"Moonlight Crossfit",
+    imagen:"assets/crossfits/moonlight-crossfit.jpg"
+  },
+  {
+    nombre:"Crossfit Bros Team",
+    imagen:"assets/crossfits/crossfit-bros-team.jpg"
+  }
+];
+
+function iniciarRotadorLogos(){
+  const logo = document.getElementById("trustLogo");
+  const nombre = document.getElementById("trustName");
+  if(!logo || !nombre || logosConfianza.length < 2) return;
+
+  let actual = 0;
+  setInterval(()=>{
+    actual = (actual + 1) % logosConfianza.length;
+    const item = logosConfianza[actual];
+
+    logo.classList.add("is-changing");
+    setTimeout(()=>{
+      logo.src = item.imagen;
+      logo.alt = item.nombre;
+      nombre.textContent = item.nombre;
+      logo.classList.remove("is-changing");
+    }, 280);
+  }, 4500);
+}
+
 // INIT
 window.onload=()=>{
   if(localStorage.getItem("registro")){
     mostrarRegistro();
   }
+  iniciarRotadorLogos();
 };
 
 </script>
