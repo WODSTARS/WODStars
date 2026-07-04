@@ -264,30 +264,56 @@ h1{color:gold;}
   letter-spacing:.04em;
 }
 
-.testimonios{
+.crossfits-confian{
   display:grid;
-  grid-template-columns:1fr;
-  gap:8px;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
 
-.testimonio{
+.crossfit-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,215,0,.22);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 12px 24px rgba(0,0,0,.28);
+}
+
+.crossfit-card img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+  background:#080808;
+}
+
+.crossfit-card strong{
+  display:block;
+  color:gold;
+  padding:10px 12px 12px;
+  text-align:center;
+  font-size:.9rem;
+}
+
+.trabajo-wodstars{
+  margin-top:14px;
   background:rgba(255,255,255,.025);
   border:1px solid rgba(255,255,255,.12);
-  border-left:2px solid rgba(255,215,0,.55);
-  border-radius:6px;
+  border-left:3px solid rgba(255,215,0,.7);
+  border-radius:8px;
   color:#d8d8d8;
   font-size:.92rem;
-  line-height:1.35;
-  padding:11px 14px;
+  line-height:1.45;
+  padding:14px;
 }
 
-.testimonio p{
-  margin:0 0 6px;
-}
-
-.testimonio strong{
+.trabajo-wodstars h3{
   color:gold;
-  font-size:.84rem;
+  margin:0 0 8px;
+  font-size:1rem;
+}
+
+.trabajo-wodstars p{
+  margin:0;
 }
 
 .competencia{
@@ -490,9 +516,9 @@ input,select{
     text-align:center;
   }
 
-  .testimonios{
+  .crossfits-confian{
     grid-template-columns:1fr;
-    gap:6px;
+    gap:10px;
   }
 
   .seccion-info{
@@ -505,13 +531,27 @@ input,select{
     margin-bottom:8px;
   }
 
-  .testimonio{
-    font-size:.82rem;
-    padding:9px 11px;
+  .crossfit-card{
+    display:grid;
+    grid-template-columns:78px 1fr;
+    align-items:center;
   }
 
-  .testimonio:nth-child(n+2){
-    display:none;
+  .crossfit-card img{
+    width:78px;
+    height:78px;
+    aspect-ratio:auto;
+  }
+
+  .crossfit-card strong{
+    text-align:left;
+    padding:10px;
+    font-size:.86rem;
+  }
+
+  .trabajo-wodstars{
+    font-size:.84rem;
+    padding:12px;
   }
 
   .competencia{
@@ -547,21 +587,25 @@ input,select{
   </div>
 </section>
 
-<section class="seccion-info" id="testimonios">
-  <h2>Testimonios</h2>
-  <div class="testimonios">
-    <div class="testimonio">
-      <p>"La competencia se sintió más profesional y los atletas pudieron ver sus resultados al momento."</p>
-      <strong>Organizador de evento</strong>
-    </div>
-    <div class="testimonio">
-      <p>"El staff tuvo mejor control de heats, categorías y scores durante toda la jornada."</p>
-      <strong>Equipo de jueces</strong>
-    </div>
-    <div class="testimonio">
-      <p>"La entrega de resultados finales fue rápida, clara y lista para compartir en redes."</p>
-      <strong>Comunidad WODSTAR</strong>
-    </div>
+<section class="seccion-info" id="crossfits-confian">
+  <h2>Crossfits que ya confían en nosotros</h2>
+  <div class="crossfits-confian">
+    <article class="crossfit-card">
+      <img src="assets/crossfits/phoenix-fitness-center.jpg" alt="Phoenix Fitness Center">
+      <strong>Phoenix Fitness Center</strong>
+    </article>
+    <article class="crossfit-card">
+      <img src="assets/crossfits/moonlight-crossfit.jpg" alt="Moonlight Crossfit">
+      <strong>Moonlight Crossfit</strong>
+    </article>
+    <article class="crossfit-card">
+      <img src="assets/crossfits/crossfit-bros-team.jpg" alt="Crossfit Bros Team">
+      <strong>Crossfit Bros Team</strong>
+    </article>
+  </div>
+  <div class="trabajo-wodstars">
+    <h3>Más sobre nuestro trabajo</h3>
+    <p>En WODSTARS acompañamos competencias con plataforma de resultados, heats, captura de scores, apoyo operativo y contenido para que cada evento se vea más profesional antes, durante y después de la jornada.</p>
   </div>
 </section>
 
@@ -585,21 +629,6 @@ const competencias = [
       "Intermedio Mujer":"$MXN",
       "Avanzado Hombre":"$MXN",
       "Avanzado Mujer":"$XN"
-    }
-  },
-  {
-    nombre:"Competencia Enero",
-    archivo:"competencia1.html",
-    banco:"BBVA",
-    cuenta:"1234567890",
-    clabe:"012345678901234567",
-    costos:{
-      "Principiante Hombre":"$400 MXN",
-      "Principiante Mujer":"$400 MXN",
-      "Intermedio Hombre":"$500 MXN",
-      "Intermedio Mujer":"$500 MXN",
-      "Avanzado Hombre":"$600 MXN",
-      "Avanzado Mujer":"$600 MXN"
     }
   }
 
