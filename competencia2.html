@@ -573,6 +573,34 @@ body{
   transform:translateY(-1px);
 }
 
+.athlete-with-photo{
+  align-items:center;
+  display:inline-flex;
+  gap:10px;
+  justify-content:center;
+}
+
+.athlete-avatar{
+  border:2px solid #FFD700;
+  border-radius:50%;
+  box-shadow:0 0 14px #FFD70044;
+  flex:0 0 auto;
+  height:44px;
+  object-fit:cover;
+  width:44px;
+}
+
+.athlete-modal-photo{
+  border:3px solid #FFD700;
+  border-radius:50%;
+  box-shadow:0 0 24px #FFD70055;
+  display:block;
+  height:118px;
+  margin:0 auto 14px;
+  object-fit:cover;
+  width:118px;
+}
+
 @media(max-width:600px){
   body{
     padding:1rem;
@@ -600,6 +628,15 @@ body{
   .secondary-actions .highlights-link{
     flex:1 1 145px;
     box-sizing:border-box;
+  }
+
+  .athlete-with-photo{
+    justify-content:flex-start;
+  }
+
+  .athlete-avatar{
+    height:38px;
+    width:38px;
   }
 
 }
@@ -689,6 +726,8 @@ const datos = {
          nombre:"Leonardo Serratos / Comando",
         categoria:"Teens",
         rama:"Hombre",
+        fotoUrl:"assets/atletas/leonardo-serratos-comando.jpg",
+        fotoEstado:"aprobada",
         heat:"1",
         carril:"1",
         resultados:[
@@ -2683,6 +2722,24 @@ function textoSeguro(valor){
     .replaceAll("'","&#039;");
 }
 
+function fotoAprobada(atleta){
+  return atleta?.fotoEstado==="aprobada" && Boolean(atleta.fotoUrl);
+}
+
+function nombreAtletaMarkup(atleta, extraHtml=""){
+  const nombre = textoSeguro(atleta.nombre);
+  const dataName = textoSeguro(atleta.nombre);
+
+  if(!fotoAprobada(atleta)){
+    return `<span class="record-name" data-record-name="${dataName}">${nombre}${extraHtml}</span>`;
+  }
+
+  return `<span class="record-name athlete-with-photo" data-record-name="${dataName}">
+    <img class="athlete-avatar" src="${textoSeguro(atleta.fotoUrl)}" alt="Foto de ${nombre}" loading="lazy">
+    <span>${nombre}${extraHtml}</span>
+  </span>`;
+}
+
 function limpiarNombreArchivo(nombre){
   return String(nombre || "atleta")
     .normalize("NFD")
@@ -2945,7 +3002,7 @@ function filaRecord(record, index){
 
   return `<tr>
     <td><strong>${lugar}</strong></td>
-    <td><span class="record-name" data-record-name="${textoSeguro(record.atleta.nombre)}">${textoSeguro(record.atleta.nombre)}${badge}</span></td>
+    <td>${nombreAtletaMarkup(record.atleta, badge)}</td>
     <td>${textoSeguro(record.atleta.categoria)} ${textoSeguro(record.atleta.rama)}</td>
     <td><strong>${textoSeguro(record.marca)} lb</strong></td>
   </tr>`;
@@ -3010,7 +3067,7 @@ function mostrarCompetencia(){
 
     const recordBadge = atletaTieneRecord(a, recordsActuales) ? ` <span class="record-badge">🏆 RECORD</span>` : "";
     html+=`<tr class="${clase}" onclick='verAtleta(${JSON.stringify(a)},${i})'>
-    <td>${lugar}</td><td><span class="record-name" data-record-name="${textoSeguro(a.nombre)}">${a.nombre}${recordBadge}</span></td><td>${a.total}</td></tr>`;
+    <td>${lugar}</td><td>${nombreAtletaMarkup(a, recordBadge)}</td><td>${a.total}</td></tr>`;
   });
 
   html+="</table>";
@@ -3028,6 +3085,7 @@ function verAtleta(a,lugar){
   <div class="modal grande" onclick="event.stopPropagation()">
   <button class="close-btn" onclick="cerrarModal()">×</button>
 
+  ${fotoAprobada(a) ? `<img class="athlete-modal-photo" src="${textoSeguro(a.fotoUrl)}" alt="Foto de ${textoSeguro(a.nombre)}">` : ""}
   <h2>${a.nombre}</h2>
   <p><strong>Categoría:</strong> ${a.categoria}</p>
   <p><strong>Rama:</strong> ${a.rama}</p>
