@@ -2740,111 +2740,6 @@ function nombreAtletaMarkup(atleta, extraHtml=""){
   </span>`;
 }
 
-function limpiarNombreArchivo(nombre){
-  return String(nombre || "atleta")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g,"_")
-    .replace(/^_+|_+$/g,"")
-    .slice(0,60) || "atleta";
-}
-
-function dataUrlAArchivo(dataUrl, nombreArchivo){
-  const partes = dataUrl.split(",");
-  const mime = partes[0].match(/:(.*?);/)?.[1] || "image/jpeg";
-  const binario = atob(partes[1]);
-  const bytes = new Uint8Array(binario.length);
-  for(let i=0;i<binario.length;i++) bytes[i] = binario.charCodeAt(i);
-  return new File([bytes], nombreArchivo, {type:mime});
-}
-
-function cargarImagen(file){
-  return new Promise((resolve,reject)=>{
-    const url = URL.createObjectURL(file);
-    const imagen = new Image();
-    imagen.onload = () => {
-      URL.revokeObjectURL(url);
-      resolve(imagen);
-    };
-    imagen.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error("No se pudo leer la imagen."));
-    };
-    imagen.src = url;
-  });
-}
-
-function canvasABlob(canvas, type, quality){
-  return new Promise(resolve => canvas.toBlob(resolve, type, quality));
-}
-
-async function optimizarFoto(file){
-  const formatosPermitidos = ["image/jpeg","image/png","image/webp"];
-  const maxOriginal = 12 * 1024 * 1024;
-  const pesoObjetivo = 300 * 1024;
-  const maxDimension = 1280;
-
-  if(!formatosPermitidos.includes(file.type)){
-    throw new Error("Formato no permitido. Usa JPG, JPEG, PNG o WEBP.");
-  }
-
-  if(file.size > maxOriginal){
-    throw new Error("La imagen es demasiado pesada. Usa una foto menor a 12 MB.");
-  }
-
-  const imagen = await cargarImagen(file);
-  let escala = Math.min(1, maxDimension / Math.max(imagen.width, imagen.height));
-  let ancho = Math.max(1, Math.round(imagen.width * escala));
-  let alto = Math.max(1, Math.round(imagen.height * escala));
-  let blob = null;
-  let calidadFinal = .78;
-
-  for(let intento=0; intento<8; intento++){
-    const canvas = document.createElement("canvas");
-    canvas.width = ancho;
-    canvas.height = alto;
-    const ctx = canvas.getContext("2d", {alpha:false});
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0,0,ancho,alto);
-    ctx.drawImage(imagen,0,0,ancho,alto);
-
-    for(const calidad of [.78,.75,.72,.70]){
-      blob = await canvasABlob(canvas, "image/jpeg", calidad);
-      calidadFinal = calidad;
-      if(blob && blob.size <= pesoObjetivo) break;
-    }
-
-    if(blob && blob.size <= pesoObjetivo) break;
-    ancho = Math.max(1, Math.round(ancho * .88));
-    alto = Math.max(1, Math.round(alto * .88));
-    if(Math.max(ancho, alto) <= 640) break;
-  }
-
-  if(!blob){
-    throw new Error("No se pudo optimizar la imagen.");
-  }
-
-  return {
-    blob,
-    extension:"jpg",
-    calidad:Math.round(calidadFinal * 100),
-    ancho,
-    alto
-  };
-}
-
-function descargarBlob(blob, nombreArchivo){
-  const url = URL.createObjectURL(blob);
-  const enlace = document.createElement("a");
-  enlace.href = url;
-  enlace.download = nombreArchivo;
-  document.body.appendChild(enlace);
-  enlace.click();
-  enlace.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 30000);
-}
-
 function mostrarFormularioFoto(){
   document.getElementById("modalContainer").innerHTML = `
     <div class="modal-bg" onclick="cerrarModal()">
@@ -2879,16 +2774,13 @@ function mostrarFormularioFoto(){
           <label>Correo electrónico usado para la inscripción
             <input id="fotoCorreo" type="email" required autocomplete="email" placeholder="correo@ejemplo.com">
           </label>
-          <label>Seleccionar fotografía
-            <input id="fotoArchivo" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" required>
-          </label>
           <div class="photo-deadline" id="photoDeadline">Fecha límite para enviar tu foto: 15 de julio de 2026.</div>
-          <div class="photo-status"><strong>Importante:</strong> la foto NO se sube desde la tabla ni se guarda en esta página. Dale en "Enviar mi foto", se abrirá tu correo y debes adjuntar manualmente la foto optimizada que se descargó.</div>
-          <div class="photo-status" id="photoStatus">Formatos permitidos: JPG, JPEG, PNG y WEBP. La foto se optimiza en tu navegador antes de abrir el correo.</div>
+          <div class="photo-status"><strong>Importante:</strong> aquí no se sube ni se optimiza la foto. Dale en "Enviar mi foto", se abrirá tu correo y debes adjuntar manualmente tu fotografía original. El equipo WodStars la revisará y optimizará.</div>
+          <div class="photo-status" id="photoStatus">El correo se abrirá con tus datos listos. Antes de enviarlo, adjunta tu foto en el correo.</div>
           <div class="photo-actions">
             <button type="submit">Enviar mi foto</button>
             <button type="button" onclick="cerrarModal()">Cancelar</button>
-            <a class="photo-help-link" href="https://wa.me/525636501351?text=Hola%20equipo%20WodStars%2C%20necesito%20ayuda%20para%20enviar%20mi%20foto%20de%20atleta.%20Ya%20intent%C3%A9%20optimizarla%20desde%20la%20p%C3%A1gina%2C%20pero%20tengo%20problemas%20para%20adjuntarla%20al%20correo." target="_blank" rel="noopener">Ayuda por WhatsApp</a>
+            <a class="photo-help-link" href="https://wa.me/525636501351?text=Hola%20equipo%20WodStars%2C%20necesito%20ayuda%20para%20enviar%20mi%20foto%20de%20atleta.%20Ya%20abr%C3%AD%20el%20correo%2C%20pero%20tengo%20problemas%20para%20adjuntar%20mi%20foto." target="_blank" rel="noopener">Ayuda por WhatsApp</a>
           </div>
         </form>
       </div>
@@ -2922,7 +2814,7 @@ function actualizarContadorFoto(){
   window.photoDeadlineTimer = setInterval(pintar, 60000);
 }
 
-async function enviarFotoAtleta(event){
+function enviarFotoAtleta(event){
   event.preventDefault();
 
   const nombre = document.getElementById("fotoNombre").value.trim();
@@ -2930,39 +2822,31 @@ async function enviarFotoAtleta(event){
   const rama = document.getElementById("fotoRama").value;
   const competencia = document.getElementById("fotoCompetencia").value.trim();
   const correo = document.getElementById("fotoCorreo").value.trim();
-  const archivo = document.getElementById("fotoArchivo").files[0];
   const status = document.getElementById("photoStatus");
 
-  if(!nombre || !categoria || !rama || !competencia || !correo || !archivo){
-    status.textContent = "Completa todos los campos y selecciona una fotografía.";
+  if(!nombre || !categoria || !rama || !competencia || !correo){
+    status.textContent = "Completa todos los campos antes de abrir el correo.";
     return;
   }
 
-  try{
-    status.textContent = "Optimizando imagen...";
-    const optimizada = await optimizarFoto(archivo);
-    const nombreArchivo = `wodstars_foto_${limpiarNombreArchivo(nombre)}.${optimizada.extension}`;
-    descargarBlob(optimizada.blob, nombreArchivo);
+  const cuerpo = [
+    `Nombre completo: ${nombre}`,
+    `Categoría: ${categoria}`,
+    `Rama: ${rama}`,
+    `Competencia: ${competencia}`,
+    `Correo de inscripción: ${correo}`,
+    "",
+    "Mensaje:",
+    "Hola equipo WodStars, envío mi fotografía de atleta adjunta a este correo para revisión antes de la fecha límite del 15 de julio de 2026. Entiendo que el equipo WodStars optimizará la imagen y la publicará en un lapso máximo de 24 horas si cumple con los requisitos. En caso de no aprobarse, recibiré respuesta por correo.",
+    "",
+    "Nota para el atleta: adjunta tu foto antes de enviar este correo."
+  ].join("\n");
 
-    const cuerpo = [
-      `Nombre completo: ${nombre}`,
-      `Categoría: ${categoria}`,
-      `Rama: ${rama}`,
-      `Competencia: ${competencia}`,
-      `Correo de inscripción: ${correo}`,
-      "",
-      "Mensaje:",
-      "Hola equipo WodStars, envío mi fotografía de atleta adjunta a este correo para revisión antes de la fecha límite del 15 de julio de 2026. Entiendo que será revisada y publicada en un lapso máximo de 24 horas si cumple con los requisitos. En caso de no aprobarse, recibiré respuesta por correo."
-    ].join("\n");
+  const mailto = `mailto:soportewodstarsscores@gmail.com?subject=${encodeURIComponent("Foto de atleta para revisión - WodStars")}&body=${encodeURIComponent(cuerpo)}`;
+  window.location.href = mailto;
 
-    const mailto = `mailto:soportewodstarsscores@gmail.com?subject=${encodeURIComponent("Foto de atleta para revisión - WodStars")}&body=${encodeURIComponent(cuerpo)}`;
-    window.location.href = mailto;
-
-    status.innerHTML = `<strong>Tu imagen ya fue optimizada y descargada.</strong> La foto NO se adjunta automáticamente. En el correo que se abrió, adjunta manualmente el archivo descargado y envíalo al equipo WodStars antes del 15 de julio de 2026. Si tienes problemas, escribe por WhatsApp al 5636501351 con el botón de ayuda.<br><br>Archivo descargado: ${textoSeguro(nombreArchivo)} (${Math.round(optimizada.blob.size / 1024)} KB, ${optimizada.ancho}x${optimizada.alto}px, calidad ${optimizada.calidad}%).`;
-    status.className = "photo-notice";
-  }catch(error){
-    status.textContent = error.message || "No se pudo procesar la foto.";
-  }
+  status.innerHTML = `<strong>Correo preparado.</strong> La foto NO se adjunta automáticamente desde la página. En el correo que se abrió, adjunta manualmente tu fotografía original y envíala al equipo WodStars antes del 15 de julio de 2026. WodStars la optimizará después. Si tienes problemas, escribe por WhatsApp al 5636501351 con el botón de ayuda.`;
+  status.className = "photo-notice";
 }
 
 function obtenerRecords(){
