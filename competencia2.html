@@ -654,8 +654,7 @@ body{
   <div class="score-controls">
     <select id="competenciaSelect" class="category-select" onchange="mostrarCompetencia()">
       <option value="">Selecciona categoria</option>
-      <option value="teens_hombre">Teens Hombre</option>
-      <option value="teens_mujer">Teens Mujer</option>
+      <option value="teens_mixto">Teens Mixto</option>
       <option value="novatos_hombre">Novatos Hombre</option>
       <option value="novatos_mujer">Novatos Mujer</option>
       <option value="principiante_hombre">Principiante Hombre</option>
@@ -691,7 +690,7 @@ const datos = {
         categoria:"Teens",
         rama:"Hombre",
         fotoUrl:"assets/atletas/leonardo-serratos-comando.jpg",
-        fotoEstado:"aprobada",
+        fotoEstado:"denegada",
         heat:"1",
         carril:"1",
         resultados:[
@@ -839,6 +838,40 @@ const datos = {
 
         {//Novatos  HOMBRE Manuel Vazquez
         nombre:"Manuel Vazquez / Grizzly ",
+        categoria:"Novatos",
+        rama:"Hombre",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            peso:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+            ]
+      },
+       {//Novatos  HOMBRE Pedro Beltrán
+        nombre:" Pedro Beltrán  / Iron box ",
         categoria:"Novatos",
         rama:"Hombre",
         heat:"",
@@ -1106,6 +1139,39 @@ const datos = {
           },
         ]
       },
+      {//Novatos Hombre Armando García
+        nombre:"Armando García /Sin Box",
+        categoria:"Novatos",
+        rama:"Hombre",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+        ]
+      },
 
 
 
@@ -1113,6 +1179,42 @@ const datos = {
 
          {//Novatos  Mujer Jenifer de la torre
         nombre:"Jenifer De La Torre / Primitivo ",
+        categoria:"Novatos",
+        rama:"Mujer",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            peso:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            peso:"",
+            puntos:0
+          },
+            ]
+      },
+      
+         {//Novatos  Mujer Coral Rodriguez 
+        nombre:"Coral Rodriguez /Sin Box ",
         categoria:"Novatos",
         rama:"Mujer",
         heat:"",
@@ -1175,6 +1277,41 @@ const datos = {
             reps:0,
             timeCap:"",
             tiebreak:"",
+            puntos:0
+          },
+            ]
+      },
+        {//Novatos  Mujer Adriana Prieto
+        nombre:"Adriana Prieto /Sin Box ",
+        categoria:"Novatos",
+        rama:"Mujer",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            peso:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            peso:"",
             puntos:0
           },
             ]
@@ -1245,6 +1382,39 @@ const datos = {
           },
         ]
       },
+      {//Novatos Hombre Daniel Solis / Sin Box
+        nombre:"Daniel Solis / Sin Box",
+        categoria:"Novatos",
+        rama:"Hombre",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+        ]
+      },
       {//Novatos Mujer Maria de Jesús Cortés / Sin Box
         nombre:"Maria de Jesús Cortés / Sin Box",
         categoria:"Novatos",
@@ -1280,6 +1450,39 @@ const datos = {
       },
       {//Novatos Mujer Reyna Romero / Sin Box
         nombre:"Reyna Romero / Sin Box",
+        categoria:"Novatos",
+        rama:"Mujer",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+        ]
+      },
+       {//Novatos Mujer Ximena Delgado
+        nombre:"Ximena Delgado /Iron Box",
         categoria:"Novatos",
         rama:"Mujer",
         heat:"",
@@ -1742,6 +1945,39 @@ const datos = {
           },
             ]
       },
+ {//Principiantes Hombre Víctor Gabriel 
+        nombre:"Víctor Gabriel /Moonlight ",
+        categoria:"Principiante",
+        rama:"Hombre",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+            ]
+      },
       {//Principiantes Hombre Jaret Domingez
         nombre:"Jaret Dominguez / Grizzly ",
         categoria:"Principiante",
@@ -1808,6 +2044,7 @@ const datos = {
           },
             ]
       },
+
 {//Principiante Hombre azael Perez
         nombre:"Azael Perez / Arkham  ",
         categoria:"Principiante",
@@ -1841,8 +2078,9 @@ const datos = {
           },
             ]
       },       
-{//Principiante Hombre azael Perez
-        nombre:"Enrique Soria / Arkham  ",
+      
+      {//Principiante Hombre azael Perez
+        nombre:"Luis Arvizu / Sin Box ",
         categoria:"Principiante",
         rama:"Hombre",
         heat:"",
@@ -1874,7 +2112,75 @@ const datos = {
           },
             ]
       },       
+      
+      
 
+{//Principiante Mujer Berenice Pérez
+        nombre: "Berenice Pérez / Moonlight  ",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+            ]
+      },       
+{//Principiantes Mujer Mariel Hernandez
+        nombre:"Mariel Hernandez / Primitivos ",
+        categoria:"Principiante",
+        rama:"Mujer",
+        heat:"",
+        carril:"",
+        resultados:[
+          {//wod1
+            wod:"WOD 1",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod2
+            wod:"WOD 2",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+          {//wod3
+            wod:"WOD 3",
+            rondas:0,
+            reps:0,
+            timeCap:"",
+            tiebreak:"",
+            puntos:0
+          },
+            ]
+      },
 
 
 
@@ -2241,8 +2547,8 @@ const datos = {
           },
             ]
        },
-        {//Principiantes Mujer Mariana Olvera 
-          nombre:"Mariana Olvera/ Moonlight ",
+        {//Principiantes Mujer Norma García
+          nombre:"Norma García / Moonlight",
         categoria:"Principiante",
         rama:"Mujer",
         heat:"",
@@ -3037,8 +3343,8 @@ const datos = {
           },
             ]
       },
-       {//Avanzado Hombre Ivan Tellez
-        nombre:"Ivan Tellez / Grizzly ",
+       {//Avanzado Hombre Raúl López
+        nombre:"Raúl López / Mictlan",
         categoria:"Avanzado",
         rama:"Hombre",
         heat:"",
@@ -3072,9 +3378,9 @@ const datos = {
       },
       
 
-{//Master Mujer Myra
+{//Intermedio Mujer Mayra
         nombre:"Mayra  / Comando ",
-        categoria:"Master",
+        categoria:"Intermedio",
         rama:"Mujer",
         heat:"",
         carril:"",
@@ -3118,16 +3424,9 @@ const datos = {
 
 const filtros={//filtros categorias paso 2
 
-  teens_hombre:{
+  teens_mixto:{
     categoria:"Teens",
-    rama:"Hombre"
-    
-  },
- 
-
-  teens_mujer:{
-    categoria:"Teens",
-    rama:"Mujer"
+    rama:"Mixto"
   },
 
   novatos_hombre:{
@@ -3473,7 +3772,7 @@ function mostrarCompetencia(){
 
   const recordsActuales = obtenerRecords();
   const atletas=datos.pruebaIndividual.ATLETAS
-  .filter(a=>a.categoria===filtro.categoria && a.rama===filtro.rama)
+  .filter(a=>a.categoria===filtro.categoria && (filtro.rama==="Mixto" || a.rama===filtro.rama))
   .map(a=>({...a,total:a.resultados.reduce((s,x)=>s+x.puntos,0)}))
   .sort((a,b)=>b.total-a.total);
 
@@ -3587,7 +3886,7 @@ function refrescarPagina(){
 const heats = {
 
   
-teens_hombre:`
+teens_mixto:`
 
 <h2>WOD 1</h2>
 
