@@ -1,5 +1,4 @@
 <html lang="es">
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +13,92 @@
   --dark:#111;
   --row:#1a1a1a;
 }
+
+html{
+  background:#000;
+}
+
+/* CARGA INICIAL: no depende de librerias externas y funciona en GitHub Pages */
+.app-loader{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  background:#050505;
+  color:#f5f5f5;
+  transition:opacity .35s ease, visibility .35s ease;
+}
+
+.app-loader.is-hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.app-loader__card{
+  width:min(420px,100%);
+  text-align:center;
+}
+
+.app-loader__mark{
+  width:58px;
+  height:58px;
+  margin:0 auto 18px;
+  border:5px solid #2b2b2b;
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:loaderSpin .85s linear infinite;
+}
+
+.app-loader__title{
+  color:var(--accent);
+  font-size:1.35rem;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.app-loader__status{
+  margin-top:8px;
+  color:#b8b8b8;
+  font-size:.95rem;
+}
+
+@keyframes loaderSpin{to{transform:rotate(360deg)}}
+
+@media(prefers-reduced-motion:reduce){
+  .app-loader__mark{animation-duration:1.8s}
+}
+
+.live-badge{
+  align-items:center;
+  gap:8px;
+  width:max-content;
+  margin:0 auto 12px;
+  padding:7px 13px;
+  border:1px solid #ff3b3b;
+  border-radius:999px;
+  background:#2a0808;
+  color:#fff;
+  font-size:.82rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  box-shadow:0 0 18px rgba(255,59,59,.28);
+}
+
+.live-badge[hidden]{display:none}
+
+.live-badge__dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#ff3b3b;
+  box-shadow:0 0 0 0 rgba(255,59,59,.7);
+  animation:livePulse 1.5s infinite;
+}
+
+@keyframes livePulse{70%{box-shadow:0 0 0 8px rgba(255,59,59,0)}100%{box-shadow:0 0 0 0 rgba(255,59,59,0)}}
 
 /* BASE */
 body{
@@ -644,12 +729,23 @@ body{
 </head>
 
 <body>
+<div id="appLoader" class="app-loader" role="status" aria-live="polite" aria-label="Cargando resultados">
+  <div class="app-loader__card">
+    <div class="app-loader__mark" aria-hidden="true"></div>
+    <div class="app-loader__title">WODSTAR SCORES</div>
+    <div id="appLoaderStatus" class="app-loader__status">Preparando la competencia...</div>
+  </div>
+</div>
 <div class="top-actions">
   <button onclick="volverCompetencias()">⬅ Competencias</button>
   <button onclick="refrescarPagina()">↻ Refrescar</button>
 </div>
 
 <section class="competencia-hero">
+  <div id="liveBadge" class="live-badge" hidden aria-label="Competencia en vivo">
+    <span class="live-badge__dot" aria-hidden="true"></span>
+    <span>EN VIVO</span>
+  </div>
   <h1>MOONLIGHT GAMES</h1>
   <div class="score-controls">
     <select id="competenciaSelect" class="category-select" onchange="mostrarCompetencia()">
@@ -673,13 +769,48 @@ body{
   <a class="highlights-link" href="https://wodstars.github.io/wodstarshiglights/">Highlights</a>
   <button onclick="mostrarHeats()">Heats y Carriles</button>
   <button onclick="mostrarTablaRecords()">Records</button>
-  <button onclick="mostrarFormularioFoto()">Subir foto de atleta</button>
 </div>
 <div id="tablas"></div>
 <div id="modalContainer"></div>
 <div id="toastStack" class="toast-stack" aria-live="polite"></div>
 
 <script>
+
+/*
+  CONTROL MANUAL PARA GITHUB PAGES
+  Cambia false por true y vuelve a publicar el archivo para mostrar "EN VIVO"
+  a todos los visitantes el dia de la competencia.
+*/
+const MODO_EN_VIVO =true; 
+//const MODO_EN_VIVO = true;
+function aplicarModoEnVivo(){
+  const badge = document.getElementById("liveBadge");
+  if(!badge)return;
+  badge.hidden = !MODO_EN_VIVO;
+  document.body.classList.toggle("is-live", MODO_EN_VIVO);
+}
+
+function cerrarPantallaCarga(){
+  const loader = document.getElementById("appLoader");
+  if(!loader || loader.classList.contains("is-hidden"))return;
+  requestAnimationFrame(()=>{
+    loader.classList.add("is-hidden");
+    setTimeout(()=>loader.remove(), 450);
+  });
+}
+
+function cargarConfetiSinBloquear(){
+  const script = document.createElement("script");
+  script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
+  script.async = true;
+  document.head.appendChild(script);
+}
+
+aplicarModoEnVivo();
+document.addEventListener("DOMContentLoaded", cerrarPantallaCarga, {once:true});
+window.addEventListener("load", cerrarPantallaCarga, {once:true});
+window.setTimeout(cerrarPantallaCarga, 3500);
+window.setTimeout(cargarConfetiSinBloquear, 500);
 
 // DATOS IGUAL
 const datos = {
@@ -690,8 +821,6 @@ const datos = {
          nombre:"Leonardo Serratos / Comando",
         categoria:"Teens",
         rama:"Hombre",
-        fotoUrl:"assets/atletas/leonardo-serratos-comando.jpg",
-        fotoEstado:"denegada",
         heat:"1",
         carril:"1",
         resultados:[
@@ -874,8 +1003,6 @@ const datos = {
          nombre:"Luis Salmoran / Comando",
         categoria:"Teens",
         rama:"Hombre",
-        fotoUrl:"assets/atletas/leonardo-serratos-comando.jpg",
-        fotoEstado:"denegada",
         heat:"1",
         carril:"1",
         resultados:[
@@ -4307,22 +4434,10 @@ function textoSeguro(valor){
     .replaceAll("'","&#039;");
 }
 
-function fotoAprobada(atleta){
-  return atleta?.fotoEstado==="aprobada" && Boolean(atleta.fotoUrl);
-}
-
 function nombreAtletaMarkup(atleta, extraHtml=""){
   const nombre = textoSeguro(atleta.nombre);
   const dataName = textoSeguro(atleta.nombre);
-
-  if(!fotoAprobada(atleta)){
-    return `<span class="record-name" data-record-name="${dataName}">${nombre}${extraHtml}</span>`;
-  }
-
-  return `<span class="record-name athlete-with-photo" data-record-name="${dataName}">
-    <img class="athlete-avatar" src="${textoSeguro(atleta.fotoUrl)}" alt="Foto de ${nombre}" loading="lazy">
-    <span>${nombre}${extraHtml}</span>
-  </span>`;
+  return `<span class="record-name" data-record-name="${dataName}">${nombre}${extraHtml}</span>`;
 }
 
 function mostrarFormularioFoto(){
@@ -4559,7 +4674,6 @@ function verAtleta(a,lugar){
   <div class="modal grande" onclick="event.stopPropagation()">
   <button class="close-btn" onclick="cerrarModal()">×</button>
 
-  ${fotoAprobada(a) ? `<img class="athlete-modal-photo" src="${textoSeguro(a.fotoUrl)}" alt="Foto de ${textoSeguro(a.nombre)}">` : ""}
   <h2>${a.nombre}</h2>
   <p><strong>Categoría:</strong> ${a.categoria}</p>
   <p><strong>Rama:</strong> ${a.rama}</p>
