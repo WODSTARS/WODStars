@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WODSTARS">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="wodstar-logo-transparent.png">
 <title>WODSTAR COMPETENCIAS</title>
 
 <style>
@@ -40,6 +46,60 @@ h1{color:gold;}
   font-size:2rem;
   letter-spacing:0;
   text-align:center;
+}
+
+.btn-instalar{
+  margin:0;
+  padding:11px 20px;
+  background:transparent;
+  color:gold;
+  border:1px solid gold;
+  font-weight:bold;
+  box-shadow:0 0 12px rgba(255,215,0,.18);
+}
+
+.barra-instalar{
+  width:100%;
+  padding:10px 12px;
+  box-sizing:border-box;
+  display:flex;
+  justify-content:center;
+  background:#090909;
+  border-bottom:1px solid rgba(255,215,0,.35);
+}
+
+.btn-instalar:hover,
+.btn-instalar:focus-visible{
+  background:gold;
+  color:black;
+  outline:none;
+}
+
+.instalar-descripcion{
+  color:#ddd;
+  line-height:1.5;
+}
+
+.pasos-instalacion{
+  margin:16px 0;
+  padding-left:22px;
+  color:#eee;
+  line-height:1.55;
+}
+
+.pasos-instalacion li{
+  margin-bottom:8px;
+}
+
+.acciones-instalacion{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+.acciones-instalacion button{
+  flex:1;
+  font-weight:bold;
 }
 
 #lista{
@@ -586,6 +646,10 @@ input,select{
 
 <body>
 
+<div class="barra-instalar">
+  <button id="btnInstalar" class="btn-instalar" type="button">⬇ Descargar app</button>
+</div>
+
 <header class="encabezado">
   <img class="logo-wodstar" src="wodstar-logo-transparent.png" alt="WODSTAR">
   <h1>WODSTARS COMPETENCIAS</h1>
@@ -618,6 +682,65 @@ input,select{
 <div id="chatBox"></div>
 
 <script>
+
+let eventoInstalacion = null;
+
+window.addEventListener("beforeinstallprompt", evento => {
+  evento.preventDefault();
+  eventoInstalacion = evento;
+});
+
+window.addEventListener("appinstalled", () => {
+  eventoInstalacion = null;
+  const boton = document.getElementById("btnInstalar");
+  if(boton) boton.textContent = "✓ App instalada";
+});
+
+function esIOS(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function esModoApp(){
+  return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+}
+
+function mostrarTutorialInstalacion(){
+  const pasos = esIOS()
+    ? `<li>Abre esta página en <strong>Safari</strong>.</li>
+       <li>Toca el botón <strong>Compartir</strong> (el cuadro con una flecha hacia arriba).</li>
+       <li>Selecciona <strong>Agregar a pantalla de inicio</strong> y después <strong>Agregar</strong>.</li>`
+    : `<li>Abre el menú del navegador (los tres puntos).</li>
+       <li>Elige <strong>Instalar aplicación</strong> o <strong>Agregar a pantalla principal</strong>.</li>
+       <li>Confirma tocando <strong>Instalar</strong>.</li>`;
+
+  modal.innerHTML = `
+    <div class="modal-bg" onclick="cerrar()">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tituloInstalar" onclick="event.stopPropagation()">
+        <h2 id="tituloInstalar">Instala WODSTARS</h2>
+        <p class="instalar-descripcion">Ten acceso rápido desde tu pantalla de inicio, como cualquier otra app.</p>
+        <ol class="pasos-instalacion">${pasos}</ol>
+        <div class="acciones-instalacion">
+          <button type="button" onclick="cerrar()">Entendido</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function instalarApp(){
+  if(esModoApp()){
+    alert("WODSTARS ya está instalada en este dispositivo.");
+    return;
+  }
+
+  if(eventoInstalacion){
+    eventoInstalacion.prompt();
+    await eventoInstalacion.userChoice;
+    eventoInstalacion = null;
+    return;
+  }
+
+  mostrarTutorialInstalacion();
+}
 
 // COMPETENCIAS
 const competencias = [
@@ -1073,6 +1196,16 @@ function iniciarRotadorLogos(){
 
 // INIT
 window.onload=()=>{
+  const botonInstalar = document.getElementById("btnInstalar");
+  if(botonInstalar){
+    botonInstalar.addEventListener("click", instalarApp);
+    if(esModoApp()) botonInstalar.textContent = "✓ App instalada";
+  }
+
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
+  }
+
   if(localStorage.getItem("registro")){
     mostrarRegistro();
   }
