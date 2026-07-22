@@ -769,7 +769,7 @@ body{
   </div>
   <h1>MOONLIGHT GAMES</h1>
   <div class="score-controls">
-    <select id="competenciaSelect" class="category-select" onchange="mostrarCompetencia()">
+    <select id="competenciaSelect" class="category-select" onchange="cambiarCategoria()">
       <option value="">Selecciona categoria</option>
       <option value="teens_mixto">Teens Mixto</option>
       <option value="novatos_hombre">Novatos Hombre</option>
@@ -4692,6 +4692,22 @@ function mostrarTablaRecords(){
 
   renderRecordsClean();
 }
+
+// PWA: al cambiar la categoría se recarga desde la red para obtener la versión más reciente.
+// La selección se guarda temporalmente para restaurarla después de la recarga.
+function cambiarCategoria(){
+  sessionStorage.setItem("wodstarsCategoriaSeleccionada", competenciaSelect.value);
+  window.location.reload();
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const categoriaGuardada = sessionStorage.getItem("wodstarsCategoriaSeleccionada");
+  if(!categoriaGuardada) return;
+
+  sessionStorage.removeItem("wodstarsCategoriaSeleccionada");
+  competenciaSelect.value = categoriaGuardada;
+  mostrarCompetencia();
+});
 
 function mostrarCompetencia(){
 

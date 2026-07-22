@@ -7,8 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WODSTARS">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="wodstar-logo-transparent.png">
+<!-- PWA: manifiesto e icono específico para la pantalla de inicio de iPhone. -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180x180.png">
 <title>WODSTAR COMPETENCIAS</title>
 
 <style>
@@ -67,6 +68,33 @@ h1{color:gold;}
   background:#090909;
   border-bottom:1px solid rgba(255,215,0,.35);
 }
+
+/* PWA: aviso discreto que solo aparece cuando hay una versión nueva lista. */
+.aviso-actualizacion{
+  position:fixed;
+  left:50%;
+  bottom:18px;
+  z-index:20000;
+  width:min(420px,calc(100vw - 28px));
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px;
+  border:1px solid gold;
+  border-radius:10px;
+  background:#111;
+  color:white;
+  box-shadow:0 12px 36px rgba(0,0,0,.65);
+  transform:translate(-50%,140%);
+  opacity:0;
+  transition:transform .3s ease,opacity .3s ease;
+}
+
+.aviso-actualizacion.visible{transform:translate(-50%,0);opacity:1}
+.aviso-actualizacion strong{color:gold}
+.aviso-actualizacion button{flex:0 0 auto;font-weight:bold}
 
 .btn-instalar:hover,
 .btn-instalar:focus-visible{
@@ -778,9 +806,18 @@ input,select{
 <div id="modal"></div>
 <div id="chatBox"></div>
 
+<!-- PWA: permanece oculto hasta que un Service Worker nuevo queda listo. -->
+<aside id="avisoActualizacion" class="aviso-actualizacion" role="status" aria-live="polite">
+  <strong>Nueva versión disponible</strong>
+  <button id="btnActualizar" type="button">Actualizar ahora</button>
+</aside>
+
 <script>
 
 let eventoInstalacion = null;
+let serviceWorkerNuevo = null;
+let recargandoPorActualizacion = false;
+let versionDocumentoActual = null;
 
 window.addEventListener("beforeinstallprompt", evento => {
   evento.preventDefault();
@@ -852,6 +889,75 @@ async function instalarApp(){
 
   mostrarTutorialInstalacion();
 }
+
+// PWA: muestra el aviso únicamente cuando la versión nueva ya está instalada y esperando.
+function mostrarAvisoActualizacion(worker){
+  serviceWorkerNuevo = worker;
+  document.getElementById("avisoActualizacion")?.classList.add("visible");
+}
+
+// PWA: también detecta publicaciones donde solo cambió index.html y no el Service Worker.
+async function comprobarVersionPublicada(){
+  try{
+    const respuesta = await fetch("./index.html", {method:"HEAD", cache:"no-store"});
+    const version = respuesta.headers.get("etag") || respuesta.headers.get("last-modified");
+    if(!version) return;
+    if(versionDocumentoActual && versionDocumentoActual !== version){
+      mostrarAvisoActualizacion(null);
+    }
+    versionDocumentoActual = version;
+  }catch(error){
+    // Sin Internet no se muestra un falso aviso; la navegación usará offline.html.
+  }
+}
+
+// PWA: usa rutas relativas para funcionar también en subcarpetas de GitHub Pages.
+async function registrarPWA(){
+  if(!("serviceWorker" in navigator)) return;
+
+  try{
+    const registro = await navigator.serviceWorker.register("./service-worker.js", {
+      scope:"./",
+      updateViaCache:"none"
+    });
+    if(registro.waiting) mostrarAvisoActualizacion(registro.waiting);
+
+    // Fuerza una consulta del Service Worker en cada apertura, sin esperar al intervalo del navegador.
+    registro.update().catch(()=>{});
+    comprobarVersionPublicada();
+
+    registro.addEventListener("updatefound", () => {
+      const worker = registro.installing;
+      if(!worker) return;
+      worker.addEventListener("statechange", () => {
+        if(worker.state === "installed" && navigator.serviceWorker.controller){
+          mostrarAvisoActualizacion(worker);
+        }
+      });
+    });
+
+    // Revisa cambios al volver a la app y cada cinco minutos.
+    document.addEventListener("visibilitychange", () => {
+      if(document.visibilityState === "visible"){
+        registro.update().catch(()=>{});
+        comprobarVersionPublicada();
+      }
+    });
+    setInterval(() => {
+      registro.update().catch(()=>{});
+      comprobarVersionPublicada();
+    }, 5 * 60 * 1000);
+  }catch(error){
+    console.warn("No fue posible registrar la PWA:", error);
+  }
+}
+
+// PWA: cuando la versión nueva toma control, recarga una sola vez.
+navigator.serviceWorker?.addEventListener("controllerchange", () => {
+  if(recargandoPorActualizacion) return;
+  recargandoPorActualizacion = true;
+  window.location.reload();
+});
 
 // COMPETENCIAS
 const competencias = [
@@ -1313,9 +1419,15 @@ window.onload=()=>{
     if(esModoApp()) botonInstalar.textContent = "✓ App instalada";
   }
 
-  if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
-  }
+  document.getElementById("btnActualizar")?.addEventListener("click", () => {
+    if(serviceWorkerNuevo){
+      serviceWorkerNuevo.postMessage({type:"SKIP_WAITING"});
+    }else{
+      window.location.reload();
+    }
+  });
+
+  registrarPWA();
 
   if(localStorage.getItem("registro")){
     mostrarRegistro();
