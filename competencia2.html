@@ -1,7 +1,14 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WODSTARS">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180x180.png">
 
 <title>WODStar Scores PRO</title>
 
@@ -744,6 +751,19 @@ body{
   }
 
 }
+
+.barra-instalar{width:100%;padding:10px 12px;box-sizing:border-box;display:flex;justify-content:center;background:#090909;border-bottom:1px solid rgba(255,215,0,.35)}
+.btn-instalar{margin:0;padding:11px 20px;background:transparent;color:var(--accent);border:1px solid var(--accent);font-weight:bold;box-shadow:0 0 12px rgba(255,215,0,.18)}
+.btn-instalar:hover,.btn-instalar:focus-visible{background:var(--accent);color:#000;outline:none}
+.aviso-actualizacion{position:fixed;left:50%;bottom:18px;z-index:20000;width:min(420px,calc(100vw - 28px));box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid var(--accent);border-radius:10px;background:#111;color:#fff;box-shadow:0 12px 36px rgba(0,0,0,.65);transform:translate(-50%,140%);opacity:0;transition:transform .3s ease,opacity .3s ease}
+.aviso-actualizacion.visible{transform:translate(-50%,0);opacity:1}
+.aviso-actualizacion strong{color:var(--accent)}
+.aviso-actualizacion button{flex:0 0 auto;font-weight:bold}
+.instalar-descripcion{color:#ddd;line-height:1.5}
+.pasos-instalacion{margin:16px 0;padding-left:22px;color:#eee;line-height:1.55;text-align:left}
+.pasos-instalacion li{margin-bottom:8px}
+.acciones-instalacion{display:flex;gap:10px;margin-top:18px}
+.acciones-instalacion button{flex:1;font-weight:bold}
 </style>
 </head>
 
@@ -756,6 +776,9 @@ body{
     <div class="app-loader__title">WODSTAR SCORES</div>
     <div id="appLoaderStatus" class="app-loader__status">Preparando la competencia...</div>
   </div>
+</div>
+<div class="barra-instalar">
+  <button id="btnInstalar" class="btn-instalar" type="button">⬇ Descargar app</button>
 </div>
 <div class="top-actions">
   <button onclick="volverCompetencias()">⬅ Competencias</button>
@@ -794,8 +817,130 @@ body{
 <div id="tablas"></div>
 <div id="modalContainer"></div>
 <div id="toastStack" class="toast-stack" aria-live="polite"></div>
+<aside id="avisoActualizacion" class="aviso-actualizacion" role="status" aria-live="polite">
+  <strong>Nueva versión disponible</strong>
+  <button id="btnActualizar" type="button">Actualizar ahora</button>
+</aside>
 
 <script>
+
+/* PWA: instalación, detección de versiones nuevas y actualización inmediata. */
+let eventoInstalacion = null;
+let serviceWorkerNuevo = null;
+let recargandoPorActualizacion = false;
+let versionDocumentoActual = null;
+
+window.addEventListener("beforeinstallprompt", evento => {
+  evento.preventDefault();
+  eventoInstalacion = evento;
+});
+
+window.addEventListener("appinstalled", () => {
+  eventoInstalacion = null;
+  const boton = document.getElementById("btnInstalar");
+  if(boton) boton.textContent = "✓ App instalada";
+});
+
+function esIOS(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function esModoApp(){
+  return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+}
+
+function mostrarTutorialInstalacion(){
+  const pasos = esIOS()
+    ? `<li>Abre esta página en <strong>Safari</strong>.</li><li>Toca <strong>Compartir</strong>.</li><li>Selecciona <strong>Agregar a pantalla de inicio</strong> y después <strong>Agregar</strong>.</li>`
+    : `<li>Abre el menú del navegador.</li><li>Elige <strong>Instalar aplicación</strong> o <strong>Agregar a pantalla principal</strong>.</li><li>Confirma tocando <strong>Instalar</strong>.</li>`;
+  document.getElementById("modalContainer").innerHTML = `
+    <div class="modal-bg" onclick="cerrarModal()">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tituloInstalar" onclick="event.stopPropagation()">
+        <button class="close-btn" type="button" onclick="cerrarModal()">×</button>
+        <h2 id="tituloInstalar">Instala WODSTARS</h2>
+        <p class="instalar-descripcion">Ten acceso rápido desde tu pantalla de inicio, como cualquier otra app.</p>
+        <ol class="pasos-instalacion">${pasos}</ol>
+        <div class="acciones-instalacion"><button type="button" onclick="cerrarModal()">Entendido</button></div>
+      </div>
+    </div>`;
+}
+
+async function instalarApp(){
+  if(esModoApp()){
+    alert("WODSTARS ya está instalada en este dispositivo.");
+    return;
+  }
+  if(eventoInstalacion){
+    eventoInstalacion.prompt();
+    await eventoInstalacion.userChoice;
+    eventoInstalacion = null;
+    return;
+  }
+  mostrarTutorialInstalacion();
+}
+
+function mostrarAvisoActualizacion(worker){
+  serviceWorkerNuevo = worker;
+  document.getElementById("avisoActualizacion")?.classList.add("visible");
+}
+
+async function comprobarVersionPublicada(){
+  try{
+    const respuesta = await fetch("./competencia2.html", {method:"HEAD",cache:"no-store"});
+    const version = respuesta.headers.get("etag") || respuesta.headers.get("last-modified");
+    if(!version) return;
+    if(versionDocumentoActual && versionDocumentoActual !== version) mostrarAvisoActualizacion(null);
+    versionDocumentoActual = version;
+  }catch(error){
+    // Sin Internet se conserva la página actual y no se muestra un aviso falso.
+  }
+}
+
+async function registrarPWA(){
+  if(!("serviceWorker" in navigator)) return;
+  try{
+    const registro = await navigator.serviceWorker.register("./service-worker.js", {scope:"./",updateViaCache:"none"});
+    if(registro.waiting) mostrarAvisoActualizacion(registro.waiting);
+    registro.update().catch(()=>{});
+    comprobarVersionPublicada();
+    registro.addEventListener("updatefound", () => {
+      const worker = registro.installing;
+      if(!worker) return;
+      worker.addEventListener("statechange", () => {
+        if(worker.state === "installed" && navigator.serviceWorker.controller) mostrarAvisoActualizacion(worker);
+      });
+    });
+    document.addEventListener("visibilitychange", () => {
+      if(document.visibilityState === "visible"){
+        registro.update().catch(()=>{});
+        comprobarVersionPublicada();
+      }
+    });
+    setInterval(() => {
+      registro.update().catch(()=>{});
+      comprobarVersionPublicada();
+    }, 5 * 60 * 1000);
+  }catch(error){
+    console.warn("No fue posible registrar la PWA:", error);
+  }
+}
+
+navigator.serviceWorker?.addEventListener("controllerchange", () => {
+  if(recargandoPorActualizacion) return;
+  recargandoPorActualizacion = true;
+  window.location.reload();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const botonInstalar = document.getElementById("btnInstalar");
+  botonInstalar?.addEventListener("click", instalarApp);
+  if(botonInstalar && esModoApp()) botonInstalar.textContent = "✓ App instalada";
+  document.getElementById("btnActualizar")?.addEventListener("click", () => {
+    if(serviceWorkerNuevo) serviceWorkerNuevo.postMessage({type:"SKIP_WAITING"});
+    else window.location.reload();
+  });
+  registrarPWA();
+});
 
 /*
   CONTROL MANUAL PARA GITHUB PAGES
