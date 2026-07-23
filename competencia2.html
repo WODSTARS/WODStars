@@ -837,8 +837,7 @@ window.addEventListener("beforeinstallprompt", evento => {
 
 window.addEventListener("appinstalled", () => {
   eventoInstalacion = null;
-  const boton = document.getElementById("btnInstalar");
-  if(boton) boton.textContent = "✓ App instalada";
+  ocultarBotonInstalacion();
 });
 
 function esIOS(){
@@ -847,6 +846,10 @@ function esIOS(){
 
 function esModoApp(){
   return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+}
+
+function ocultarBotonInstalacion(){
+  document.getElementById("btnInstalar")?.closest(".barra-instalar")?.remove();
 }
 
 function mostrarTutorialInstalacion(){
@@ -934,7 +937,7 @@ navigator.serviceWorker?.addEventListener("controllerchange", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const botonInstalar = document.getElementById("btnInstalar");
   botonInstalar?.addEventListener("click", instalarApp);
-  if(botonInstalar && esModoApp()) botonInstalar.textContent = "✓ App instalada";
+  if(esModoApp()) ocultarBotonInstalacion();
   document.getElementById("btnActualizar")?.addEventListener("click", () => {
     if(serviceWorkerNuevo) serviceWorkerNuevo.postMessage({type:"SKIP_WAITING"});
     else window.location.reload();

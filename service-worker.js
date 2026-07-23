@@ -3,7 +3,7 @@
  * Cambia CACHE_VERSION al publicar cambios importantes para activar el aviso.
  * El HTML siempre consulta primero la red para evitar versiones antiguas.
  */
-const CACHE_VERSION = "wodstars-static-v3";
+const CACHE_VERSION = "wodstars-static-v4";
 const OFFLINE_URL = "./offline.html";
 
 // Solo se guardan archivos estáticos esenciales; las páginas no se precachean.
