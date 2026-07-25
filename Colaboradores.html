@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WODSTARS Colaboradores</title>
+  <style>
+:root{
+  --bg:#060607;
+  --panel:#101114;
+  --panel-soft:#17191d;
+  --line:#272a31;
+  --text:#f6f2e8;
+  --muted:#aaa59a;
+  --gold:#f4c430;
+  --gold-strong:#ffd84d;
+  --green:#42d392;
+  --red:#ff5c5c;
+  --blue:#6db7ff;
+  --radius:8px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    linear-gradient(135deg,rgba(244,196,48,.12),transparent 34%),
+    radial-gradient(circle at 80% 0%,rgba(109,183,255,.14),transparent 26%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  border:0;
+}
+
+.screen{
+  display:none;
+}
+
+.screen.active{
+  display:block;
+}
+
+.login-shell{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:minmax(260px,1fr) minmax(320px,420px);
+  gap:48px;
+  align-items:center;
+  width:min(1100px,calc(100% - 32px));
+  margin:0 auto;
+}
+
+.brand-lockup{
+  align-self:stretch;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:18px;
+  padding:40px 0;
+}
+
+.brand-logo{
+  width:min(440px,85vw);
+  filter:drop-shadow(0 18px 36px rgba(244,196,48,.22));
+}
+
+.brand-lockup p{
+  margin:0;
+  color:var(--muted);
+  font-size:1.1rem;
+}
+
+.login-card,
+.tool-panel,
+.wod-card,
+.control-panel,
+.table-shell,
+.athlete-card{
+  background:rgba(16,17,20,.88);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:0 22px 60px rgba(0,0,0,.28);
+}
+
+.login-card{
+  padding:28px;
+}
+
+.eyebrow{
+  display:block;
+  margin-bottom:8px;
+  color:var(--gold);
+  font-size:.76rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+h1,
+h2,
+h3,
+h4,
+p{
+  margin-top:0;
+}
+
+h1{
+  margin-bottom:24px;
+  font-size:2rem;
+  line-height:1.08;
+}
+
+h2{
+  margin-bottom:0;
+  font-size:1.9rem;
+}
+
+h3{
+  margin-bottom:8px;
+  font-size:1.25rem;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  color:var(--muted);
+  font-size:.84rem;
+  font-weight:700;
+}
+
+input,
+select{
+  width:100%;
+  min-height:42px;
+  padding:10px 12px;
+  color:var(--text);
+  background:#0b0c0f;
+  border:1px solid #2d3038;
+  border-radius:6px;
+  outline:none;
+}
+
+input:focus,
+select:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(244,196,48,.12);
+}
+
+.password-row{
+  display:grid;
+  grid-template-columns:1fr 82px;
+  gap:8px;
+}
+
+.primary-action,
+.ghost-button,
+.danger-button,
+.icon-button,
+.nav-item{
+  min-height:42px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:800;
+}
+
+.primary-action{
+  width:100%;
+  margin-top:18px;
+  color:#151006;
+  background:linear-gradient(180deg,var(--gold-strong),var(--gold));
+}
+
+.primary-action.compact{
+  width:auto;
+  margin-top:0;
+  padding:0 16px;
+}
+
+.compact-button{
+  width:auto;
+  min-height:36px;
+  padding:0 14px;
+}
+
+.ghost-button,
+.icon-button{
+  color:var(--text);
+  background:#1b1d23;
+  border:1px solid #343842;
+}
+
+.danger-button{
+  padding:0 16px;
+  color:white;
+  background:#6f2020;
+}
+
+.form-error{
+  min-height:20px;
+  margin:12px 0 0;
+  color:#ff8b8b;
+  font-size:.9rem;
+}
+
+#appScreen.active{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:260px 1fr;
+}
+
+.sidebar{
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+  padding:22px;
+  background:#08090b;
+  border-right:1px solid var(--line);
+}
+
+.sidebar-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.sidebar-logo{
+  width:56px;
+  height:56px;
+  object-fit:contain;
+}
+
+.sidebar-brand strong,
+.sidebar-brand span{
+  display:block;
+}
+
+.sidebar-brand span{
+  color:var(--muted);
+  font-size:.86rem;
+}
+
+.nav-list{
+  display:grid;
+  gap:8px;
+}
+
+.nav-item{
+  width:100%;
+  padding:0 14px;
+  text-align:left;
+  color:var(--muted);
+  background:transparent;
+}
+
+.nav-item.active,
+.nav-item:hover{
+  color:#1a1405;
+  background:var(--gold);
+}
+
+.sidebar-footer{
+  margin-top:auto;
+  display:grid;
+  gap:10px;
+  color:var(--muted);
+  font-size:.84rem;
+}
+
+.workspace{
+  width:min(1240px,100%);
+  padding:28px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:center;
+  margin-bottom:24px;
+}
+
+.status-strip{
+  display:grid;
+  grid-template-columns:repeat(3,110px);
+  gap:10px;
+}
+
+.status-strip div{
+  padding:12px;
+  background:rgba(16,17,20,.8);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+
+.status-strip span,
+.status-strip small{
+  display:block;
+}
+
+.status-strip span{
+  color:var(--gold);
+  font-size:1.4rem;
+  font-weight:900;
+}
+
+.status-strip small{
+  color:var(--muted);
+}
+
+.tab-panel{
+  display:none;
+}
+
+.tab-panel.active{
+  display:block;
+}
+
+.control-panel{
+  display:grid;
+  grid-template-columns:1.1fr 1fr .75fr 1.2fr;
+  gap:14px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.wod-card{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.wod-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.chip,
+.heat-pill,
+.status-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:26px;
+  padding:0 10px;
+  border-radius:999px;
+  font-size:.76rem;
+  font-weight:900;
+}
+
+.chip{
+  margin-bottom:10px;
+  color:#161106;
+  background:var(--gold);
+}
+
+.heat-pill{
+  color:var(--gold);
+  background:rgba(244,196,48,.1);
+  border:1px solid rgba(244,196,48,.25);
+}
+
+.wod-meta{
+  display:grid;
+  align-content:center;
+  gap:8px;
+  min-width:170px;
+  color:var(--muted);
+  text-align:right;
+}
+
+.wod-meta .compact-button{
+  justify-self:end;
+}
+
+.table-shell{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  min-width:860px;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  vertical-align:middle;
+}
+
+th{
+  color:var(--gold);
+  background:#111318;
+  font-size:.78rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+tbody tr:nth-child(even){
+  background:rgba(255,255,255,.018);
+}
+
+.athlete-cell{
+  min-width:230px;
+  font-weight:800;
+}
+
+.score-input{
+  min-width:96px;
+}
+
+.status-select{
+  min-width:120px;
+}
+
+.status-badge.pending{
+  color:var(--gold);
+  background:rgba(244,196,48,.12);
+}
+
+.status-badge.valid{
+  color:var(--green);
+  background:rgba(66,211,146,.12);
+}
+
+.status-badge.review{
+  color:var(--blue);
+  background:rgba(109,183,255,.12);
+}
+
+.empty-state{
+  padding:28px;
+  color:var(--muted);
+  text-align:center;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.athlete-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:14px;
+}
+
+.athlete-card{
+  padding:16px;
+}
+
+.athlete-card h4{
+  margin-bottom:4px;
+  color:var(--gold);
+}
+
+.athlete-card p{
+  margin-bottom:12px;
+  color:var(--muted);
+}
+
+.athlete-card ul{
+  margin:0;
+  padding-left:18px;
+  color:#ded9ce;
+  line-height:1.6;
+}
+
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:16px;
+}
+
+.heats-summary,
+.heat-controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.heats-summary span,
+.heat-filter-button{
+  min-height:34px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 12px;
+  border-radius:6px;
+  font-size:.82rem;
+  font-weight:900;
+}
+
+.heats-summary span{
+  color:var(--gold);
+  background:rgba(244,196,48,.1);
+  border:1px solid rgba(244,196,48,.22);
+}
+
+.heat-filter-button{
+  color:var(--muted);
+  background:#1b1d23;
+  border:1px solid #343842;
+  cursor:pointer;
+}
+
+.heat-filter-button.active,
+.heat-filter-button:hover{
+  color:#1a1405;
+  background:var(--gold);
+}
+
+.heat-controls{
+  margin-bottom:16px;
+}
+
+.heat-timeline{
+  display:grid;
+  gap:14px;
+}
+
+.heat-block,
+.heat-change{
+  border-radius:var(--radius);
+  box-shadow:0 18px 42px rgba(0,0,0,.22);
+}
+
+.heat-block{
+  overflow:hidden;
+  background:rgba(16,17,20,.9);
+  border:1px solid var(--line);
+}
+
+.heat-block-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 16px;
+  background:#111318;
+  border-bottom:1px solid var(--line);
+}
+
+.heat-block-head h4{
+  margin:0;
+  font-size:1.35rem;
+}
+
+.heat-time{
+  display:grid;
+  gap:4px;
+  color:var(--gold);
+  text-align:right;
+}
+
+.heat-time span,
+.muted-text{
+  color:var(--muted);
+}
+
+.heat-material{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:12px;
+  padding:12px 16px;
+  color:#1a1405;
+  background:rgba(244,196,48,.95);
+}
+
+.lanes-table{
+  min-width:0;
+}
+
+.lanes-table th:first-child,
+.lanes-table td:first-child{
+  width:92px;
+  text-align:center;
+}
+
+.lane-number{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  color:#161106;
+  background:var(--gold);
+  font-weight:900;
+}
+
+.heat-change{
+  display:grid;
+  grid-template-columns:180px 160px 1fr;
+  gap:12px;
+  align-items:center;
+  padding:12px 16px;
+  color:#1a1405;
+  background:#ffe7a3;
+  border:1px solid #e3b834;
+}
+
+.heat-change strong{
+  text-transform:uppercase;
+}
+
+.heat-change p{
+  margin:0;
+  font-weight:800;
+}
+
+.tool-panel{
+  padding:18px;
+}
+
+.tool-panel p{
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.tool-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(0,0,0,.72);
+}
+
+.modal-backdrop[hidden]{
+  display:none;
+}
+
+.modal-panel{
+  width:min(760px,100%);
+  max-height:calc(100vh - 36px);
+  overflow:auto;
+  padding:18px;
+  background:#101114;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:0 28px 80px rgba(0,0,0,.48);
+}
+
+.modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+.wods-list{
+  display:grid;
+  gap:12px;
+}
+
+.wod-summary{
+  padding:15px;
+  background:#14161b;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+
+.wod-summary.active{
+  border-color:rgba(244,196,48,.72);
+  box-shadow:0 0 0 3px rgba(244,196,48,.08);
+}
+
+.wod-summary h4{
+  margin:0 0 8px;
+  color:var(--text);
+}
+
+.wod-summary p{
+  margin-bottom:12px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.wod-summary-meta{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  color:var(--gold);
+  font-size:.86rem;
+  font-weight:800;
+}
+
+dl{
+  display:grid;
+  gap:10px;
+  margin:0;
+}
+
+dl div{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+}
+
+dt{
+  color:var(--muted);
+}
+
+dd{
+  margin:0;
+  color:var(--text);
+  font-weight:800;
+}
+
+@media (max-width:900px){
+  .login-shell{
+    grid-template-columns:1fr;
+    gap:20px;
+    padding:24px 0;
+  }
+
+  .brand-lockup{
+    align-items:center;
+    text-align:center;
+    padding:0;
+  }
+
+  #appScreen.active{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:static;
+    height:auto;
+    padding:14px;
+  }
+
+  .nav-list{
+    grid-template-columns:repeat(5,1fr);
+  }
+
+  .nav-item{
+    min-height:38px;
+    padding:0 8px;
+    text-align:center;
+    font-size:.84rem;
+  }
+
+  .sidebar-footer{
+    grid-template-columns:1fr auto;
+    align-items:center;
+  }
+
+  .workspace{
+    padding:18px 12px 28px;
+  }
+
+  .topbar,
+  .wod-card,
+  .section-head{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .status-strip{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .control-panel{
+    grid-template-columns:1fr;
+  }
+
+  .heat-block-head,
+  .section-head{
+    align-items:stretch;
+  }
+
+  .heat-material,
+  .heat-change{
+    grid-template-columns:1fr;
+  }
+
+  .heat-time{
+    text-align:left;
+  }
+
+  .wod-meta{
+    min-width:0;
+    text-align:left;
+  }
+
+  .wod-meta .compact-button{
+    justify-self:start;
+  }
+}
+
+@media (max-width:520px){
+  h1{
+    font-size:1.6rem;
+  }
+
+  h2{
+    font-size:1.45rem;
+  }
+
+  .login-card{
+    padding:20px;
+  }
+
+  .password-row{
+    grid-template-columns:1fr;
+  }
+
+  .nav-list{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .status-strip{
+    grid-template-columns:1fr;
+  }
+
+  .primary-action.compact,
+  .danger-button{
+    width:100%;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <section id="loginScreen" class="screen active">
+    <div class="login-shell">
+      <div class="brand-lockup">
+        <img src="highlights-repo/wodstar-logo-transparent.png" alt="WODSTARS" class="brand-logo">
+        <p>Panel de colaboradores</p>
+      </div>
+
+      <form id="loginForm" class="login-card">
+        <div>
+          <span class="eyebrow">Acceso privado</span>
+          <h1>Captura y valida scores en tiempo real</h1>
+        </div>
+
+        <label for="password">Contrasena</label>
+        <div class="password-row">
+          <input id="password" type="password" autocomplete="current-password" placeholder="Clave de colaborador">
+          <button type="button" id="togglePassword" class="icon-button" aria-label="Mostrar contrasena">Ver</button>
+        </div>
+
+        <button type="submit" class="primary-action">Entrar al panel</button>
+        <p id="loginError" class="form-error" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <section id="appScreen" class="screen">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="highlights-repo/wodstar-logo-transparent.png" alt="WODSTARS" class="sidebar-logo">
+        <div>
+          <strong>WODSTARS</strong>
+          <span>Colaboradores</span>
+        </div>
+      </div>
+
+      <nav class="nav-list" aria-label="Secciones">
+        <button class="nav-item active" data-tab="capture">Captura</button>
+        <button class="nav-item" data-tab="heats">Heats</button>
+        <button class="nav-item" data-tab="leaderboard">Ranking</button>
+        <button class="nav-item" data-tab="athletes">Atletas</button>
+        <button class="nav-item" data-tab="settings">Herramientas</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span id="lastSaved">Sin cambios guardados</span>
+        <button id="logoutButton" class="ghost-button">Salir</button>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">Moonlight Games</span>
+          <h2>Operacion de scores</h2>
+        </div>
+        <div class="status-strip">
+          <div>
+            <span id="metricAthletes">0</span>
+            <small>Atletas</small>
+          </div>
+          <div>
+            <span id="metricCaptured">0</span>
+            <small>Scores</small>
+          </div>
+          <div>
+            <span id="metricCategories">0</span>
+            <small>Categorias</small>
+          </div>
+        </div>
+      </header>
+
+      <section id="capture" class="tab-panel active">
+        <div class="control-panel">
+          <div class="field">
+            <label for="categorySelect">Categoria</label>
+            <select id="categorySelect"></select>
+          </div>
+          <div class="field">
+            <label for="wodSelect">WOD</label>
+            <select id="wodSelect"></select>
+          </div>
+          <div class="field">
+            <label for="heatFilter">Heat</label>
+            <select id="heatFilter">
+              <option value="all">Todos</option>
+              <option value="1">Heat 1</option>
+              <option value="2">Heat 2</option>
+              <option value="3">Heat 3</option>
+            </select>
+          </div>
+          <div class="field search-field">
+            <label for="searchInput">Buscar</label>
+            <input id="searchInput" type="search" placeholder="Nombre o box">
+          </div>
+        </div>
+
+        <div class="wod-card">
+          <div>
+            <span id="wodType" class="chip">FOR TIME</span>
+            <h3 id="wodName">WOD 1</h3>
+            <p id="wodDescription"></p>
+          </div>
+          <div class="wod-meta">
+            <span id="timeCap">Time cap 10:00</span>
+            <span id="scoreHelp">Menor tiempo gana</span>
+            <button id="showWodsButton" class="ghost-button compact-button" type="button">Ver WODs</button>
+          </div>
+        </div>
+
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Heat</th>
+                <th>Carril</th>
+                <th>Competidor</th>
+                <th id="scoreColumnLabel">Score principal</th>
+                <th>Tiempo</th>
+                <th>Tiebreak</th>
+                <th id="weightColumnLabel">Peso</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="scoreTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="heats" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Flujo de competencia</span>
+            <h3>Heats, carriles y material</h3>
+          </div>
+          <div class="heats-summary">
+            <span>Inicio 7:00 AM</span>
+            <span>Cambio material 3 min</span>
+            <span>Hasta 7 carriles</span>
+          </div>
+        </div>
+        <div class="heat-controls">
+          <button class="heat-filter-button active" type="button" data-wod-filter="all">Todos</button>
+          <button class="heat-filter-button" type="button" data-wod-filter="WOD 1">WOD 1</button>
+          <button class="heat-filter-button" type="button" data-wod-filter="WOD 2">WOD 2</button>
+          <button class="heat-filter-button" type="button" data-wod-filter="WOD 3">WOD 3</button>
+        </div>
+        <div id="heatTimeline" class="heat-timeline"></div>
+      </section>
+
+      <section id="leaderboard" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Resultados</span>
+            <h3>Ranking por WOD</h3>
+          </div>
+          <button id="recalculateButton" class="primary-action compact">Actualizar ranking</button>
+        </div>
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Posicion</th>
+                <th>Competidor</th>
+                <th>Detalle</th>
+                <th>Puntos</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="athletes" class="tab-panel">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Directorio</span>
+            <h3>Atletas por categoria</h3>
+          </div>
+          <button id="addDemoAthlete" class="ghost-button">Agregar invitado</button>
+        </div>
+        <div id="athleteGrid" class="athlete-grid"></div>
+      </section>
+
+      <section id="settings" class="tab-panel">
+        <div class="tools-grid">
+          <article class="tool-panel">
+            <h3>Respaldo local</h3>
+            <p>Los resultados se guardan autom?ticamente en este navegador.</p>
+            <div class="tool-actions">
+              <button id="exportButton" class="primary-action compact">Descargar memoria final</button>
+              <button id="clearButton" class="danger-button compact">Borrar scores</button>
+            </div>
+          </article>
+          <article class="tool-panel">
+            <h3>Estado del sistema</h3>
+            <dl class="status-list">
+              <div><dt>Almacenamiento</dt><dd>localStorage</dd></div>
+              <div><dt>Modalidades</dt><dd>FOR TIME, AMRAP, RM</dd></div>
+              <div><dt>Sincronizaci?n</dt><dd>Competencia 2</dd></div>
+            </dl>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="emptyRowTemplate">
+    <tr><td colspan="8" class="empty-state">No hay atletas para los filtros seleccionados.</td></tr>
+  </template>
+
+  <div id="wodsModal" class="modal-backdrop" hidden>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="wodsModalTitle">
+      <div class="modal-head">
+        <div><span class="eyebrow">Programacion</span><h3 id="wodsModalTitle">WODs de competencia</h3></div>
+        <button id="closeWodsButton" class="ghost-button compact-button" type="button">Cerrar</button>
+      </div>
+      <div id="wodsList" class="wods-list"></div>
+    </div>
+  </div>
+
+  <script>
+
+    const PASSWORD = "E0H0FBD";
+    const STORAGE_KEY = "wodstars_collaborator_scores_v2";
+    const AUDIT_KEY = "wodstars_collaborator_audit_v1";
+
+    const competition = {
+      categories: {
+        "Teens Mixto": [
+          "Leonardo Serratos / Comando",
+          "Leonardo De la Curz/ Arkham",
+          "Dylan flores / Moonlight",
+          "Danna Zoe /Comando",
+          "Lizbeth Morelos/ Arkham",
+          "Luis Salmoran / Comando",
+          "Emiliano/ Comando cross"
+        ],
+        "Novatos Varonil": [
+          "Manuel Vazquez / Grizzly",
+          "Pedro Beltrán / Iron box",
+          "David Martinez / Grizzly",
+          "Damián García / Moonlight",
+          "Diego Garcia / Grizzly",
+          "Gael flores / Moonlight",
+          "Diego Rubio /Ravic-ADL",
+          "Daniel Solis / Ravic-ADL",
+          "Armando García /Sin Box",
+          "Oscar Betancourt /Phoenix",
+          "Francisco Silva /Phoenix",
+          "Jose Garcia /Iron Box",
+          "Jazziel Toriz /Iron Box",
+          "Ian Ramírez /"
+        ],
+        "Novatos Femenil": [
+          "Jenifer De La Torre / Primitivo",
+          "Brenda Sanchez / Mictlan",
+          "Coral Rodriguez /Sin Box",
+          "albi Cervantes / Sin Box",
+          "Leonor González / Sin Box",
+          "Isabel Aldama / Grizzly",
+          "Lizbeth Catálan / Sin box",
+          "Karla Hernandez / Black Horse",
+          "Ivette Luna /Ravic-ADL",
+          "Ximena Delgado /Iron BoxL",
+          "Reyna Romero /Ravic-ADL",
+          "Maria Ortiz /Ravic-ADL",
+          "Daniela Rodríguez/Rhinos CF",
+          "Yamyle Morales / UNK-ADL",
+          "Ariana Ramírez / UNK-ADL",
+          "Dolores Domingo / UKN-ADL"
+        ],
+        "Principiante Varonil": [
+          "Armando Altamirano / Primitivo",
+          "Armando Ruiz / Comandos",
+          "Daniel Rubio / Primitivos",
+          "Noe cortes / Red zone",
+          "German Costumbre / Primitivos",
+          "Fernando Aparicio / Grizzly",
+          "Oscar Luna / Phoenix",
+          "Ramon Reyes /Guerreros",
+          "Víctor Gabriel /Moonlight",
+          "Jaret Dominguez / Grizzly",
+          "Azael Perez / Arkham",
+          "Luis Arvizu / Sin Box",
+          "Julio Miguel / Moonlight",
+          "Enrique Soria / Amarok",
+          "Martin González / Kapital",
+          "Cristian Santiago / Black horse",
+          "Isaias Del Angel/ Ravic-ADL",
+          "Hector Gonzales /",
+          "Reyes Malind /Guerreros",
+          "David Reyes/ Phoenix"
+        ],
+        "Principiante Femenil": [
+          "Rebeca Hernández /",
+          "Rebeca Enriquez /",
+          "Berenice Pérez / Moonlight",
+          "Esmeralda Lopez / Black Horse",
+          "Aimeé /black horse",
+          "Fernanda González /",
+          "Kimberly Abundes / Primitivos",
+          "Tere / Comando",
+          "Lucía Climaco / Wic",
+          "Angelica Jimenez / Black Horse",
+          "Fryda / Comando",
+          "Alyn máximo / Moonlight",
+          "Nancy Gomez / Grizzly",
+          "Nayeli Delreal / Moonlight",
+          "Bet Chong / Moonlight",
+          "Rosy Juárez / Moonlight",
+          "Norma García / Moonlight",
+          "Inzy Cruz / Ravic-ADL",
+          "Dayan Suárez / Ravic-ADL",
+          "Miariam López / Moonlight",
+          "Danny Goar / Sin Box",
+          "Laura Rivas / Black Horse",
+          "Alejandra Alvarez/"
+        ],
+        "Intermedio Varonil": [
+          "Alexis Resendiz / Grizzly",
+          "Arturo Gallardo /Moonlight",
+          "Marco Heredia / Moonlight",
+          "César Ignacio /Phoenix center",
+          "Jose Luis soñanes / Moonlight",
+          "Manuel Cruz/Rhinos CF",
+          "Atri Valadez/Rhinos CF",
+          "Eric Eynard/ Wic",
+          "Benjamin Espinosa / Brotherhood",
+          "Omar Alvarez / Moonlight",
+          "Jorge Kyoshy / Black Horse",
+          "Zaheem Téllez / Phoenix Centro",
+          "Miguel Rodríguez /Phoenix center",
+          "Haniel Vázquez /Gorillax"
+        ],
+        "Intermedio Femenil": [
+          "Tatiana Quezada / Grizzly",
+          "Yaneli Carbajal / Grizzly",
+          "Sonia Zalazar / Grizzly",
+          "mayra /",
+          "Ivana Miranda /Phoenix Center",
+          "Jessica robles /Phoenix Center",
+          "Karen Fuentes / Rhinos CF"
+        ],
+        "Avanzado Varonil": [
+          "David Maya / Grizzly",
+          "Rafael Campos / FIT60",
+          "Irving Salas / Grizzly",
+          "Mauricio Avila / Black Horse",
+          "Raúl López / Mictlan",
+          "Carlos Climaco / Wic"
+        ]
+      },
+      wods: {
+        "WOD 1": {
+          type: "FOR TIME",
+          cap: "10:00",
+          help: "Menor tiempo gana",
+          variants: {
+            "Novatos/Teens": {
+              categories: ["Teens Varonil", "Novatos Varonil", "Novatos Femenil"],
+              description: "3 bloques for time: 10 wall ball, 10 1DB snatch, 30 mts 1DB overhead walking lunge, 50 saltos; luego 20/20/20/50; luego 30/30/10/50.",
+              weights: "Dumbbell H 25 lb / M 20 lb. Medball H 14 lb / M 10 lb."
+            },
+            "Principiantes": {
+              categories: ["Principiante Varonil", "Principiante Femenil"],
+              description: "3 bloques for time: 10 wall ball, 10 1DB snatch, 30 mts 1DB overhead walking lunge, 50 saltos; luego 20/20/20/50; luego 30/30/10/50.",
+              weights: "Dumbbell H 25 lb / M 20 lb. Medball H 14 lb / M 10 lb."
+            },
+            "Intermedios/Master": {
+              categories: ["Intermedio Varonil", "Intermedio Femenil", "Master Varonil", "Master Femenil"],
+              description: "3 bloques for time: 10 wall ball, 10 1DB snatch, 30 mts 1DB overhead walking lunge, 50 saltos dobles; luego 20/20/20/50; luego 30/30/10/50.",
+              weights: "Dumbbell H 35 lb / M 25 lb. Medball H 20 lb / M 14 lb."
+            },
+            "Avanzados": {
+              categories: ["Avanzado Varonil"],
+              description: "3 bloques for time: 10 wall ball, 10 1DB snatch, 30 mts 1DB overhead walking lunge, 50 saltos dobles; luego 20/20/20/50; luego 30/30/10/50.",
+              weights: "Dumbbell H 50 lb / M 35 lb. Medball H 20 lb / M 14 lb."
+            }
+          }
+        },
+        "WOD 2": {
+          type: "AMRAP + RM",
+          cap: "6:00 + 4:00",
+          help: "Mas reps en AMRAP y mayor peso en RM",
+          variants: {
+            "Novatos/Teens": {
+              categories: ["Teens Varonil", "Novatos Varonil", "Novatos Femenil"],
+              description: "AMRAP 6 min: escalera 3-6-9-12-15-18... de hang clean, step up over y H.R.P.U.S. Luego 4 min para encontrar 1RM clean.",
+              weights: "Barra H 65 lb / M 45 lb. Cajon H 24 in / M 20 in."
+            },
+            "Principiantes": {
+              categories: ["Principiante Varonil", "Principiante Femenil"],
+              description: "AMRAP 6 min: escalera 3-6-9-12-15-18... de hang clean, step up over y H.R.P.U.S. Luego 4 min para encontrar 1RM clean.",
+              weights: "Barra H 85 lb / M 65 lb. Cajon H 24 in / M 20 in."
+            },
+            "Intermedios/Master": {
+              categories: ["Intermedio Varonil", "Intermedio Femenil", "Master Varonil", "Master Femenil"],
+              description: "AMRAP 6 min: escalera 3-6-9-12-15-18... de hang clean, box jump over y H.S.P.U.S. Luego 4 min para encontrar 1RM clean.",
+              weights: "Barra H 115 lb / M 85 lb. Cajon H 24 in / M 20 in."
+            },
+            "Avanzados": {
+              categories: ["Avanzado Varonil"],
+              description: "AMRAP 6 min: escalera 3-6-9-12-15-18... de hang clean, box jump over y H.S.P.U.S estrictos. Luego 4 min para encontrar 1RM clean.",
+              weights: "Barra H 135 lb / M 105 lb. Cajon H 30 in / M 24 in."
+            }
+          }
+        },
+        "WOD 3": {
+          type: "POR DEFINIR",
+          cap: "10:00",
+          help: "Pendiente de confirmar",
+          variants: {
+            "General": {
+              categories: [
+                "Teens Varonil",
+                "Novatos Varonil",
+                "Novatos Femenil",
+                "Principiante Varonil",
+                "Principiante Femenil",
+                "Intermedio Varonil",
+                "Intermedio Femenil",
+                "Master Femenil",
+                "Avanzado Varonil"
+              ],
+              description: "WOD 3 pendiente de confirmar por staff.",
+              weights: "Material por definir."
+            }
+          }
+        }
+      }
+    };
+
+    const BASE_HEATS = [
+      {
+        "heat": 1,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Jenifer De La Torre / Primitivo",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Brenda Sanchez / Mictlan",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Coral Rodriguez /Sin Box",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "albi Cervantes / Sin Box",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Leonor González / Sin Box",
+            "category": "Novatos Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 2,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Isabel Aldama / Grizzly",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Lizbeth Catálan / Sin box",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Maria Ortiz /Ravic-ADL",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Reyna Romero /Ravic-ADL",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Karla Hernandez / Black Horse",
+            "category": "Novatos Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 3,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Ivette Luna /Ravic-ADL",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Daniela Rodríguez/Rhinos CF",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Ximena Delgado /Iron BoxL",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Yamyle Morales / UNK-ADL",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Ariana Ramírez / UNK-ADL",
+            "category": "Novatos Femenil"
+          },
+          {
+            "lane": 6,
+            "athlete": "Dolores Domingo / UKN-ADL",
+            "category": "Novatos Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 4,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Leonardo Serratos / Comando",
+            "category": "Teens Mixto"
+          },
+          {
+            "lane": 2,
+            "athlete": "Leonardo De la Curz/ Arkham",
+            "category": "Teens Mixto"
+          },
+          {
+            "lane": 3,
+            "athlete": "Dylan flores / Moonlight",
+            "category": "Teens Mixto"
+          },
+          {
+            "lane": 4,
+            "athlete": "Danna Zoe /Comando",
+            "category": "Teens Mixto"
+          },
+          {
+            "lane": 5,
+            "athlete": "Lizbeth Morelos/ Arkham",
+            "category": "Teens Mixto"
+          },
+          {
+            "lane": 6,
+            "athlete": "Luis Salmoran / Comando",
+            "category": "Teens Mixto"
+          },
+          {
+            "lane": 7,
+            "athlete": "Emiliano/ Comando cross",
+            "category": "Teens Mixto"
+          }
+        ]
+      },
+      {
+        "heat": 5,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Manuel Vazquez / Grizzly",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Pedro Beltrán / Iron box",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "David Martinez / Grizzly",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Damián García / Moonlight",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Diego Garcia / Grizzly",
+            "category": "Novatos Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 6,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Gael flores / Moonlight",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Diego Rubio /Ravic-ADL",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Daniel Solis / Ravic-ADL",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Armando García /Sin Box",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Francisco Silva /Phoenix",
+            "category": "Novatos Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 7,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Ian Ramírez /",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Jose Garcia /Iron Box",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Jazziel Toriz /Iron Box",
+            "category": "Novatos Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Oscar Betancourt /Phoenix",
+            "category": "Novatos Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 8,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Rebeca Hernández /",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Berenice Pérez / Moonlight",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Esmeralda Lopez / Black Horse",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Fernanda González /",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Aimeé /black horse",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 6,
+            "athlete": "Rebeca Enriquez /",
+            "category": "Principiante Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 9,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Tere / Comando",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Angelica Jimenez / Black Horse",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Fryda / Comando",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Alyn máximo / Moonlight",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Nancy Gomez / Grizzly",
+            "category": "Principiante Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 10,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Nayeli Delreal / Moonlight",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Bet Chong / Moonlight",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Rosy Juárez / Moonlight",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Norma García / Moonlight",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Inzy Cruz / Ravic-ADL",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 6,
+            "athlete": "Kimberly Abundes / Primitivos",
+            "category": "Principiante Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 11,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Dayan Suárez / Ravic-ADL",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Miariam López / Moonlight",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Danny Goar / Sin Box",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Laura Rivas / Black Horse",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Alejandra Alvarez/",
+            "category": "Principiante Femenil"
+          },
+          {
+            "lane": 6,
+            "athlete": "Lucía Climaco / Wic",
+            "category": "Principiante Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 12,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Armando Altamirano / Primitivo",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Armando Ruiz / Comandos",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Daniel Rubio / Primitivos",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Noe cortes / Red zone",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "German Costumbre / Primitivos",
+            "category": "Principiante Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 13,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Fernando Aparicio / Grizzly",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Oscar Luna / Phoenix",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Ramon Reyes /Guerreros",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Víctor Gabriel /Moonlight",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Jaret Dominguez / Grizzly",
+            "category": "Principiante Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 14,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Azael Perez / Arkham",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Luis Arvizu / Sin Box",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Julio Miguel / Moonlight",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Enrique Soria / Amarok",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Martin González / Kapital",
+            "category": "Principiante Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 15,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Cristian Santiago / Black horse",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Isaias Del Angel/ Ravic-ADL",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Hector Gonzales /",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Reyes Malind /Guerreros",
+            "category": "Principiante Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "David Reyes/ Phoenix",
+            "category": "Principiante Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 16,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Tatiana Quezada / Grizzly",
+            "category": "Intermedio Femenil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Ivana Miranda /Phoenix Center",
+            "category": "Intermedio Femenil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Yaneli Carbajal / Grizzly",
+            "category": "Intermedio Femenil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Sonia Zalazar / Grizzly",
+            "category": "Intermedio Femenil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Jessica robles /Phoenix Center",
+            "category": "Intermedio Femenil"
+          },
+          {
+            "lane": 6,
+            "athlete": "mayra /",
+            "category": "Intermedio Femenil"
+          },
+          {
+            "lane": 7,
+            "athlete": "Karen Fuentes / Rhinos CF",
+            "category": "Intermedio Femenil"
+          }
+        ]
+      },
+      {
+        "heat": 17,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Alexis Resendiz / Grizzly",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Arturo Gallardo /Moonlight",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Marco Heredia / Moonlight",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "César Ignacio /Phoenix center",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Jose Luis soñanes / Moonlight",
+            "category": "Intermedio Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 18,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Manuel Cruz/Rhinos CF",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Atri Valadez/Rhinos CF",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Eric Eynard/ Wic",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Benjamin Espinosa / Brotherhood",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Omar Alvarez / Moonlight",
+            "category": "Intermedio Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 19,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "Jorge Kyoshy / Black Horse",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Zaheem Téllez / Phoenix Centro",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Miguel Rodríguez /Phoenix center",
+            "category": "Intermedio Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Haniel Vázquez /Gorillax",
+            "category": "Intermedio Varonil"
+          }
+        ]
+      },
+      {
+        "heat": 20,
+        "lanes": [
+          {
+            "lane": 1,
+            "athlete": "David Maya / Grizzly",
+            "category": "Avanzado Varonil"
+          },
+          {
+            "lane": 2,
+            "athlete": "Rafael Campos / FIT60",
+            "category": "Avanzado Varonil"
+          },
+          {
+            "lane": 3,
+            "athlete": "Irving Salas / Grizzly",
+            "category": "Avanzado Varonil"
+          },
+          {
+            "lane": 4,
+            "athlete": "Mauricio Avila / Black Horse",
+            "category": "Avanzado Varonil"
+          },
+          {
+            "lane": 5,
+            "athlete": "Raúl López / Mictlan",
+            "category": "Avanzado Varonil"
+          },
+          {
+            "lane": 6,
+            "athlete": "Carlos Climaco / Wic",
+            "category": "Avanzado Varonil"
+          }
+        ]
+      }
+    ];
+
+    syncCategoriesFromHeats();
+
+    let scores = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    let auditTrail = JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]");
+    let activeCategory = Object.keys(competition.categories)[0];
+    let activeWod = Object.keys(competition.wods)[0];
+
+    const elements = {
+      loginScreen: document.getElementById("loginScreen"),
+      appScreen: document.getElementById("appScreen"),
+      loginForm: document.getElementById("loginForm"),
+      password: document.getElementById("password"),
+      loginError: document.getElementById("loginError"),
+      togglePassword: document.getElementById("togglePassword"),
+      categorySelect: document.getElementById("categorySelect"),
+      wodSelect: document.getElementById("wodSelect"),
+      heatFilter: document.getElementById("heatFilter"),
+      searchInput: document.getElementById("searchInput"),
+      scoreTable: document.getElementById("scoreTable"),
+      leaderboardTable: document.getElementById("leaderboardTable"),
+      athleteGrid: document.getElementById("athleteGrid"),
+      heatTimeline: document.getElementById("heatTimeline"),
+      lastSaved: document.getElementById("lastSaved"),
+      metricAthletes: document.getElementById("metricAthletes"),
+      metricCaptured: document.getElementById("metricCaptured"),
+      metricCategories: document.getElementById("metricCategories")
+    };
+
+    elements.loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (elements.password.value !== PASSWORD) {
+        elements.loginError.textContent = "Contrasena incorrecta";
+        return;
+      }
+      elements.loginError.textContent = "";
+      elements.loginScreen.classList.remove("active");
+      elements.appScreen.classList.add("active");
+      bootApp();
+    });
+
+    elements.togglePassword.addEventListener("click", () => {
+      const isHidden = elements.password.type === "password";
+      elements.password.type = isHidden ? "text" : "password";
+      elements.togglePassword.textContent = isHidden ? "Ocultar" : "Ver";
+    });
+
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      elements.appScreen.classList.remove("active");
+      elements.loginScreen.classList.add("active");
+      elements.password.value = "";
+    });
+
+    document.querySelectorAll(".nav-item").forEach((button) => {
+      button.addEventListener("click", () => switchTab(button.dataset.tab));
+    });
+
+    document.getElementById("recalculateButton").addEventListener("click", renderLeaderboard);
+    document.getElementById("exportButton").addEventListener("click", exportFinalReport);
+    document.getElementById("clearButton").addEventListener("click", clearScores);
+    document.getElementById("addDemoAthlete").addEventListener("click", addGuestAthlete);
+    document.getElementById("showWodsButton").addEventListener("click", openWodsModal);
+    document.getElementById("closeWodsButton").addEventListener("click", closeWodsModal);
+    document.getElementById("wodsModal").addEventListener("click", (event) => {
+      if (event.target.id === "wodsModal") closeWodsModal();
+    });
+    document.querySelectorAll(".heat-filter-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".heat-filter-button").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        renderHeats(button.dataset.wodFilter);
+      });
+    });
+
+    function bootApp() {
+      fillSelectors();
+      renderCapture();
+      renderHeats();
+      renderLeaderboard();
+      renderAthletes();
+      updateMetrics();
+    }
+
+    function fillSelectors() {
+      elements.categorySelect.innerHTML = Object.keys(competition.categories)
+        .map((category) => `<option value="${category}">${category}</option>`)
+        .join("");
+      elements.wodSelect.innerHTML = Object.keys(competition.wods)
+        .map((wod) => `<option value="${wod}">${wod}</option>`)
+        .join("");
+      elements.heatFilter.innerHTML = [
+        `<option value="all">Todos</option>`,
+        ...BASE_HEATS.map((heat) => `<option value="${heat.heat}">Heat ${heat.heat}</option>`)
+      ].join("");
+
+      elements.categorySelect.value = activeCategory;
+      elements.wodSelect.value = activeWod;
+
+      elements.categorySelect.addEventListener("change", () => {
+        activeCategory = elements.categorySelect.value;
+        renderCapture();
+        renderLeaderboard();
+      });
+      elements.wodSelect.addEventListener("change", () => {
+        activeWod = elements.wodSelect.value;
+        renderCapture();
+        renderLeaderboard();
+      });
+      elements.heatFilter.addEventListener("change", renderCapture);
+      elements.searchInput.addEventListener("input", renderCapture);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.classList.toggle("active", item.dataset.tab === tabId);
+      });
+      document.querySelectorAll(".tab-panel").forEach((panel) => {
+        panel.classList.toggle("active", panel.id === tabId);
+      });
+      if (tabId === "leaderboard") renderLeaderboard();
+      if (tabId === "athletes") renderAthletes();
+      if (tabId === "heats") renderHeats(document.querySelector(".heat-filter-button.active")?.dataset.wodFilter || "all");
+    }
+
+    function renderHeats(wodFilter = "all") {
+      const timeline = buildHeatTimeline().filter((item) => {
+        return wodFilter === "all" || item.wod === wodFilter || item.nextWod === wodFilter;
+      });
+
+      elements.heatTimeline.innerHTML = timeline.map((item) => {
+        if (item.type === "change") {
+          return `
+            <article class="heat-change">
+              <strong>Cambio de material</strong>
+              <span>${item.start} - ${item.end}</span>
+              <p>${item.material}</p>
+            </article>
+          `;
+        }
+
+        const laneCount = Math.max(1, ...item.lanes.map((lane) => lane.lane));
+        const lanes = Array.from({ length: laneCount }, (_, index) => {
+          const lane = item.lanes.find((entry) => entry.lane === index + 1);
+          return `
+            <tr>
+              <td><span class="lane-number">${index + 1}</span></td>
+              <td>${lane ? escapeHtml(lane.athlete) : "<span class=\"muted-text\">Libre</span>"}</td>
+              <td>${lane ? escapeHtml(lane.category) : ""}</td>
+            </tr>
+          `;
+        }).join("");
+
+        return `
+          <article class="heat-block">
+            <div class="heat-block-head">
+              <div>
+                <span class="eyebrow">${item.wod}</span>
+                <h4>Heat ${item.heat}</h4>
+              </div>
+              <div class="heat-time">
+                <strong>${item.start} - ${item.end}</strong>
+                <span>${item.lanes.length}/${laneCount} atletas</span>
+              </div>
+            </div>
+            <div class="heat-material">
+              <strong>Material</strong>
+              <span>${escapeHtml(item.material)}</span>
+            </div>
+            <table class="lanes-table">
+              <thead>
+                <tr>
+                  <th>Carril</th>
+                  <th>Atleta</th>
+                  <th>Categoria</th>
+                </tr>
+              </thead>
+              <tbody>${lanes}</tbody>
+            </table>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function buildHeatTimeline() {
+      const items = [];
+      let currentMinutes = 7 * 60;
+      let previousMaterial = null;
+
+      Object.keys(competition.wods).forEach((wod) => {
+        BASE_HEATS.forEach((baseHeat) => {
+          const material = getHeatMaterial(baseHeat, wod);
+          if (previousMaterial !== null && material !== previousMaterial) {
+            const changeStart = currentMinutes;
+            currentMinutes += 3;
+            items.push({
+              type: "change",
+              nextWod: wod,
+              start: minutesToDisplay(changeStart),
+              end: minutesToDisplay(currentMinutes),
+              material
+            });
+          }
+
+          const start = currentMinutes;
+          currentMinutes += 10;
+          items.push({
+            type: "heat",
+            wod,
+            heat: baseHeat.heat,
+            start: minutesToDisplay(start),
+            end: minutesToDisplay(currentMinutes),
+            material,
+            lanes: baseHeat.lanes
+          });
+          previousMaterial = material;
+        });
+      });
+
+      return items;
+    }
+
+    function getHeatAthletes(category, wodName) {
+      return BASE_HEATS.flatMap((heat) => {
+        return heat.lanes
+          .filter((lane) => lane.category === category)
+          .map((lane) => ({
+            name: lane.athlete,
+            heat: String(heat.heat),
+            lane: lane.lane,
+            material: getHeatMaterial(heat, wodName)
+          }));
+      });
+    }
+
+    function getHeatMaterial(heat, wodName) {
+      const materials = heat.lanes.map((lane) => {
+        return getWodForCategory(wodName, lane.category).weights;
+      });
+      return [...new Set(materials)].join(" / ");
+    }
+
+    function syncCategoriesFromHeats() {
+      const categories = {};
+      BASE_HEATS.forEach((heat) => {
+        heat.lanes.forEach((lane) => {
+          if (!categories[lane.category]) categories[lane.category] = [];
+          if (!categories[lane.category].includes(lane.athlete)) {
+            categories[lane.category].push(lane.athlete);
+          }
+        });
+      });
+      competition.categories = {
+        ...competition.categories,
+        ...categories
+      };
+    }
+
+    function minutesToDisplay(totalMinutes) {
+      const hours = Math.floor(totalMinutes / 60) % 24;
+      const minutes = totalMinutes % 60;
+      const suffix = hours < 12 ? "AM" : "PM";
+      const hour12 = hours % 12 || 12;
+      return `${String(hour12).padStart(2, "0")}:${String(minutes).padStart(2, "0")} ${suffix}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderCapture() {
+      const wod = getActiveWod();
+      document.getElementById("wodType").textContent = wod.type;
+      document.getElementById("wodName").textContent = activeWod;
+      document.getElementById("wodDescription").textContent = wod.description;
+      document.getElementById("timeCap").textContent = `Time cap ${wod.cap}`;
+      document.getElementById("scoreHelp").textContent = `${wod.help} | ${wod.weights}`;
+      const isWod2 = activeWod === "WOD 2";
+      document.getElementById("scoreColumnLabel").textContent = isWod2 ? "Puntos AMRAP" : "Score principal";
+      document.getElementById("weightColumnLabel").textContent = isWod2 ? "RM Clean (lb)" : "Peso";
+
+      const query = elements.searchInput.value.trim().toLowerCase();
+      const heat = elements.heatFilter.value;
+      const athletes = getHeatAthletes(activeCategory, activeWod)
+        .filter((athlete) => heat === "all" || athlete.heat === heat)
+        .filter((athlete) => athlete.name.toLowerCase().includes(query));
+
+      if (!athletes.length) {
+        elements.scoreTable.innerHTML = document.getElementById("emptyRowTemplate").innerHTML;
+        return;
+      }
+
+      elements.scoreTable.innerHTML = athletes.map((athlete) => {
+        const saved = getScore(activeCategory, activeWod, athlete.name);
+        return `
+          <tr>
+            <td><span class="heat-pill">H${athlete.heat}</span></td>
+            <td><span class="lane-number">${athlete.lane}</span></td>
+            <td class="athlete-cell">${athlete.name}</td>
+            <td><input class="score-input" data-athlete="${athlete.name}" data-field="score" type="number" min="0" value="${saved.score || ""}" placeholder="${wod.type === "RM" ? "lb" : "reps"}"></td>
+            <td><input class="score-input" data-athlete="${athlete.name}" data-field="time" value="${saved.time || ""}" placeholder="00:00"></td>
+            <td><input class="score-input" data-athlete="${athlete.name}" data-field="tiebreak" value="${saved.tiebreak || ""}" placeholder="00:00"></td>
+            <td><input class="score-input" data-athlete="${athlete.name}" data-field="weight" type="number" min="0" value="${saved.weight || ""}" placeholder="lb"></td>
+            <td>
+              <select class="score-input status-select" data-athlete="${athlete.name}" data-field="status">
+                <option value="pending" ${saved.status === "pending" ? "selected" : ""}>Pendiente</option>
+                <option value="valid" ${saved.status === "valid" ? "selected" : ""}>Validado</option>
+                <option value="review" ${saved.status === "review" ? "selected" : ""}>Revision</option>
+              </select>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".score-input").forEach((input) => {
+        input.addEventListener("input", saveScoreFromInput);
+        input.addEventListener("change", saveScoreFromInput);
+      });
+    }
+
+    function saveScoreFromInput(event) {
+      const athlete = event.target.dataset.athlete;
+      const field = event.target.dataset.field;
+      const key = scoreKey(activeCategory, activeWod, athlete);
+      scores[key] = {
+        athlete,
+        category: activeCategory,
+        wod: activeWod,
+        ...scores[key],
+        [field]: event.target.value
+      };
+      if (event.type === "change") {
+        registerChange({
+          action: "Actualizacion de resultado",
+          athlete,
+          category: activeCategory,
+          wod: activeWod,
+          field,
+          value: event.target.value
+        });
+      }
+      persistScores();
+      updateMetrics();
+    }
+
+    function renderLeaderboard() {
+      const wod = getActiveWod();
+      const athletes = getAthletes(activeCategory).map((athlete) => {
+        const score = getScore(activeCategory, activeWod, athlete);
+        return {
+          athlete,
+          ...score,
+          scoreValue: Number(score.score || 0),
+          weightValue: Number(score.weight || 0),
+          timeValue: timeToSeconds(score.time),
+          tiebreakValue: timeToSeconds(score.tiebreak)
+        };
+      });
+
+      const captured = athletes.filter((item) => hasCapturedScore(item));
+      captured.sort((a, b) => compareScores(a, b, wod.type));
+
+      if (!captured.length) {
+        elements.leaderboardTable.innerHTML = `
+          <tr><td colspan="5" class="empty-state">Aun no hay scores capturados para ${activeCategory} / ${activeWod}.</td></tr>
+        `;
+        return;
+      }
+
+      elements.leaderboardTable.innerHTML = captured.map((item, index) => `
+        <tr>
+          <td><strong>${index + 1}</strong></td>
+          <td class="athlete-cell">${item.athlete}</td>
+          <td>${scoreDetail(item, wod.type)}</td>
+          <td>${Math.max(100 - index * 2, 0)}</td>
+          <td><span class="status-badge ${item.status || "pending"}">${statusLabel(item.status)}</span></td>
+        </tr>
+      `).join("");
+    }
+
+    function renderAthletes() {
+      elements.athleteGrid.innerHTML = Object.entries(competition.categories).map(([category, athletes]) => `
+        <article class="athlete-card">
+          <h4>${category}</h4>
+          <p>${athletes.length} atletas</p>
+          <ul>
+            ${athletes.map((athlete) => `<li>${athlete}</li>`).join("")}
+          </ul>
+        </article>
+      `).join("");
+    }
+
+    function addGuestAthlete() {
+      const name = prompt("Nombre del atleta invitado");
+      if (!name) return;
+      competition.categories[activeCategory].push(`${name} / Invitado`);
+      registerChange({ action: "Atleta invitado agregado", athlete: name, category: activeCategory });
+      renderCapture();
+      renderAthletes();
+      updateMetrics();
+    }
+
+    function openWodsModal() {
+      const modal = document.getElementById("wodsModal");
+      document.getElementById("wodsList").innerHTML = Object.entries(competition.wods).map(([name]) => {
+        const wod = getWodForCategory(name, activeCategory);
+        return `
+        <article class="wod-summary ${name === activeWod ? "active" : ""}">
+          <div>
+            <span class="chip">${wod.type}</span>
+            <h4>${name}</h4>
+          </div>
+          <p>${wod.description}</p>
+          <div class="wod-summary-meta">
+            <span>Time cap: ${wod.cap}</span>
+            <span>${wod.help}</span>
+            <span>${wod.weights}</span>
+          </div>
+        </article>
+      `;
+      }).join("");
+      modal.hidden = false;
+    }
+
+    function closeWodsModal() {
+      document.getElementById("wodsModal").hidden = true;
+    }
+
+    function getAthletes(category) {
+      return competition.categories[category] || [];
+    }
+
+    function getActiveWod() {
+      return getWodForCategory(activeWod, activeCategory);
+    }
+
+    function getWodForCategory(wodName, category) {
+      const wod = competition.wods[wodName];
+      const variant = Object.values(wod.variants).find((item) => item.categories.includes(category));
+      return {
+        ...wod,
+        ...(variant || Object.values(wod.variants)[0])
+      };
+    }
+
+    function getScore(category, wod, athlete) {
+      return scores[scoreKey(category, wod, athlete)] || { status: "pending" };
+    }
+
+    function scoreKey(category, wod, athlete) {
+      return `${category}|${wod}|${athlete}`;
+    }
+
+    function hasCapturedScore(item) {
+      return Boolean(item.score || item.time || item.tiebreak || item.weight);
+    }
+
+    function compareScores(a, b, type) {
+      if (type === "FOR TIME") {
+        if (a.timeValue !== b.timeValue) return a.timeValue - b.timeValue;
+        if (b.scoreValue !== a.scoreValue) return b.scoreValue - a.scoreValue;
+        return a.tiebreakValue - b.tiebreakValue;
+      }
+      if (type === "AMRAP") {
+        if (b.scoreValue !== a.scoreValue) return b.scoreValue - a.scoreValue;
+        if (b.weightValue !== a.weightValue) return b.weightValue - a.weightValue;
+        return a.tiebreakValue - b.tiebreakValue;
+      }
+      if (type === "AMRAP + RM") {
+        if (b.scoreValue !== a.scoreValue) return b.scoreValue - a.scoreValue;
+        if (b.weightValue !== a.weightValue) return b.weightValue - a.weightValue;
+        return a.tiebreakValue - b.tiebreakValue;
+      }
+      if (type === "RM") {
+        if (b.weightValue !== a.weightValue) return b.weightValue - a.weightValue;
+        return b.scoreValue - a.scoreValue;
+      }
+      return 0;
+    }
+
+    function scoreDetail(item, type) {
+      if (type === "FOR TIME") return item.time || "Sin tiempo";
+      if (type === "AMRAP") return `${item.scoreValue} reps`;
+      if (type === "AMRAP + RM") return `${item.scoreValue} reps / ${item.weightValue} lb`;
+      if (type === "RM") return `${item.weightValue} lb / ${item.scoreValue} reps`;
+      return item.score || "Sin score";
+    }
+
+    function timeToSeconds(value) {
+      if (!value) return 999999;
+      const parts = value.split(":").map(Number);
+      if (parts.some(Number.isNaN)) return 999999;
+      return (parts[0] || 0) * 60 + (parts[1] || 0);
+    }
+
+    function statusLabel(status) {
+      if (status === "valid") return "Validado";
+      if (status === "review") return "Revision";
+      return "Pendiente";
+    }
+
+    function persistScores() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(scores));
+      elements.lastSaved.textContent = `Guardado ${new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}`;
+    }
+
+    function registerChange(change) {
+      auditTrail.push({
+        ...change,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem(AUDIT_KEY, JSON.stringify(auditTrail));
+    }
+
+    function updateMetrics() {
+      elements.metricAthletes.textContent = Object.values(competition.categories).flat().length;
+      elements.metricCaptured.textContent = Object.values(scores).filter(hasCapturedScore).length;
+      elements.metricCategories.textContent = Object.keys(competition.categories).length;
+    }
+
+    async function exportFinalReport() {
+      const generatedAt = new Date();
+      const documentId = `WS-C2-${generatedAt.toISOString().replace(/\D/g, "").slice(0, 14)}`;
+      const logo = await getLogoDataUrl();
+      const allAthletes = Object.entries(competition.categories).flatMap(([category, athletes]) =>
+        athletes.map((athlete) => ({ category, athlete }))
+      );
+      const captured = Object.values(scores).filter(hasCapturedScore).length;
+      const validated = Object.values(scores).filter((item) => item.status === "valid").length;
+      const athleteRows = allAthletes.map(({ category, athlete }) => {
+        const assignment = BASE_HEATS.flatMap((heat) => heat.lanes.map((lane) => ({ ...lane, heat: heat.heat })))
+          .find((lane) => lane.athlete === athlete && lane.category === category);
+        return `<tr><td>${escapeHtml(athlete)}</td><td>${escapeHtml(category)}</td><td>${assignment ? assignment.heat : "-"}</td><td>${assignment ? assignment.lane : "-"}</td></tr>`;
+      }).join("");
+      const resultRows = allAthletes.flatMap(({ category, athlete }) =>
+        Object.keys(competition.wods).map((wod) => {
+          const item = getScore(category, wod, athlete);
+          const isWod2 = wod === "WOD 2";
+          return `<tr>
+            <td>${escapeHtml(athlete)}</td><td>${escapeHtml(category)}</td><td>${wod}</td>
+            <td>${escapeHtml(item.score || "-")}</td><td>${escapeHtml(item.time || "-")}</td>
+            <td>${escapeHtml(item.tiebreak || "-")}</td><td>${escapeHtml(item.weight || "-")}</td>
+            <td>${isWod2 ? "AMRAP + RM Clean" : escapeHtml(competition.wods[wod].type)}</td>
+            <td>${statusLabel(item.status)}</td>
+          </tr>`;
+        })
+      ).join("");
+      const changeRows = [...auditTrail].reverse().map((item, index) => `<tr>
+        <td>${auditTrail.length - index}</td><td>${formatReportDate(item.timestamp)}</td>
+        <td>${escapeHtml(item.action || "Cambio")}</td><td>${escapeHtml(item.athlete || "-")}</td>
+        <td>${escapeHtml(item.wod || "-")}</td><td>${escapeHtml(fieldLabel(item.field))}</td>
+        <td>${escapeHtml(item.value === "" ? "Vacio" : item.value ?? "-")}</td>
+      </tr>`).join("") || `<tr><td colspan="7" class="empty">Sin cambios registrados desde la activacion de la bitacora.</td></tr>`;
+      const report = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Memoria Final WODSTARS</title>
+        <style>
+          :root{--red:#ffd400;--ink:#121212;--muted:#686868;--line:#dedede;--soft:#f5f5f3}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#d9d9d6}.report{max-width:1200px;margin:28px auto;background:#fff;box-shadow:0 24px 80px #0004}.cover{min-height:650px;padding:68px;background:radial-gradient(circle at 82% 18%,#ffd40022 0 13%,transparent 14%),linear-gradient(135deg,#111 0%,#202020 70%,#090909 100%);color:#fff;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;border-bottom:12px solid var(--red)}.cover:before{content:"COMPETENCIA 2";position:absolute;right:-80px;bottom:125px;font-size:92px;font-weight:900;letter-spacing:.02em;color:#ffffff08;transform:rotate(-90deg)}.cover:after{content:"";position:absolute;width:460px;height:460px;border:90px solid #ffd40018;border-radius:50%;right:-160px;top:-150px}.brand{position:relative;z-index:1}.logo{width:300px;max-height:170px;object-fit:contain;object-position:left}.kicker{color:var(--red);text-transform:uppercase;letter-spacing:.24em;font-weight:900;font-size:12px;margin-top:22px}.edition{display:inline-block;margin-top:14px;padding:7px 12px;border:1px solid #ffd40077;color:#ffd400;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}.cover h1{font-size:64px;line-height:.92;margin:20px 0;max-width:760px;text-transform:uppercase;letter-spacing:-.045em}.cover p{color:#cfcfcf;font-size:18px;max-width:700px;line-height:1.55}.doc-control{position:absolute;right:60px;top:56px;z-index:2;text-align:right;font-size:10px;color:#9b9b9b;line-height:1.7;letter-spacing:.08em}.doc-control strong{color:#ffd400}.folio{display:flex;gap:36px;position:relative;z-index:1;border-top:1px solid #ffffff22;padding-top:24px}.folio strong{display:block;font-size:30px;color:#fff}.folio span{color:#999;font-size:10px;text-transform:uppercase;letter-spacing:.14em}.content{padding:48px}.section{margin:0 0 52px;page-break-inside:auto}.section-head{border-left:7px solid var(--red);padding-left:17px;margin-bottom:20px}.section-head h2{margin:0;font-size:29px;text-transform:uppercase;letter-spacing:-.025em}.section-head p{margin:6px 0 0;color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#171717;color:#fff;border-top:5px solid var(--red);padding:21px}.card strong{font-size:36px;display:block;color:var(--red)}.card span{color:#aaa;font-size:10px;text-transform:uppercase;letter-spacing:.1em}table{width:100%;border-collapse:collapse;font-size:11px}thead{display:table-header-group}th{background:#171717;color:#ffd400;text-align:left;padding:11px 8px;text-transform:uppercase;font-size:9px;letter-spacing:.06em}td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr:nth-child(even){background:#f6f6f4}.empty{text-align:center;color:var(--muted);padding:24px}.note{padding:15px 18px;background:#fff9d9;border-left:5px solid var(--red);color:#4a421d;font-size:12px}.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.team-card{padding:22px;background:#151515;color:#fff;position:relative;overflow:hidden}.team-card:after{content:"";position:absolute;width:90px;height:90px;background:#ffd40018;border-radius:50%;right:-25px;top:-30px}.team-card small{color:#ffd400;text-transform:uppercase;letter-spacing:.13em;font-weight:800}.team-card h3{margin:9px 0 4px;font-size:22px}.team-card p{margin:0;color:#aaa;font-size:12px}.manifesto{padding:28px;background:linear-gradient(120deg,#ffd400,#ffe767);font-size:18px;line-height:1.55;font-weight:700}.signature-zone{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:48px}.signature{text-align:center;padding-top:36px}.signature-name{font-family:cursive;font-size:34px;transform:rotate(-3deg);margin-bottom:8px}.signature-line{border-top:1px solid #222;padding-top:10px;font-size:11px;text-transform:uppercase;letter-spacing:.1em}.seal{width:108px;height:108px;border:5px double #171717;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;font-weight:900;letter-spacing:.08em;margin:0 auto 12px;transform:rotate(-8deg)}.footer{padding:24px 42px;background:#111;color:#999;display:flex;justify-content:space-between;font-size:10px;border-top:5px solid var(--red)}@media print{body{background:#fff}.report{margin:0;max-width:none;box-shadow:none}.cover{min-height:100vh;page-break-after:always}.section{page-break-before:auto}.cards{grid-template-columns:repeat(4,1fr)}.signature-zone{page-break-inside:avoid}}@media(max-width:700px){.cover{padding:34px}.cover h1{font-size:42px}.doc-control{position:static;text-align:left;margin-bottom:30px}.content{padding:22px}.cards,.team-grid,.signature-zone{grid-template-columns:1fr}.table-wrap{overflow:auto}}
+        </style></head><body><main class="report">
+        <section class="cover"><div class="doc-control"><strong>CONTROL DOCUMENTAL</strong><br>${documentId}<br>VERSION FINAL · TEMPORADA 2026<br>CLASIFICACION: OFICIAL</div><div class="brand">${logo ? `<img class="logo" src="${logo}" alt="WODSTARS">` : `<div class="kicker">WODSTARS</div>`}<div class="kicker">Documento oficial de cierre</div><div class="edition">Competencia 2 · Edicion 2026</div><h1>Memoria Final de Competencia</h1><p>El registro definitivo de atletas, operación deportiva, resultados por WOD, trazabilidad y equipo responsable.</p></div><div class="folio"><div><strong>${allAthletes.length}</strong><span>Atletas</span></div><div><strong>${BASE_HEATS.length}</strong><span>Heats oficiales</span></div><div><strong>${auditTrail.length}</strong><span>Cambios auditados</span></div><div><strong>${formatReportDate(generatedAt)}</strong><span>Fecha de emisión</span></div></div></section>
+        <div class="content"><section class="section"><div class="section-head"><h2>Resumen ejecutivo</h2><p>Estado consolidado al momento de la descarga.</p></div><div class="cards"><div class="card"><strong>${allAthletes.length}</strong><span>Atletas registrados</span></div><div class="card"><strong>${captured}</strong><span>Scores capturados</span></div><div class="card"><strong>${validated}</strong><span>Resultados validados</span></div><div class="card"><strong>${auditTrail.length}</strong><span>Cambios registrados</span></div></div></section>
+        <section class="section"><div class="section-head"><h2>Directorio oficial</h2><p>Categoria, heat y carril de cada atleta.</p></div><div class="table-wrap"><table><thead><tr><th>Atleta / Box</th><th>Categoria</th><th>Heat</th><th>Carril</th></tr></thead><tbody>${athleteRows}</tbody></table></div></section>
+        <section class="section"><div class="section-head"><h2>Resultados por WOD</h2><p>En WOD 2, los puntos AMRAP y el RM de Clean se muestran en columnas independientes.</p></div><div class="table-wrap"><table><thead><tr><th>Atleta</th><th>Categoria</th><th>WOD</th><th>Puntos / reps</th><th>Tiempo</th><th>Tiebreak</th><th>RM / peso (lb)</th><th>Modalidad</th><th>Estado</th></tr></thead><tbody>${resultRows}</tbody></table></div></section>
+        <section class="section"><div class="section-head"><h2>Bitacora de cambios</h2><p>${auditTrail.length} movimientos, del mas reciente al mas antiguo.</p></div><div class="note">La bitacora registra modificaciones realizadas desde que esta funcion fue activada en este navegador. Los datos anteriores permanecen en los resultados, aunque no es posible reconstruir retroactivamente su hora exacta.</div><div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha y hora</th><th>Accion</th><th>Atleta</th><th>WOD</th><th>Dato</th><th>Valor</th></tr></thead><tbody>${changeRows}</tbody></table></div></section>
+        <section class="section"><div class="section-head"><h2>Equipo de Produccion</h2><p>Personas responsables de convertir la competencia en una experiencia de alto nivel.</p></div><div class="team-grid"><article class="team-card"><small>Direccion general y competencia</small><h3>Enrique Heredia</h3><p>Coordinacion integral, operación deportiva y validacion final.</p></article><article class="team-card"><small>Equipo de produccion</small><h3>Atri Acosta</h3><p>Logistica, ejecucion y soporte operativo.</p></article><article class="team-card"><small>Equipo de produccion</small><h3>Romina Miranda</h3><p>Coordinacion de experiencia y atencion de competencia.</p></article><article class="team-card"><small>Equipo de produccion</small><h3>Leonardo Paez</h3><p>Operacion en piso y seguimiento deportivo.</p></article><article class="team-card"><small>Responsable web y datos</small><h3>Enrique Heredia</h3><p>Plataforma, trazabilidad, publicación y memoria digital.</p></article><article class="team-card"><small>Control de resultados</small><h3>WODSTARS Scores</h3><p>Captura, revision y consolidacion del archivo oficial.</p></article></div></section>
+        <section class="section"><div class="section-head"><h2>Declaracion de Integridad</h2><p>Cierre institucional y certificacion del documento.</p></div><div class="manifesto">Esta memoria representa el estado consolidado de Competencia 2 al momento de su emisión. La información fue organizada para preservar la trazabilidad de atletas, heats, resultados y modificaciones, bajo los principios de claridad, responsabilidad deportiva y mejora continua de WODSTARS.</div><div class="signature-zone"><div class="signature"><div class="signature-name">Enrique Heredia</div><div class="signature-line"><strong>Enrique Heredia</strong><br>Encargado de Competencia · Encargado Web<br>Firma y validacion oficial</div></div><div class="signature"><div class="seal">WODSTARS<br>DOCUMENTO<br>OFICIAL<br>2026</div><div class="signature-line"><strong>Sello de control</strong><br>${documentId}<br>Emitido ${formatReportDate(generatedAt)}</div></div></div></section></div>
+        <footer class="footer"><span>WODSTARS · COMPETENCIA 2 · MEMORIA FINAL</span><span>${documentId} · Generado ${formatReportDate(generatedAt)}</span></footer></main></body></html>`;
+      const blob = new Blob([report], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `WODSTARS_Memoria_Final_${generatedAt.toISOString().slice(0, 10)}.html`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function getLogoDataUrl() {
+      try {
+        const candidates = ["../wodstar-logo.png", "wodstar-logo.png", "wodstar-logo-transparent.png"];
+        let blob = null;
+        for (const path of candidates) {
+          try {
+            const response = await fetch(path);
+            if (response.ok) { blob = await response.blob(); break; }
+          } catch (_) {}
+        }
+        if (!blob) return "";
+        return await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => resolve("");
+          reader.readAsDataURL(blob);
+        });
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function formatReportDate(value) {
+      return new Date(value).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
+    }
+
+    function fieldLabel(field) {
+      return ({ score: "Puntos / reps", time: "Tiempo", tiebreak: "Tiebreak", weight: "RM / peso", status: "Estado" })[field] || field || "-";
+    }
+
+    function exportCsv() {
+      const rows = [["Categoria", "WOD", "Competidor", "Score", "Tiempo", "Tiebreak", "Peso", "Estado"]];
+      Object.values(scores).forEach((item) => {
+        rows.push([
+          item.category,
+          item.wod,
+          item.athlete,
+          item.score || "",
+          item.time || "",
+          item.tiebreak || "",
+          item.weight || "",
+          statusLabel(item.status)
+        ]);
+      });
+
+      const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "wodstars-scores.csv";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearScores() {
+      if (!confirm("Esto borrara todos los scores guardados en este navegador. Continuar?")) return;
+      registerChange({
+        action: "Borrado general de resultados",
+        value: `${Object.values(scores).filter(hasCapturedScore).length} scores eliminados`
+      });
+      scores = {};
+      persistScores();
+      renderCapture();
+      renderLeaderboard();
+      updateMetrics();
+    }
+  
+
+  </script>
+</body>
+</html>
