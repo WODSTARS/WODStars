@@ -5042,12 +5042,16 @@ function mostrarCompetencia(){
 
   atletas.forEach((a,i)=>{
 
-    let clase="";
-    if(i===0)clase="gold";
-    else if(i===1)clase="silver";
-    else if(i===2)clase="bronze";
+    const posicion = i > 0 && a.total === atletas[i-1].total
+      ? atletas.findIndex(anterior=>anterior.total===a.total) + 1
+      : i + 1;
 
-    let lugar=i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1;
+    let clase="";
+    if(posicion===1)clase="gold";
+    else if(posicion===2)clase="silver";
+    else if(posicion===3)clase="bronze";
+
+    let lugar=posicion===1?"🥇":posicion===2?"🥈":posicion===3?"🥉":posicion;
 
     const recordBadge = atletaTieneRecord(a, recordsActuales) ? ` <span class="record-badge">🏆 RECORD</span>` : "";
     html+=`<tr class="${clase}" onclick='verAtleta(${JSON.stringify(a)},${i})'>
