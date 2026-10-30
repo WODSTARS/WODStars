@@ -7388,5 +7388,43 @@ ${heats[categoriaActual] ||
 
 </script>
 
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/+esm";
+const liveDb = createClient("https://frabmnxuaypxodtgpzzj.supabase.co", "sb_publishable_DK1mCrP-0M-n8FRs4RraCA_pDQ-RY0A");
+const liveNorm = value => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const liveTime = seconds => {
+  if(seconds === null || seconds === undefined) return null;
+  const total = Number(seconds);
+  if(!Number.isFinite(total)) return null;
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+};
+
+async function sincronizarPuntajesPublicos(){
+  const {data:evento, error:eventError} = await liveDb.from("competition_events").select("id").eq("slug", "hallo-wod-jaguar-cross").eq("status", "published").maybeSingle();
+  if(eventError || !evento) return;
+  const {data:rows, error} = await liveDb.from("competition_scores").select("wod_number,rounds,reps,time_seconds,tie_break_seconds,weight_kg,points,competition_athletes(name)").eq("event_id", evento.id);
+  if(error || !Array.isArray(rows)) return;
+  for(const row of rows){
+    const nombre = row.competition_athletes?.name;
+    const atleta = datos.pruebaIndividual.ATLETAS.find(item => liveNorm(item.nombre.split("/")[0]) === liveNorm(nombre));
+    const indice = Number(row.wod_number) - 1;
+    if(!atleta || indice < 0 || indice >= atleta.resultados.length) continue;
+    const resultado = atleta.resultados[indice];
+    if(row.rounds !== null && row.rounds !== undefined) resultado.rondas = row.rounds;
+    if(row.reps !== null && row.reps !== undefined) resultado.reps = row.reps;
+    const tiempo = liveTime(row.time_seconds);
+    if(tiempo) resultado.tiempo = tiempo;
+    const desempate = liveTime(row.tie_break_seconds);
+    if(desempate) resultado.tiebreak = desempate;
+    if(row.weight_kg !== null && row.weight_kg !== undefined) resultado.peso = `${row.weight_kg} kg`;
+    if(row.points !== null && row.points !== undefined) resultado.puntos = row.points;
+  }
+  if(typeof mostrarCompetencia === "function" && competenciaSelect.value) mostrarCompetencia();
+}
+
+sincronizarPuntajesPublicos();
+liveDb.channel("public-competition-scores").on("postgres_changes", {event:"*", schema:"public", table:"competition_scores"}, sincronizarPuntajesPublicos).subscribe();
+</script>
+
 </body>
 </html>
