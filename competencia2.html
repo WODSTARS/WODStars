@@ -1344,12 +1344,12 @@ function mostrarCompetencia(){
   const equipos=datos.pruebaEquipos.EQUIPOS.filter(e=>e.categoria==="Unica")
     .map(e=>({...e,total:(e.resultados||[]).reduce((sum,r)=>sum+(Number(r.puntos)||0),0)}))
     .sort((a,b)=>b.total-a.total);
-  let html=`<div class="category">Categoría Unica · Equipos de 4</div><table><tr><th>#</th><th>Equipo</th><th>Integrantes</th><th>Total</th></tr>`;
+  let html=`<div class="category">Categoría Unica · Equipos de 4</div><table><tr><th>#</th><th>Equipo</th><th>Total</th></tr>`;
   equipos.forEach((e,i)=>{
     const posicion=i>0 && e.total===equipos[i-1].total ? equipos.findIndex(prev=>prev.total===e.total)+1 : i+1;
     const clase=posicion===1?"gold":posicion===2?"silver":posicion===3?"bronze":"";
     const lugar=posicion===1?"🥇":posicion===2?"🥈":posicion===3?"🥉":posicion;
-    html+=`<tr class="${clase}" onclick='verEquipo(${JSON.stringify(e).replace(/'/g,"&#39;")},${i})'><td>${lugar}</td><td><strong>${textoSeguro(e.nombre)}</strong></td><td>${(e.integrantes||[]).map(textoSeguro).join("<br>")}</td><td>${e.total}</td></tr>`;
+    html+=`<tr class="${clase}" onclick='verEquipo(${JSON.stringify(e).replace(/'/g,"&#39;")},${i})' title="Haz clic para ver integrantes y resultados"><td>${lugar}</td><td><strong>${textoSeguro(e.nombre)}</strong><br><small style="color:#aaa;font-size:.78em">Toca para ver integrantes</small></td><td>${e.total}</td></tr>`;
   });
   html+="</table>";
   if(!equipos.length)html+=`<p class="records-empty">Aún no hay equipos registrados. Cada equipo debe tener cuatro integrantes.</p>`;
