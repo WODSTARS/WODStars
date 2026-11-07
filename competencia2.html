@@ -800,9 +800,9 @@ body{
 </section>
 
 <div class="secondary-actions">
-  <a class="highlights-link" href="https://wodstars.github.io/wodstarshiglights/">Highlights</a>
+
   <button onclick="mostrarHeats()">Heats y Carriles</button>
-  <button onclick="mostrarTablaRecords()">Records</button>
+
 </div>
 <div id="tablas"></div>
 <div id="modalContainer"></div>
@@ -940,7 +940,7 @@ document.addEventListener("DOMContentLoaded", () => {
   Cambia false por true y vuelve a publicar el archivo para mostrar "EN VIVO"
   a todos los visitantes el dia de la competencia.
 */
-const MODO_EN_VIVO =true; 
+const MODO_EN_VIVO =false; 
 //const MODO_EN_VIVO = true;
 function aplicarModoEnVivo(){
   const badge = document.getElementById("liveBadge");
@@ -1316,27 +1316,10 @@ function enviarFotoAtleta(event){
   status.className = "photo-notice";
 }
 
-function obtenerRecords(){
-  return datos.pruebaEquipos.EQUIPOS.map(e=>{
-    const clean=e.resultados?.find(r=>r.wod==="WOD 2");
-    const peso=numeroDesdePeso(clean?.peso);
-    return clean && peso!==null ? {equipo:e,resultado:clean,marca:peso} : null;
-  }).filter(Boolean).sort((a,b)=>b.marca-a.marca).slice(0,3);
-}
-function obtenerRecordDestacado(records){
-  const record=records[0];
-  return record ? {titulo:"Record Clean RM",mensaje:`${record.equipo.nombre} tiene el Clean mas alto con ${record.marca} lb.`,record} : null;
-}
-function equipoTieneRecord(equipo,records){
-  return Boolean(records[0] && records[0].equipo.nombre===equipo.nombre);
-}
-function mostrarTablaRecords(){
-  document.getElementById("modalContainer").innerHTML=`<div class="modal-bg" onclick="cerrarModal()"><div class="modal grande records-panel" onclick="event.stopPropagation()"><button class="close-btn" onclick="cerrarModal()">×</button><h2>Records Clean RM por equipo</h2><p class="records-subtitle">Top 3 equipos por peso registrado en Clean.</p><div id="recordsContent"></div></div></div>`;
-  const records=obtenerRecords();
-  document.getElementById("recordsContent").innerHTML=records.length
-    ? `<table class="records-table"><tr><th>#</th><th>Equipo</th><th>Integrantes</th><th>Libras</th></tr>${records.map((r,i)=>`<tr><td>${i+1}</td><td>${textoSeguro(r.equipo.nombre)}</td><td>${(r.equipo.integrantes||[]).map(textoSeguro).join(", ")}</td><td>${r.marca} lb</td></tr>`).join("")}</table>`
-    : `<p class="records-empty">Todavía no hay records registrados.</p>`;
-}
+
+
+
+
 function mostrarCompetencia(){
   const seleccion=competenciaSelect.value;
   categoriaActual=seleccion;
